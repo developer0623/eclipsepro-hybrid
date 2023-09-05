@@ -1,0 +1,129 @@
+@import './list/addToolingModal/addToolingModal.scss';
+@import './detail/addMachineModal/addMachineModal.scss';
+.xl-list-container {
+  border: 1px solid #d4d4d4;
+  border-radius: 4px;
+  .material-usage-item {
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.machine-detail {
+  display: flex;
+  flex-wrap: wrap;
+  .machine-detail__item {
+    display: flex;
+    width: 33%;
+    min-height: 30px;
+    align-items: center;
+  }
+  .machine-detail__title {
+    width: 40%;
+    text-align: right;
+    color: gray;
+    font-size: 12px;
+
+  }
+  .machine-detail__content {
+    flex: 1;
+    padding-left: 10px;
+    font-size: 16px;
+    min-height: 30px;
+    display: flex;
+    align-items: center
+  }
+}
+
+.back-header {
+  height: 60px !important;
+  padding: 18px 24px !important;
+}
+
+.back-icon {
+  margin-left: 0;
+  cursor: pointer;
+}
+
+.link-item {
+  cursor: pointer;
+}
+
+.tooling-filter-container {
+  margin-left: auto;
+  margin-right: 20px;
+  width: 50%;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .report-search {
+    width: 100%;
+  }
+}
+
+.size-20 {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  line-height: 20px !important;
+}
+
+.add-button {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  font-size: 35px;
+  font-weight: 300;
+  margin: 0 30px 30px 0;
+  background-color: #d19d30;
+}
+
+.warning-col {
+  width: 30px;
+}
+
+.tooling-machine-row {
+  .btn-col {
+    width: 45px;
+  }
+  &:hover {
+    background-color: whitesmoke;
+    .machine-deletebtn {
+        display: block !important;
+    }
+  }
+
+  .machine-detail__content {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  .editable-wrap .editable-controls {
+    .editable-input {
+      padding: 0 !important;
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+
+    label {
+      position: initial;
+      left: 0;
+      top: 0;
+      font-size: 1.5rem;
+      transform: initial;
+    }
+  }
+}
+
+.machine-deletebtn {
+  display: none;
+}
+.tooling-machine-container {
+  background-color: white;
+}

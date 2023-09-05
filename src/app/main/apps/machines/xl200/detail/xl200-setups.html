@@ -1,0 +1,108 @@
+<div class="machine-detail">
+  <div class="machine-detail__item">
+    <div class="machine-detail__title">Instance:</div>
+    <div class="machine-detail__content">
+      {{$ctrl.currentSetups.libraryName}}
+    </div>
+  </div>
+  <div class="machine-detail__item">
+    <div class="machine-detail__title">Id:</div>
+    <div class="machine-detail__content">{{$ctrl.currentSetups.libraryId}}</div>
+  </div>
+  <div class="machine-detail__item">
+    <div class="machine-detail__title">Date:</div>
+    <div class="machine-detail__content">
+      {{$ctrl.currentSetups.date | date : 'short'}}
+    </div>
+  </div>
+  <div class="machine-detail__item">
+    <div class="machine-detail__title">Model:</div>
+    <div class="machine-detail__content">
+      {{$ctrl.currentSetups.softwareModel}}
+    </div>
+  </div>
+  <div class="machine-detail__item">
+    <div class="machine-detail__title">Version:</div>
+    <div class="machine-detail__content">
+      {{$ctrl.currentSetups.softwareVersion}}
+    </div>
+  </div>
+  <div class="machine-detail__item">
+    <div class="machine-detail__title">
+      <md-icon md-font-icon="mdi-filter-outline" class="mdi s24"></md-icon>
+    </div>
+    <div class="machine-detail__content">
+      <input class="machine-search" ng-model="$ctrl.searchTxt" ng-model-options="{debounce: 400}" />
+    </div>
+  </div>
+  <div class="machine-detail__item"></div>
+  <div class="machine-detail__item"></div>
+  <div class="machine-detail__item">
+    <div class="machine-detail__title">
+      <!-- Empty for spacing -->
+    </div>
+    <div class="machine-detail__content">
+      <md-checkbox ng-model="$ctrl.showChangedOnly" on-change="$ctrl.onChangeShow()" aria-label="Show Changed Only">
+        Show Changed Only
+      </md-checkbox>
+    </div>
+  </div>
+</div>
+
+<div class="content md-background md-hue-1 scroll-content">
+  <div class="xl-list-container">
+    <div class="material-usage-item sub-header">
+      <div class="main-con" ng-click="$ctrl.onSortBy('setupId')">
+        Id
+        <i class="icon-sort-ascending sort-icon" ng-if="$ctrl.sortDir === 'asc' && $ctrl.sortKey ==='setupId'"></i>
+        <i class="icon-sort-descending sort-icon" ng-if="$ctrl.sortDir === 'desc' && $ctrl.sortKey ==='setupId'"></i>
+      </div>
+      <div class="main-con" ng-click="$ctrl.onSortBy('setupName')">
+        Name
+        <i class="icon-sort-ascending sort-icon" ng-if="$ctrl.sortDir === 'asc' && $ctrl.sortKey ==='setupName'"></i>
+        <i class="icon-sort-descending sort-icon" ng-if="$ctrl.sortDir === 'desc' && $ctrl.sortKey ==='setupName'"></i>
+      </div>
+      <div class="main-con" ng-click="$ctrl.onSortBy('setupValue')">
+        Value
+        <i class="icon-sort-ascending sort-icon" ng-if="$ctrl.sortDir === 'asc' && $ctrl.sortKey ==='setupValue'"></i>
+        <i class="icon-sort-descending sort-icon" ng-if="$ctrl.sortDir === 'desc' && $ctrl.sortKey ==='setupValue'"></i>
+      </div>
+    </div>
+    <div class="material-usage-content">
+      <accordion
+        ng-repeat="param in $ctrl.sortedCurrentSetups.parameters  | filter: ($ctrl.showChangedOnly ? {hasChanged:true} : '') | filter:$ctrl.searchTxt"
+        class="xl-row" is-open="param.isOpen">
+        <accordion-header on-close="$ctrl.onClose(param)">
+          <div class="material-usage-item item-header">
+            <div class="main-con">{{param.setupId}}</div>
+            <div class="main-con">{{param.setupName}}</div>
+            <div class="main-con" ng-class="{'red-color': param.hasChanged, 'italic-font': param.isReadOnly}">
+              {{param.setupValue}}
+            </div>
+          </div>
+          <div></div>
+        </accordion-header>
+
+        <accordion-content>
+          <div class="material-usage-item sub-header">
+            <div class="main-con">Date</div>
+            <div class="main-con">Instance</div>
+            <div class="main-con">Id</div>
+            <div class="main-con">Value</div>
+          </div>
+          <div class="material-usage-content">
+            <!-- use loop for sub table here -->
+            <div class="material-usage-item" ng-repeat="history in param.history">
+              <div class="main-con">{{history.date | date : 'short'}}</div>
+              <div class="main-con">{{history.libraryName}}</div>
+              <div class="main-con">{{history.libraryId}}</div>
+              <div class="main-con">{{history.setupValue}}</div>
+            </div>
+            <!-- ------ -->
+            <div></div>
+          </div>
+        </accordion-content>
+      </accordion>
+    </div>
+  </div>
+</div>

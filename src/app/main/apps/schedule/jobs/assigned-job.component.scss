@@ -1,0 +1,44 @@
+.jobitem-group-item {
+   height: 72px;
+   /* why didn't 100% work here? */
+   /* background: rgb(186, 205, 113); */
+   /* // padding: 10px 10px 0px 10px; */
+   position: relative;
+}
+
+.job-id {
+   font-size: 1.7rem;
+   font-weight: bold;
+   justify-content: space-between;
+   /* .warn {
+             color: #D32F2F;
+         } */
+}
+
+.job-sys {
+   font-size: 1.4rem;
+   line-height: 1.5rem;
+}
+
+.job-state {
+   align-items: flex-end;
+}
+
+.job-state p {
+   /* p{ */
+   margin: 0px;
+   text-align: center;
+}
+
+.job-state .job-item-title {   
+   font-size: 0.9rem;
+}
+
+.job-state .job-item-content {
+   font-weight: bold;
+   font-size: 1.2rem;
+}
+
+.jobitem-item-group {
+   justify-content: flex-start;
+}

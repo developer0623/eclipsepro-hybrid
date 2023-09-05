@@ -1,0 +1,111 @@
+<!-- Styles are here temporarily because `gulp serve-local does not refresh nicely. It should get moved into a proper scss file -->
+<div class="schedule-summary">
+   <div class="schedule-header">
+      <div class="h3 schedule-title ph-24">SCHEDULE SUMMARY <md-button ui-sref="app.schedule_jobs({machine: $ctrl.scheduleSummary.machineNumber})">
+               <md-tooltip md-direction="right">Open Scheduler</md-tooltip>
+               <md-icon md-font-icon="mdi-calendar" class="mdi s18"></md-icon></md-button>
+      </div>
+      <div class="schedule-stats">
+         <table>
+            <tbody>
+               <tr>
+                  <td class="secondary-text" translate="scheduledFeetTotal">Total Scheduled</td>
+                  <td> ({{$ctrl.scheduleSummary.scheduledJobsCount}})</td>
+                  <td>{{$ctrl.scheduleSummary.scheduledFeetTotal | unitsFormat:"ft":0 }} </td>
+               </tr>
+               <tr>
+                  <td class="secondary-text" translate="atMachineFeetTotal">At Machine</td>
+                  <td> ({{$ctrl.scheduleSummary.atMachineJobsCount}})</td>
+                  <td>{{$ctrl.scheduleSummary.atMachineFeetTotal | unitsFormat:"ft":0 }} </td>
+               </tr>
+               <tr>
+                  <td class="secondary-text" translate="available">Total Available</td>
+                  <td> ({{$ctrl.scheduleSummary.availableJobsCount}})</td>
+                  <td>{{$ctrl.scheduleSummary.availableFeetTotal | unitsFormat:"ft":0 }} </td>
+               </tr>
+               <tr>
+                  <td class="secondary-text" translate="scheduleCompletionDate">Schedule Ends</td>
+                  <td style="padding-left:8px;" colspan="2">{{$ctrl.scheduleSummary.scheduleCompletionDate | amsDateTime}}</td>
+               </tr>
+               <tr feature-flag="experimental">
+                  <td class="secondary-text" translate="">🧪 Today Remaining<md-tooltip>Experimental: Orders remaining that are scheduled and required today</md-tooltip></td>
+                  <td>({{$ctrl.scheduleSummary.requiredByTodayFt | unitsFormat:"ft":0 }})</td>
+                  <td>{{($ctrl.shiftStats.goodFeet / ($ctrl.shiftStats.goodFeet + $ctrl.scheduleSummary.requiredByTodayFt))*100 | number : 1}}% </td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+   <div class="schedule-body">
+      <div class="schedule-element-container">
+         <div class="schedule-element">
+            <div class="element-title">ORDER</div>
+            <div class="element-current-line">
+               <div class="current-title"><job-detail-preview ord-id="$ctrl.scheduleSummary.currentOrderId">
+                  <a ng-click="$event.stopPropagation()" ui-sref="app.orders.detail({id: $ctrl.scheduleSummary.currentOrderId})">{{$ctrl.scheduleSummary.currentOrderCode}}</a>
+               </job-detail-preview></div>
+               <div class="current-length">{{($ctrl.scheduleSummary.currentOrderRemainingFeet | unitsFormat :"ft":0:true) || "n/a"}} <span ng-if="$ctrl.scheduleSummary.currentOrderRemainingFeet" class="sch-unit">{{'ft' | userDisplayUnits}}</span>
+                  <md-tooltip>Length remaining in current order</md-tooltip></div>
+               <div class="current-time"><duration-display date="$ctrl.scheduleSummary.currentOrderCompletionDate"></duration-display>
+                  <md-tooltip>Time until current order completion</md-tooltip></div> <!--2<span class="sch-unit">H</span> 34<span class="sch-unit">M</span>-->
+               <!-- <p class="des-txt">Descriptive Text</p> -->
+            </div>
+            <div class="element-next-line">
+               <div class="next">NEXT:</div>
+               <div class="next-title"><job-detail-preview ord-id="$ctrl.scheduleSummary.nextOrderId">
+                  <a ng-click="$event.stopPropagation()" ui-sref="app.orders.detail({id: $ctrl.scheduleSummary.nextOrderId})">{{$ctrl.scheduleSummary.nextOrderCode}}</a>
+               </job-detail-preview></div>
+               <!-- descriptive text -->
+               <div class="next-length">{{($ctrl.scheduleSummary.nextOrderFeet | unitsFormat :"ft":0:true) || "n/a"}} <span ng-if="$ctrl.scheduleSummary.nextOrderFeet" class="sch-unit">{{'ft' | userDisplayUnits}}</span>
+                  <md-tooltip>Length of next order</md-tooltip></div>
+               <div class="next-time"><duration-display milliseconds="$ctrl.scheduleSummary.nextOrderRuntimeMs"></duration-display>
+                  <md-tooltip>Next order runtime</md-tooltip></div> 
+            </div>
+         </div>
+      </div>
+      <div class="schedule-element-container">
+         <div class="schedule-element">
+            <div class="element-title">MATERIAL</div>
+            <div class="element-current-line">
+               <div class="current-title"><a ng-click="$event.stopPropagation()" ui-sref="app.inventory.coil-types.coil-type({id: $ctrl.scheduleSummary.currentMaterialCode})">{{$ctrl.scheduleSummary.currentMaterialCode}}</a></div>
+               <div class="current-length">{{($ctrl.scheduleSummary.currentMaterialRemainingFeet | unitsFormat :"ft":0:true) || "n/a"}} <span ng-if="$ctrl.scheduleSummary.currentMaterialRemainingFeet" class="sch-unit">{{'ft' | userDisplayUnits}}</span>
+                  <md-tooltip>Length remaining in current material</md-tooltip></div>
+               <div class="current-time"><duration-display date="$ctrl.scheduleSummary.currentMaterialCompletionDate"></duration-display>
+                  <md-tooltip>Time until current material completion</md-tooltip></div>
+               <!-- <p class="des-txt">Descriptive Text</p> -->
+            </div>
+            <div class="element-next-line">
+               <div class="next">NEXT:</div>
+               <div class="next-title"><a ng-click="$event.stopPropagation()" ui-sref="app.inventory.coil-types.coil-type({id: $ctrl.scheduleSummary.nextMaterialCode})">{{$ctrl.scheduleSummary.nextMaterialCode}}</a></div>
+               <!-- descriptive text -->
+               <div class="next-length">{{($ctrl.scheduleSummary.nextMaterialFeet | unitsFormat :"ft":0:true) || "n/a"}} <span ng-if="$ctrl.scheduleSummary.nextMaterialFeet" class="sch-unit">{{'ft' | userDisplayUnits}}</span>
+                  <md-tooltip>Length of next material</md-tooltip></div>
+               <div class="next-time"><duration-display milliseconds="$ctrl.scheduleSummary.nextMaterialRuntimeMs"></duration-display>
+                  <md-tooltip>Next material runtime</md-tooltip></div> 
+            </div>
+         </div>
+      </div>
+      <div class="schedule-element-container">
+         <div class="schedule-element">
+            <div class="element-title">TOOLING</div>
+            <div class="element-current-line">
+               <div class="current-title">{{$ctrl.scheduleSummary.currentToolingCode}}</div>
+               <div class="current-length">{{($ctrl.scheduleSummary.currentToolingRemainingFeet | unitsFormat :"ft":0:true) || "n/a"}} <span ng-if="$ctrl.scheduleSummary.currentToolingRemainingFeet" class="sch-unit">{{'ft' | userDisplayUnits}}</span>
+                  <md-tooltip>Length remaining in current tooling</md-tooltip></div>
+               <div class="current-time"><duration-display date="$ctrl.scheduleSummary.currentToolingCompletionDate"></duration-display>
+                  <md-tooltip>Time until current tooling completion</md-tooltip></div>
+               <!-- <p class="des-txt">Descriptive Text</p> -->
+            </div>
+            <div class="element-next-line">
+               <div class="next">NEXT:</div>
+               <div class="next-title">{{$ctrl.scheduleSummary.nextToolingCode}}</div>
+               <!-- descriptive text -->
+               <div class="next-length">{{($ctrl.scheduleSummary.nextToolingFeet | unitsFormat :"ft":0:true) || "n/a"}} <span ng-if="$ctrl.scheduleSummary.nextToolingFeet" class="sch-unit">{{'ft' | userDisplayUnits}}</span>
+                  <md-tooltip>Length of next tooling</md-tooltip></div>
+               <div class="next-time"><duration-display milliseconds="$ctrl.scheduleSummary.nextToolingRuntimeMs"></duration-display>
+                  <md-tooltip>Next tooling runtime</md-tooltip></div> 
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

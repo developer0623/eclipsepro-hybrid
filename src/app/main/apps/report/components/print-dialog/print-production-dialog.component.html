@@ -1,0 +1,286 @@
+<md-dialog class="printview-dialog" aria-label="Print Preview">
+  <div class="summary-print">
+    <div class="summary-print__header">
+      Print
+    </div>
+    <div class="summary-print__body">
+      <div class="summary-print__select-part">
+        <md-input-container class="summary-print__select-container">
+          <label class="summary-print__select-label">Size</label>
+          <md-select ng-model="ctrl.selectedSize" ng-change="ctrl.change()">
+            <md-option ng-repeat="size in ctrl.sizes" ng-value="size.id">
+              {{size.size}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <div class="summary-print__style" ng-if="!ctrl.selectedSize">
+          <div class="summary-print__style-title">Time Chart</div>
+          <md-radio-group class="summary-print__radioGr" ng-model="ctrl.selectedStyle" ng-change="ctrl.change()">
+            <md-radio-button class="summary-print__radioBtn" ng-value="style.id" ng-repeat="style in ctrl.printStyles">
+              {{ style.value }}</md-radio-button>
+          </md-radio-group>
+        </div>
+      </div>
+      <div class="summary-print__preview">Preview</div>
+      <div id="main-print-body">
+        <div id="print-content" class="print-content" ng-if="!ctrl.selectedSize"
+          ng-class="{'include-85': ctrl.selectedStyle == 0, 'side-85': ctrl.selectedStyle == 1, 'stack-85': ctrl.selectedStyle == 2}">
+          <div class="page-content" ng-class="{'is_active': !ctrl.nextPage}">
+            <div class="print-content__main-titles">
+              <div class="print-content__title1">Eclipsepro</div>
+              <div class="print-content__title2">Production Summary</div>
+              <div class="print-content__title3">{{ctrl.factoryName}}</div>
+            </div>
+            <div class="print-content__main-header">
+              <div class="print-content__date"
+                ng-bind-html="ctrl.startDate.date | printDateFilter: ctrl.endDate.date : ctrl.duration.title"></div>
+              <div class="print-content__duration-title">Duration:</div>
+              <div class="print-content__duration-content">{{ ctrl.duration.title }}</div>
+              <div class="print-content__shift-title">Shift:</div>
+              <div class="print-content__shift-content">{{ ctrl.shift }}</div>
+              <div class="print-content__machine-title">Mahines:</div>
+              <div class="print-content__machine-content">Custom 7/12</div>
+            </div>
+            <div class="print-content__main-table">
+              <div class="print-content__header">
+                <div class="mh-column column-title">MACHINE</div>
+                <div class="mh-column column-good-scrap">
+                  <div>Total GOOD</div>
+                </div>
+                <div class="mh-column column-good-scrap">
+                  <div>Net SCRAP</div>
+                </div>
+                <div class="mh-column column-running">
+                  <div>RUNNING THROUGHPUT</div>
+                </div>
+                <div class="mh-column column-oee-target">
+                  <div>OEE</div>
+                </div>
+                <div class="mh-column column-oee-target">
+                  <div>
+                    <div>TARGET</div>
+                    <div>%</div>
+                  </div>
+                </div>
+                <div class="mh-column column-asy">
+                  <div>
+                    <div>AVAILABILITY</div>
+                    <div>%</div>
+                  </div>
+                </div>
+                <div class="mh-column column-asy">
+                  <div>
+                    <div>SPEED</div>
+                    <div>%</div>
+                  </div>
+                </div>
+                <div class="mh-column column-asy">
+                  <div>
+                    <div>YIELD</div>
+                    <div>%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="machine-summary-list" ng-repeat="item in ctrl.data">
+                <print-summary machine="item.machineName" data="item" ng-if="item.availability"></print-summary>
+                <print-summary-timebar data='item.timeBar' ng-if="ctrl.selectedStyle == 2 && item.availability">
+                </print-summary-timebar>
+                <div class="print-summary-empty-item" ng-if="!item.availability">
+                  <div class="column-title ms-column">{{item.machineName}}</div>
+                  <div class="no-data">No data available</div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+          <div class="page-content" ng-class="{'is_active': ctrl.nextPage}" ng-if="ctrl.selectedStyle != 2">
+            <div class="print-content__main-titles" ng-if="ctrl.selectedStyle == 0">
+              <div class="print-content__title1">Eclipsepro</div>
+              <div class="print-content__title2">Production Summary</div>
+              <div class="print-content__title3">Factory Location Name</div>
+            </div>
+            <div class="print-content__main-header" ng-if="ctrl.selectedStyle == 0">
+              <div class="print-content__date"
+                ng-bind-html="ctrl.startDate.date | printDateFilter: ctrl.endDate.date : ctrl.duration.title"></div>
+              <div class="print-content__duration-title">Duration:</div>
+              <div class="print-content__duration-content">{{ ctrl.duration.title }}</div>
+              <div class="print-content__shift-title">Shift:</div>
+              <div class="print-content__shift-content">{{ ctrl.shift }}</div>
+              <div class="print-content__machine-title">Mahines:</div>
+              <div class="print-content__machine-content">Custom 7/12</div>
+            </div>
+
+            <div class="print-content__inline-header" ng-if="ctrl.selectedStyle == 1">
+              <div class="print-content__inline-title">Eclipsepro</div>
+              <div class="print-content__inline-title  font-bold">Production Summary</div>
+              <div class="print-content__inline-title">Factory Location Name</div>
+              <div class="print-content__inline-title font-bold"
+                ng-bind-html="ctrl.startDate.date | printDateFilter: ctrl.endDate.date : ctrl.duration.title"></div>
+              <div class="print-content__inline-title">Duration:</div>
+              <div class="print-content__inline-title">{{ ctrl.duration.title }}</div>
+              <div class="print-content__inline-title">Shift:</div>
+              <div class="print-content__inline-title">{{ ctrl.shift }}</div>
+              <div class="print-content__inline-title">Mahines:</div>
+              <div class="print-content__inline-title">Custom 7/12</div>
+            </div>
+            <div class="print-content__main-table">
+              <div class="print-content__header" ng-if="ctrl.selectedStyle == 0">
+                <div class="mh-column column-title">MACHINE</div>
+                <div class="mh-column column-good-scrap">
+                  <div>Total GOOD</div>
+                </div>
+                <div class="mh-column column-good-scrap">
+                  <div>Net SCRAP</div>
+                </div>
+                <div class="mh-column column-running">
+                  <div>RUNNING THROUGHPUT</div>
+                </div>
+                <div class="mh-column column-oee-target">
+                  <div>OEE</div>
+                </div>
+                <div class="mh-column column-oee-target">
+                  <div>
+                    <div>TARGET</div>
+                    <div>%</div>
+                  </div>
+                </div>
+                <div class="mh-column column-asy first-hide">
+                  <div>
+                    <div>AVAILABILITY</div>
+                    <div>%</div>
+                  </div>
+                </div>
+                <div class="mh-column column-asy first-hide">
+                  <div>
+                    <div>SPEED</div>
+                    <div>%</div>
+                  </div>
+                </div>
+                <div class="mh-column column-asy first-hide">
+                  <div>
+                    <div>YIELD</div>
+                    <div>%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="print-content__header" ng-if="ctrl.selectedStyle == 1">
+                <div class="print-content__machine-header">MACHINE</div>
+                <div class="print-content__timechart-header">Time CHART</div>
+              </div>
+
+              <div class="machine-summary-list" ng-repeat="item in ctrl.data">
+                <print-summary-timebar machine="item.machineName" data='item.timeBar' ng-if="item.availability">
+                </print-summary-timebar>
+                <div class="print-summary-empty-item" ng-if="!item.availability">
+                  <div class="column-title ms-column">{{item.machineName}}</div>
+                  <div class="no-data">No data available</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+
+        </div>
+
+        <div id="print-content" class="print-content size-1117" ng-if="ctrl.selectedSize">
+          <div class="page-content">
+            <div class="print-content__main-titles">
+              <div class="print-content__title1">Eclipsepro</div>
+              <div class="print-content__title2">Production Summary</div>
+              <div class="print-content__title3">Factory Location Name</div>
+            </div>
+            <div class="print-content__main-header">
+              <div class="print-content__date"
+                ng-bind-html="ctrl.startDate.date | printDateFilter: ctrl.endDate.date : ctrl.duration.title"></div>
+              <div class="print-content__duration-title">Duration:</div>
+              <div class="print-content__duration-content">{{ ctrl.duration.title }}</div>
+              <div class="print-content__shift-title">Shift:</div>
+              <div class="print-content__shift-content">{{ ctrl.shift }}</div>
+              <div class="print-content__machine-title">Mahines:</div>
+              <div class="print-content__machine-content">Custom 7/12</div>
+            </div>
+            <div class="print-content__main-table">
+              <div class="print-content__left-table">
+                <div class="print-content__header">
+                  <div class="mh-column column-title">MACHINE</div>
+                  <div class="mh-column column-good-scrap">
+                    <div>Total GOOD</div>
+                  </div>
+                  <div class="mh-column column-good-scrap">
+                    <div>Net SCRAP</div>
+                  </div>
+                  <div class="mh-column column-running">
+                    <div>RUNNING THROUGHPUT</div>
+                  </div>
+                  <div class="mh-column column-oee-target">
+                    <div>OEE</div>
+                  </div>
+                  <div class="mh-column column-oee-target">
+                    <div>
+                      <div>TARGET</div>
+                      <div>%</div>
+                    </div>
+                  </div>
+                  <div class="mh-column column-asy">
+                    <div>
+                      <div>AVAILABILITY</div>
+                      <div>%</div>
+                    </div>
+                  </div>
+                  <div class="mh-column column-asy">
+                    <div>
+                      <div>SPEED</div>
+                      <div>%</div>
+                    </div>
+                  </div>
+                  <div class="mh-column column-asy">
+                    <div>
+                      <div>YIELD</div>
+                      <div>%</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="machine-summary-list" ng-repeat="item in ctrl.data">
+                  <print-summary machine="item.machineName" data="item" ng-if="item.availability"></print-summary>
+                  <div class="print-summary-empty-item" ng-if="!item.availability">
+                    <div class="column-title ms-column">{{item.machineName}}</div>
+                    <div class="no-data">No data available</div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="print-content__right-table">
+                <div class="print-content__header">
+                  <div class="print-content__timechart-header">Time CHART</div>
+                </div>
+
+                <div class="machine-summary-list" ng-repeat="item in ctrl.data">
+                  <print-summary-timebar state="true" data='item.timeBar' ng-if="item.availability">
+                  </print-summary-timebar>
+                  <div class="print-summary-empty-item" ng-if="!item.availability">
+                    <div class="column-title ms-column">{{item.machineName}}</div>
+                    <div class="no-data">No data available</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </div>
+    <div class="printview-dialog__buttons">
+      <button class="printview-dialog__btn" ng-click="ctrl.cancel()">Cancel</button>
+      <button class="printview-dialog__btn" ng-click="ctrl.print()">Continue</button>
+    </div>
+
+  </div>
+</md-dialog>

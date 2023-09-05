@@ -1,0 +1,122 @@
+<md-dialog class="integration-config-dialog" aria-label="config-dialog">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>{{vm.title}} Configuration</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="vm.cancel()">
+        <md-icon md-font-icon="icon-close" class="icon"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      <div class="config-row">
+        <div class="config-label">Type:</div>
+        <div class="config-content">
+          <md-select
+            ng-model="vm.selectedConfig"
+            ng-change="vm.onChangeConfig(vm.selectedConfig)"
+            aria-label="config-select"
+          >
+            <md-option ng-repeat="(key, item) in vm.configList" value="{{key}}"
+              >{{item.name}}</md-option
+            >
+          </md-select>
+        </div>
+      </div>
+      <div class="config-row">
+        <div class="config-label"></div>
+        <div class="config-content">
+          <md-checkbox
+            class="config-enable yellow-check"
+            ng-model="vm.configEnabled"
+            aria-label="Config Enabled"
+          >
+            Enabled
+          </md-checkbox>
+        </div>
+      </div>
+      <div class="config-row" ng-repeat="(key, item) in vm.itemsList">
+        <div class="config-label">
+          {{item.name}}:
+
+          <a ng-if="item.kbLink" href="{{item.kbLink}}" target="_blank">
+            <md-tooltip md-direction="top">Help</md-tooltip>
+            <i class="icon s20 secondary-text icon-help-circle"></i>
+          </a>
+        </div>
+        <div class="config-content">
+          <input
+            ng-if="item.type==='string'"
+            class="config-input"
+            ng-model="vm.settings[key]"
+          />
+          <input
+            ng-if="item.type==='integer'"
+            class="config-input"
+            ng-model="vm.settings[key]"
+          />
+          <div class="time-container" ng-if="item.type==='interval'">
+            <time-input
+              is-hour="true"
+              ng-model="vm.settings[key][0]"
+            ></time-input
+            >:
+            <time-input
+              is-hour="false"
+              ng-model="vm.settings[key][1]"
+            ></time-input
+            >:
+            <time-input
+              is-hour="false"
+              ng-model="vm.settings[key][2]"
+            ></time-input>
+          </div>
+          <md-checkbox
+            ng-if="item.type==='bool'"
+            class="config-enable yellow-check"
+            ng-model="vm.settings[key]"
+          ></md-checkbox>
+          <md-select
+            ng-if="item.type==='option'"
+            ng-model="vm.settings[key]"
+            aria-label="config-select"
+          >
+            <md-option ng-repeat="opt in item.options" value="{{opt.key}}"
+              >{{opt.value}}</md-option
+            >
+          </md-select>
+          <md-select
+            ng-if="item.type==='externalConnection'"
+            ng-model="vm.settings[key]"
+            
+            aria-label="config-select"
+          >
+          <!-- ng-change="vm.onChangeConfig(vm.selectedConfig)" -->
+            <md-option ng-repeat="conn in vm.externalConnections" value="{{conn.id}}"
+              >{{conn.settings.name}}</md-option
+            >
+          </md-select>
+        </div>
+      </div>
+
+      <div class="btn-container">
+        <md-button class="add-bt" aria-label="Test" ng-click="vm.onTest()">
+          Test
+        </md-button>
+
+        <md-button class="add-bt" aria-label="Save" ng-click="vm.onSave()">
+          Save
+        </md-button>
+      </div>
+
+      <div class="message-container" ng-if="vm.messages.length > 0">
+        <div ng-repeat="message in vm.messages track by $index">
+          {{message}}
+        </div>
+      </div>
+      <div class="message-container" ng-if="vm.messages.length === 0"></div>
+    </div>
+  </md-dialog-content>
+</md-dialog>

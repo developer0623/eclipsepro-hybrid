@@ -1,0 +1,150 @@
+<div id="settings" class="page-layout simple fullwidth">
+  <div class="header">
+    <div layout="row" layout-align="space-between">
+      <span class="h2">System Health</span>
+      <div layout="row" class="toolbar">
+        <md-button ng-click="$ctrl.doDiagnosticUpload()" class="md-icon-button">
+          <md-icon md-font-icon="icon-folder-upload"></md-icon>
+          <md-tooltip md-direction="bottom">
+            Upload Diagnostics Package To AMS
+          </md-tooltip>
+        </md-button>
+        <md-button href="/api/system/diagnostics" ng-click="$ctrl.toastDiagnosticDownload()" class="md-icon-button"
+          target="_self">
+          <md-icon md-font-icon="icon-folder-download"></md-icon>
+          <md-tooltip md-direction="bottom">
+            Download Diagnostics Package
+          </md-tooltip>
+        </md-button>
+        <md-button ng-click="$ctrl.triggerHistorySync()" class="md-icon-button">
+          <md-icon md-font-icon="icon-refresh"></md-icon>
+          <md-tooltip md-direction="bottom"> Start History Sync </md-tooltip>
+        </md-button>
+        <div>
+          Uptime:
+          <duration-display date="$ctrl.systemInfo.serverStartTime" ng-if="$ctrl.systemInfo.isSignalRConnected">
+          </duration-display>
+          <span ng-if="!$ctrl.systemInfo.isSignalRConnected">*Disconnected*</span>
+          <br />Last start: {{$ctrl.systemInfo.serverStartTime|amsDateTime}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content" md-background-bg>
+    <md-tabs md-dynamic-height md-border-bottom md-selected="$ctrl.selectedTabIndex">
+      <md-tab label="Alerts" md-on-select="$ctrl.selectTab()">
+        <system-alerts-grid alerts="$ctrl.alerts"></system-alerts-grid>
+      </md-tab>
+      <md-tab label="Services" md-on-select="$ctrl.selectTab()">
+        <service-health-grid healths="$ctrl.health" health-summary="$ctrl.healthSummary"></service-health-grid>
+      </md-tab>
+      <md-tab label="Agent" md-on-select="$ctrl.selectTab()">
+        <div layout="column">
+          <div class="simple-table-container md-whiteframe-2dp mb-24">
+            <div class="form-title" layout="column" layout-fill>
+              <div class="agent-id font-size-14">
+                <span class="text-inline w-160">Agent ID:</span> <span class="secondary-text ml-8"
+                  ng-class="{'font-size-13': $mdMedia('xs')}">{{$ctrl.systemInfoService.agentStatus.status.agentId}}</span>
+              </div>
+              <div class="agent-status font-size-14">
+                <span class="text-inline w-160">Status:</span>
+                <span ng-if="$ctrl.systemInfoService.agentStatus.isAgentReachable" class="connected ml-8"
+                  style="text-transform: uppercase;">connected</span>
+                <span ng-if="!$ctrl.systemInfoService.agentStatus.isAgentReachable" class="hint-text ml-8"
+                  style="text-transform: uppercase;">disconnected <span class="secondary-text">(showing last known
+                    configuration)</span></span>
+              </div>
+              <div class="agent-status font-size-14">
+                <span class="text-inline w-160">Eclipse Ver:</span>
+                <span ng-if="$ctrl.systemInfoService.agentStatus.isAgentReachable" class="connected ml-8"
+                  style="text-transform: uppercase;">{{$ctrl.systemInfoService.agentStatus.status.eclipseVersion}}</span>
+                <span ng-if="!$ctrl.systemInfoService.agentStatus.isAgentReachable" class="hint-text ml-8"
+                  style="text-transform: uppercase;">{{$ctrl.systemInfoService.agentStatus.status.eclipseVersion}} <span
+                    class="secondary-text">(showing last known configuration)</span></span>
+              </div>
+              <div class="agent-status font-size-14">
+                <span class="text-inline w-160">Agent URL:</span>
+                <a ng-if="$ctrl.systemInfoService.agentStatus.isAgentReachable"
+                  href="{{$ctrl.systemInfoService.agentStatus.agentUrl}}" class="connected ml-8" target="_blank"
+                  style="text-decoration: underline">{{$ctrl.systemInfoService.agentStatus.agentUrl}}</a>
+                <a ng-if="!$ctrl.systemInfoService.agentStatus.isAgentReachable"
+                  href="{{$ctrl.systemInfoService.agentStatus.agentUrl}}" class="secondary-text ml-8" target="_blank"
+                  style="text-decoration: underline">{{$ctrl.systemInfoService.agentStatus.agentUrl}}</a>
+              </div>
+              <div class="agent-id font-size-14">
+                <span class="text-inline w-160">Eclipse Directory:</span> <span class="ml-8"
+                  ng-class="{'font-size-13': $mdMedia('xs')}">{{$ctrl.systemInfoService.agentStatus.status.eclipseDirectory}}</span>
+              </div>
+              <div class="agent-status font-size-14">
+                <span class="text-inline w-160">Eclipse Pro Server URL:</span>
+                <span class="ml-8">{{$ctrl.systemInfoService.agentStatus.status.eclipseProServerUrl}}</span>
+              </div>
+              <div class="agent-status font-size-14">
+                <span class="text-inline w-160">Record Queue:</span>
+                <span class="ml-8">{{$ctrl.systemInfoService.agentStatus.status.eclipseLegacyQueueName}}</span>
+              </div>
+            </div>
+            <!-- <form name="$ctrl.agentStatusForm" class="md-inline-form p-16 pb-32" novalidate>
+
+              <div layout="column">
+
+                <md-input-container class="mb-0" flex>
+                  <label translate="eclipseDirectory">Eclipse Directory</label>
+                  <input type="text" name="EclipseDirectory" id="EclipseDirectory" disabled
+                    value="{{$ctrl.systemInfoService.agentStatus.status.eclipseDirectory}}">
+                  <div ng-messages
+                    ng-repeat="message in $ctrl.systemInfoService.agentStatus.status.eclipseDirectoryValidationErrors">
+                    <span class="font-size-12" translate="{{message | camelCase}}">{{message}}</span>
+                  </div>
+                </md-input-container>
+
+                <md-input-container class="mb-0" flex>
+                  <label>Eclipse Pro Server URL</label>
+                  <input type="text" name="EclipseProServerUrl" id="EclipseProServerUrl" disabled
+                    value="{{$ctrl.systemInfoService.agentStatus.status.eclipseProServerUrl}}">
+                  <div ng-messages ng-show="$ctrl.systemInfoService.agentStatus.status.errorMessage">
+                    <span class="font-size-12">{{$ctrl.systemInfoService.agentStatus.status.errorMessage}}</span>
+                  </div>
+                  <div ng-messages ng-show="!$ctrl.systemInfoService.agentStatus.status.eclipseProServerUrlIsGood">
+                    <span class="font-size-12">invalid server url - agent cannot reach the server</span>
+                  </div>
+                </md-input-container>
+
+                <md-input-container class="mb-0" flex>
+                  <label translate="recordQueue">Record Queue</label>
+                  <input type="text" disabled name="EclipseLegacyQueueName" id="EclipseLegacyQueueName"
+                    value="{{$ctrl.systemInfoService.agentStatus.status.eclipseLegacyQueueName}}">
+                  <div ng-messages
+                    ng-repeat="message in $ctrl.systemInfoService.agentStatus.status.eclipseSchemaVersionValidationErrors">
+                    <span class="font-size-12">{{message}}</span>
+                  </div>
+                </md-input-container>
+              </div>
+            </form> -->
+          </div>
+          <pending-actions-to-agent-grid pending-agent-actions="$ctrl.pendingAgentActions">
+          </pending-actions-to-agent-grid>
+          <sync-state-grid sync-state="$ctrl.syncState"></sync-state-grid>
+          <div class="simple-table-container md-whiteframe-2dp mb-24">
+            <div layout="row" class="table-title black-text" layout-align="center start">
+              Actions
+            </div>
+            <div>
+              <md-button ng-click="$ctrl.synchronizeOrdersWithAgent()">
+                <md-icon md-font-icon="icon-broom"></md-icon>
+                Cleanup Orders
+                <md-tooltip md-direction="bottom">
+                  Synchronize Orders With Agent
+                </md-tooltip>
+              </md-button>
+            </div>
+          </div>
+        </div>
+      </md-tab>
+      <md-tab label="Express" md-on-select="$ctrl.selectTab()">
+        <express-view></express-view>
+      </md-tab>
+    </md-tabs>
+  </div>
+</div>

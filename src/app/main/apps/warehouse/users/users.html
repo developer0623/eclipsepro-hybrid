@@ -1,0 +1,88 @@
+<div
+  id="warehouse"
+  class="page-layout simple fullwidth white-bg user-class"
+  ng-class="{'no-scroll': panelIsOpen }"
+  ngsf-fullscreen
+>
+  <div class="header">
+    <div layout="row" layout-align="space-between">
+      <span class="h2 text-upper">WAREHOUSE: USERS</span>
+    </div>
+  </div>
+
+  <div class="content md-background md-hue-1">
+    <md-content scroll-glue-right>
+      <div class="table-container">
+        <table class="user-table">
+          <thead>
+            <tr>
+              <th class="first-td bold-font">USERS</th>
+              <th class="nth-td bold-font" ng-repeat="user in users">
+                {{user.userName}}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="first-td">Active</td>
+              <td class="nth-td" ng-repeat="user in users">
+                <md-select
+                  ng-model="user.transferType"
+                  class="user-type-select"
+                >
+                  <md-option
+                    ng-value="type.title"
+                    ng-repeat="type in transferTypes"
+                    >{{type.title}}</md-option
+                  >
+                </md-select>
+                <md-checkbox aria-label="Select All"> </md-checkbox>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-container" ng-repeat="facet in facets">
+        <md-toolbar class="md-table-toolbar md-default">
+          <div class="md-toolbar-tools">
+            <span>{{facet.title}}</span>
+            <div flex></div>
+          </div>
+        </md-toolbar>
+        <table class="machine-table">
+          <thead>
+            <tr>
+              <th class="first-td bold-font"></th>
+              <th
+                class="nth-td bold-font"
+                ng-repeat="user in facet.userSettings"
+              >
+                <md-checkbox
+                  aria-label="Select All"
+                  ng-checked="user.isAllFacetChecked"
+                  md-indeterminate="user.isFacetIndeterminate"
+                  ng-disabled="true"
+                >
+                </md-checkbox>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="filter in facet.filters">
+              <td class="first-td">{{filter.title}}</td>
+              <td class="nth-td" ng-repeat="user in filter.userSettings">
+                <md-checkbox
+                  aria-label="Select All"
+                  ng-disabled="true"
+                  ng-checked="user.isFilterChecked"
+                >
+                </md-checkbox>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </md-content>
+  </div>
+</div>

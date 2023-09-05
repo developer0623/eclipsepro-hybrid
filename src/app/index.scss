@@ -1,0 +1,531 @@
+@import "~angular-advanced-searchbox/dist/angular-advanced-searchbox.min.css";
+@import "~nvd3/build/nv.d3.css";
+@import "~dc/dc.min.css";
+$mdi-font-path: '~@mdi/font/fonts/';
+// @import '~@mdi/font/scss/materialdesignicons';
+// @import "~@mdi/font/scss/materialdesignicons.scss";
+@import "../assets/icons/style.css";
+@import "./core/global-scss/global.scss";
+@import "./toolbar/toolbar.scss";
+@import "./navigation/navigation.scss";
+@import "./quick-panel/quick-panel.scss";
+@import "./main/apps/dashboards/dashboards.scss";
+@import "./core/directives/index.scss";
+@import "./main/apps/explorer/explorer.scss";
+@import "./main/apps/inventory/inventory.scss";
+@import "./main/apps/orders/orders.scss";
+@import "./main/apps/report/report.scss";
+@import "./main/apps/schedule/schedule.scss";
+@import "./main/apps/settings/settings.scss";
+@import "./main/apps/warehouse/warehouse.scss";
+@import "./main/apps/tooling/tooling.scss";
+@import "./main/apps/machines/xl200/xl200.scss";
+
+.md-cal endar-day-header th {
+   color: black !important;
+}
+
+md-menu-item {
+   .md-button {
+      color: black;
+   }
+}
+
+body {
+   -webkit-print-color-adjust: exact !important;
+}
+
+.yellow-check {
+   &.md-checked {
+      .md-icon {
+         background-color: rgba(236, 177, 0, 0.87);
+         color: rgba(255, 255, 255, 0.87);
+         border-color: rgba(236, 177, 0, 0.87);
+
+         &::after {
+            border-color: white;
+         }
+      }
+
+      .md-ink-ripple {
+         color: rgba(236, 177, 0, 0.87);
+      }
+   }
+}
+
+.integration-tooltip {
+   background-color: rgb(97, 97, 97) !important;
+}
+
+.wi-100 {
+   width: 100%;
+}
+
+#print-body {
+   height: 0px;
+   overflow: hidden;
+
+   .ng-isolate-scope {
+      display: flex;
+   }
+
+   .ui-grid-cell {
+      flex: 1;
+   }
+}
+
+#main {
+   display: flex;
+}
+
+.template-layout {
+   display: flex;
+   width: 100%;
+}
+
+#content-container {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+}
+
+help-icon {
+   -ms-flex-item-align: center;
+   align-self: center;
+   width: 24px;
+   margin-top: -6px;
+
+   md-icon.info-icon {
+      margin-left: 0;
+      margin-right: 0;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      width: 30px;
+   }
+}
+
+md-tooltip.multi-line {
+   max-width: 250px;
+   height: auto !important;
+   background-color: white !important;
+   color: black !important;
+   box-shadow: 0 0 10px #999;
+   opacity: 1 !important;
+
+   .tooltip-header {
+      margin-bottom: 10px;
+      text-align: center;
+   }
+
+   .tooltip-body {
+      font-size: 14px;
+      font-style: italic;
+   }
+}
+
+md-tooltip.multi-line .tooltip-container {
+   width: 100%;
+   white-space: initial;
+   padding: 10px;
+}
+
+md-tooltip.link-helper-job-detail {
+   max-width: 500px;
+   height: auto !important;
+   background-color: red !important;
+   color: black !important;
+
+   opacity: 1 !important;
+   margin-top: -50px !important;
+   padding-top: 50px;
+}
+
+md-tooltip.link-helper-job-detail .tooltip-container {
+   width: 100%;
+   white-space: initial;
+   padding: 10px;
+   background-color: white !important;
+   box-shadow: 0 0 10px #999;
+}
+
+.coilTypeTooltip {
+   .main-container {
+      max-height: 800px !important;
+   }
+   .coil-type-tooltip-header {
+      height: 70px !important;
+   }
+   .coil-type-tooltip-title{
+      display: flex;
+      /* align-items: center; */
+      justify-content: center;
+      flex-direction: column;
+      line-height: 20px;
+   }
+   .header-right-container {
+      margin-left: auto;
+      display: flex;
+      // align-items: center;
+      // justify-content: center;
+      flex-direction: column;
+      width: 130px;
+
+      .item-title {
+         width: 60px !important;
+      }
+      .item-content {
+         text-align: right;
+      }
+   }
+}
+
+.jobDetailTooltip {
+   display: none;
+   position: absolute;
+   background-color: transparent;
+   padding: 7px 10px 7px 17px;
+   min-width: 700px;
+   max-width: 1000px;
+   width: 1000px;
+   color: #fff;
+   z-index: 1000;
+   .right-padding-0 {
+      padding-right: 0px !important;
+   }
+   .bp-0 {
+      padding-bottom: 0 !important;
+   }
+   .main-container {
+      background-color: white;
+      box-shadow: 0 0 10px #999;
+      width: 100%;
+      min-height: 300px;
+      max-height: 600px;
+      padding-bottom: 10px;
+      md-tabs md-ink-bar {
+         background: #545454;
+      }
+      md-tab-item.md-active {
+         color: #545454 !important;
+         border-bottom: 2px solid #545454;
+      }
+
+      md-tab-item {
+         color: #ecb100 !important;
+         padding: 18px 15px 0;
+         border-bottom: 2px solid rgba(236,177,0,.4);
+      }
+
+      .job-detail-tooltip-header {
+         height: 55px;
+         width: 100%;
+         background-color: rgb(71,71,71);
+         display: flex;
+         align-items: center;
+         padding: 0 24px;
+
+         p {
+            margin: 0;
+         }
+
+         .job-detail-tooltip-title {
+            font-size: 20px;
+         }
+
+         .job-detail-progressbar {
+            height: 10px;
+            border-radius: 5px;
+            .md-container {
+               height: 10px;
+               border-radius: 5px;
+               background-color: #eee;
+            }
+            .md-bar {
+               height: 10px;
+               background-color: #aaa;
+            }
+         }
+
+         .progress-container {
+            width: 100px;
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+         }
+         .machine-title {
+            margin-left: 10px;
+            font-size: 20px;
+         }
+      }
+
+      .job-detail-col-item {
+         height: 40px;
+      }
+      .job-detail-col-item-header {
+         border-bottom: 1px solid rgba(0,0,0,.3);
+      }
+
+      .flex-container {
+         display:  flex;
+         .left-container {
+            width: 65%;
+         }
+
+         .right-container {
+            flex: 1;
+            .item-title {
+               width: 80px !important;
+            }
+         }
+      }
+
+      .item-container {
+         display: flex;
+      }
+      .item-title {
+         width: 35%;
+         text-align: right;
+      }
+      .item-content {
+         flex: 1;
+         padding-left: 10px;
+      }
+
+      .item-des {
+         padding-left: 28%;
+      }
+      .remaining-item {
+         line-height: 40px;
+         background-color: #666;
+         color: #fff;
+      }
+
+      .table-container {
+         width: 100%;
+         min-width: 900px;
+         th:first-child {
+            padding-left: 5px;
+         }
+         td:first-child {
+            padding-left: 5px;
+         }
+      }
+      .job-detail-scroll-container {
+         max-height: 600px;
+      }
+   }
+ }
+ .job-detail-progressbar-container {
+   width: 500px;
+   position: absolute;
+   box-shadow: 0 0 10px #999;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background-color: white;
+   .job-detail-progressbar path{
+      stroke: #ecb100 !important;;
+   }
+}
+
+ .tooltip-show {
+   display: inherit;
+ }
+
+ .production-log-menu-container {
+   text-align: right;
+ }
+
+@page {
+   margin: 0mm;
+}
+
+@media print {
+
+   html,
+   body {
+      height: 100%;
+      overflow: visible !important;
+   }
+
+   // remove html5 boilerplate link helper
+   a[href]:after {
+      content: "";
+   }
+
+   .md-dialog-backdrop,
+   .md-scroll-mask {
+      display: none;
+   }
+
+   .md-autocomplete-suggestions-container {
+      display: none;
+   }
+
+   .md-dialog-container {
+      height: 100% !important;
+      width: 100%;
+      display: none !important;
+   }
+
+   //// Instead of hiding everything, I'm going to try hiding the nav and toolbar
+   // #main {
+   //    display: none;
+   // }
+
+   #navigation,
+   #toolbar {
+      display: none;
+   }
+
+   .print-hide {
+      display: none;
+   }
+
+   .page-break {
+      display: block !important;
+      width: 100%;
+      page-break-before: always !important;
+   }
+
+   .main-print-body {
+      height: auto !important;
+      overflow-y: auto !important;
+
+   }
+
+   .template-layout {
+      display: block;
+   }
+
+   #content-container {
+      display: block !important;
+      overflow-y: auto !important;
+
+      #content {
+         top: 0 !important;
+         position: initial !important;
+      }
+
+   }
+
+   .layout-column {
+      display: block !important;
+   }
+
+   .print-hide {
+      display: none !important;
+   }
+
+   #print-content {
+      width: 100%;
+      display: block !important;
+      float: none !important;
+
+      .page-content {
+         display: block !important;
+         width: 100% !important;
+         // height: 100%;
+         box-shadow: none;
+         page-break-before: always;
+      }
+   }
+
+   #print-body {
+      height: auto !important;
+      overflow-y: auto !important;
+
+      .ng-isolate-scope {
+         display: flex;
+      }
+
+      .ui-grid-cell {
+         flex: 1;
+      }
+   }
+}
+
+.punch-list-container {
+   .punch-pattern-detail-edit {
+      padding: 3px;
+
+      .editable-wrap .editable-controls .editable-input {
+         width: 90%;
+         margin-left: 5%;
+      }
+
+      .editable-hide {
+         display: none;
+      }
+   }
+
+   .form-group {
+      margin-bottom: 0;
+   }
+
+   .md-icon-button:focus {
+      background-color: #e3e3e3 !important;
+   }
+
+   .action-con {
+      white-space: nowrap;
+   }
+}
+
+.grid-cell-alert-text {
+   color: red;
+}
+
+.grid-cell-alert-frame {
+   border: solid 1px;
+   border-color: var(--ag-border-color, red) !important;
+}
+
+.grid-cell-alert-fill {
+   background-color: red;
+}
+
+.full-page-grid {
+   height: calc(100vh - 228px);
+}
+
+.tools-grid {
+   height: calc(40vh - 28px);
+}
+
+.error-cell {
+   border: 1px solid;
+   border-color: #d32f2f;
+   background: rgba(211, 47, 47, 0.205);
+}
+
+.deleted-cell {
+   border: 1px solid;
+   border-color: #7c5f5f;
+   background: rgba(88, 82, 82, 0.384);
+   text-decoration: line-through;
+   font-style: italic;
+}
+
+@media (min-width: 600px) {
+   md-pagination-wrapper ams-md-tab-item {
+      min-width: 160px !important;
+   }
+}
+md-pagination-wrapper ams-md-tab-item {
+   min-width: 72px;
+}
+
+div[ams-md-tabs-template] {
+   height: 100%;
+   overflow: hidden;
+}

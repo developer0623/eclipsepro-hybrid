@@ -1,0 +1,670 @@
+<div id="orders" class="page-layout simple fullwidth order-detail">
+  <!-- CONTENT CARD -->
+  <div class="md-background md-hue-1 scroll-content" ms-scroll ng-if="$ctrl.order">
+    <div class="order-header">
+      <div class="order-header__title">
+        <span>ORDER</span>: {{$ctrl.order.job.orderCode}}
+      </div>
+      <div>
+        <md-button aria-label="Save Order Changes" class="md-raised md-primary"
+          ng-click="$ctrl.saveOrderDetailChanges()" ng-if="$ctrl.gotSaveableChanges()">
+          <md-icon class="mdi" md-font-icon="mdi-content-save-all"></md-icon>
+          <md-tooltip>Save order changes</md-tooltip>
+          Save Order Changes
+        </md-button>
+
+        <md-button aria-label="Save Bundle Changes" class="md-raised md-primary" ng-click="$ctrl.saveBundleChanges()"
+          ng-if="$ctrl.order.hasUnsavedBundleChanges">
+          <md-icon class="mdi" md-font-icon="mdi-content-save-all"></md-icon>
+          <md-tooltip>Save bundle changes</md-tooltip>
+          Save Bundle Changes
+        </md-button>
+
+        <md-button aria-label="Cancel Changes" class="md-raised md-primary" ng-click="$ctrl.cancelUnsavedChanges()"
+          ng-if="$ctrl.order.hasUnsavedBundleChanges || $ctrl.gotSaveableChanges()">
+          <md-tooltip>Cancel Changes</md-tooltip>
+          Cancel Changes
+        </md-button>
+      </div>
+      <div class="order-header__progress">
+        <order-progress percent="$ctrl.order.completePerc"></order-progress>
+      </div>
+      <div class="order-header__state">
+        {{$ctrl.order.job.status | orderStatus}}
+      </div>
+    </div>
+
+    <div class="order-content">
+      <div class="order-content__items">
+        <div class="order-content__item">
+          <div class="order-content__title">Material:</div>
+            <link-helper document-id="'Material/' + $ctrl.order.job.materialCode" label="$ctrl.order.job.materialCode" hide-type="true"></link-helper>
+        </div>
+        <div class="order-content__tagline">
+          {{$ctrl.order.job.material.description}}
+        </div>
+        <div class="order-content__item">
+          <div class="order-content__title">Tooling:</div>
+          {{$ctrl.order.job.toolingCode}}
+        </div>
+        <div class="order-content__tagline">
+          {{$ctrl.order.job.toolingDescription}}
+        </div>
+      </div>
+      <div class="order-content__items">
+        <div class="order-content__item" ng-if="$ctrl.order.job.scheduleState.state === 'Scheduled'">
+          <div class="order-content__title">Machine:</div>
+          {{$ctrl.order.job.scheduleState.machine.description}}
+        </div>
+        <div class="order-content__item" ng-if="$ctrl.order.job.scheduleState.state === 'Scheduled'">
+          <div class="order-content__title">Sequence:</div>
+          {{$ctrl.order.job.scheduleState.sequence}}
+        </div>
+
+        <div class="order-content__item">
+          <md-button ng-click="$ctrl.onToggleHold()">
+            <md-tooltip md-direction="left">Hold prevents a job from going to the machine.</md-tooltip>
+            <md-icon class="mdi" md-font-icon="mdi-pause-circle{{
+                        $ctrl.order.job.hold ? '-outline' : ''
+                        }}"></md-icon>
+            {{ $ctrl.order.job.hold ? 'Remove hold' : 'Hold' }}
+          </md-button>
+        </div>
+      </div>
+      <div class="order-content__date">
+        <div class="order-content__item" editable-date="$ctrl.order.job.requiredDate"
+          onaftersave="$ctrl.onChangeOrderDetail($data, '/job/requiredDate')">
+          <div class="order-content__title">Required:</div>
+          {{$ctrl.order.job.requiredDate | amsDate}}
+        </div>
+        <div class="order-content__item" editable-date="$ctrl.order.job.shipDate"
+          onaftersave="$ctrl.onChangeOrderDetail($data, '/job/shipDate')">
+          <div class="order-content__title">Ship:</div>
+          {{$ctrl.order.job.shipDate | amsDate}}
+        </div>
+        <div class="order-content__item">
+          <div class="order-content__title">
+            <span ng-if="$ctrl.order.job.scheduleState.state === 'Scheduled'">Estimated:</span>
+            <span ng-if="$ctrl.order.job.scheduleState.state === 'Done'">Completed:</span>
+          </div>
+          {{$ctrl.order.job.completionDate | amsDateTime}}
+        </div>
+      </div>
+      <div class="order-content__length">
+        <div class="order-content__item">
+          <div class="order-content__title">Total:</div>
+          {{$ctrl.order.job.totalFt | unitsFormat :"ft":2:true}}<span class="sign">{{'ft' | userDisplayUnits}}</span>
+        </div>
+        <div class="order-content__item-remaining">
+          <div class="order-content__title">Remaining:</div>
+          {{$ctrl.order.job.remainingFt | unitsFormat :"ft":2:true}}<span class="sign">{{'ft' |
+            userDisplayUnits}}</span>
+        </div>
+        <div class="order-content__item-alert" ng-if="$ctrl.alerts.length > 0">
+          <div class="order-content__title">Alerts:</div>
+          <div class="order-content__alerts">
+            <div ng-repeat="alert in $ctrl.alerts track by $index">
+              {{alert}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <accordion is-open="false">
+      <accordion-toggle class="no-shadow" label="DETAILS"></accordion-toggle>
+
+      <accordion-content id="details">
+        <div class="order-detail">
+          <div class="order-detail__section">
+            <div class="order-detail__item">
+              <div class="order-detail__title">Customer:</div>
+              <div class="order-detail__content" editable-text="$ctrl.order.job.customerName"
+                onaftersave="$ctrl.onChangeOrderDetail($data, '/job/customerName')">
+                {{$ctrl.order.job.customerName}}
+              </div>
+            </div>
+
+            <div class="order-detail__address">
+              <div class="order-detail__title"></div>
+              <div class="order-detail__content">
+                <div editable-text="$ctrl.order.job.customerAddress1"
+                  onaftersave="$ctrl.onChangeOrderDetail($data, '/job/customerAddress1')">
+                  {{$ctrl.order.job.customerAddress1}}
+                </div>
+                <div editable-text="$ctrl.order.job.customerAddress2"
+                  onaftersave="$ctrl.onChangeOrderDetail($data, '/Job/CustomerAddress2')">
+                  {{$ctrl.order.job.customerAddress2}}
+                </div>
+                <div>
+                  {{$ctrl.order.job.customerCity}}
+                  {{$ctrl.order.job.customerState}}
+                  {{$ctrl.order.job.customerZip}}
+                </div>
+                <div>
+                  {{$ctrl.order.job.customerCountry}}
+                </div>
+              </div>
+            </div>
+            <div class="order-detail__item">
+              <div class="order-detail__title">Phone:</div>
+              <div class="order-detail__content" editable-text="$ctrl.order.job.customerPhone"
+                onaftersave="$ctrl.onChangeOrderDetail($data, '/job/customerPhone')">
+                {{$ctrl.order.job.customerPhone}}
+              </div>
+            </div>
+            <div class="order-detail__item">
+              <div class="order-detail__title">Cust #:</div>
+              <div class="order-detail__content" editable-text="$ctrl.order.job.customerNumber"
+                onaftersave="$ctrl.onChangeOrderDetail($data, '/job/customerNumber')">
+                {{$ctrl.order.job.customerNumber}}
+              </div>
+            </div>
+            <div class="order-detail__item">
+              <div class="order-detail__title">PO #:</div>
+              <div class="order-detail__content" editable-text="$ctrl.order.job.customerPO"
+                onaftersave="$ctrl.onChangeOrderDetail($data, '/job/customerPO')">
+                {{$ctrl.order.job.customerPO}}
+              </div>
+            </div>
+            <div class="order-detail__item">
+              <div class="order-detail__title">Sales Order:</div>
+              <div class="order-detail__content" editable-text="$ctrl.order.job.salesOrder"
+                onaftersave="$ctrl.onChangeOrderDetail($data, '/job/salesOrder')">
+                {{$ctrl.order.job.salesOrder}}
+              </div>
+            </div>
+          </div>
+          <div class="order-detail__section">
+            <div class="order-detail__item">
+              <div class="order-detail__title">Instructions:</div>
+              <div class="order-detail__content" editable-text="$ctrl.order.job.customerInstructions"
+                onaftersave="$ctrl.onChangeOrderDetail($data, '/job/customerInstructions')">
+                {{$ctrl.order.job.customerInstructions}}
+              </div>
+            </div>
+            <div class="order-detail__item">
+              <div class="order-detail__title">Truck #:</div>
+              <div class="order-detail__content" editable-text="$ctrl.order.job.truckNumber"
+                onaftersave="$ctrl.onChangeOrderDetail($data, '/job/truckNumber')">
+                {{$ctrl.order.job.truckNumber}}
+              </div>
+            </div>
+            <div class="order-detail__item">
+              <div class="order-detail__title">Staging Bay:</div>
+              <div class="order-detail__content" editable-text="$ctrl.order.job.stagingBay"
+                onaftersave="$ctrl.onChangeOrderDetail($data, '/job/stagingBay')">
+                {{$ctrl.order.job.stagingBay}}
+              </div>
+            </div>
+            <div class="order-detail__item">
+              <div class="order-detail__title">Loading Dock:</div>
+              <div class="order-detail__content" editable-text="$ctrl.order.job.loadingDock"
+                onaftersave="$ctrl.onChangeOrderDetail($data, '/job/loadingDock')">
+                {{$ctrl.order.job.loadingDock}}
+              </div>
+            </div>
+            <!-- <div class="order-detail__item">
+              <div class="order-detail__title">Message:</div>
+              <div class="order-detail__content" editable-text="$ctrl.order.job.operatorMessage"
+                onaftersave="$ctrl.onChangeOrderDetail($data, '/job/operatorMessage')">
+                {{$ctrl.order.job.operatorMessage}}
+              </div>
+            </div> -->
+          </div>
+          <div class="order-detail__section">
+            <div class="order-detail__item">
+              <div class="order-detail__title">
+                <span translate="orderUser1"></span>:
+              </div>
+              <div class="order-detail__content" editable-text="$ctrl.order.job.user1"
+                onaftersave="$ctrl.onChangeOrderDetail($data, '/job/user1')">
+                {{$ctrl.order.job.user1}}
+              </div>
+            </div>
+            <div class="order-detail__item">
+              <div class="order-detail__title">
+                <span translate="orderUser2"></span>:
+              </div>
+              <div class="order-detail__content" editable-text="$ctrl.order.job.user2"
+                onaftersave="$ctrl.onChangeOrderDetail($data, '/job/user2')">
+                {{$ctrl.order.job.user2}}
+              </div>
+            </div>
+            <div class="order-detail__item">
+              <div class="order-detail__title">
+                <span translate="orderUser3"></span>:
+              </div>
+              <div class="order-detail__content" editable-text="$ctrl.order.job.user3"
+                onaftersave="$ctrl.onChangeOrderDetail($data, '/job/user3')">
+                {{$ctrl.order.job.user3}}
+              </div>
+            </div>
+            <div class="order-detail__item">
+              <div class="order-detail__title">
+                <span translate="orderUser4"></span>:
+              </div>
+              <div class="order-detail__content" editable-text="$ctrl.order.job.user4"
+                onaftersave="$ctrl.onChangeOrderDetail($data, '/job/user4')">
+                {{$ctrl.order.job.user4}}
+              </div>
+            </div>
+            <div class="order-detail__item">
+              <div class="order-detail__title">
+                <span translate="orderUser5"></span>:
+              </div>
+              <div class="order-detail__content" editable-text="$ctrl.order.job.user5"
+                onaftersave="$ctrl.onChangeOrderDetail($data, '/job/user5')">
+                {{$ctrl.order.job.user5}}
+              </div>
+            </div>
+          </div>
+
+          <div class="order-detail__section">
+            <div class="order-detail__item">
+              <div class="order-detail__title">Date Imported:</div>
+              <div class="order-detail__content">
+                {{$ctrl.order.job.dateImported | amsDateTime}}
+              </div>
+            </div>
+            <div class="order-detail__bundle">
+              <div class="order-detail__title">Bundle Maximums:</div>
+            </div>
+            <div class="order-detail__item1">
+              <div class="order-detail__title">Weight:</div>
+              <div class="order-detail__content" editable-number="$ctrl.bundleRules.maxWeightLbs"
+                onaftersave="$ctrl.onChangeOrderDetail($data, 'bundleRules.maxWeightLbs')">
+                {{$ctrl.bundleRules.maxWeightLbs | unitsFormat
+                :"lbs":2:true}}<span>{{'lbs' | userDisplayUnits}}</span>
+              </div>
+            </div>
+            <div class="order-detail__item1">
+              <div class="order-detail__title">Piece Count:</div>
+              <div class="order-detail__content" editable-number="$ctrl.bundleRules.maxPieceCount"
+                onaftersave="$ctrl.onChangeOrderDetail($data, 'bundleRules.maxPieceCount')">
+                {{$ctrl.bundleRules.maxPieceCount}}
+              </div>
+            </div>
+            <div class="order-detail__length">
+              <div class="order-detail__title">
+                <div>Min/Max</div>
+                <div>Length Diff:</div>
+              </div>
+              <div class="order-detail__content">
+                {{$ctrl.bundleRules.minPctOfMaxLength}}<span>%</span>
+              </div>
+            </div>
+            <div class="order-detail__item">
+              <div class="order-detail__title">Message:</div>
+              <div class="order-detail__content" editable-text="$ctrl.order.job.operatorMessage"
+                onaftersave="$ctrl.onChangeOrderDetail($data, '/job/operatorMessage')">
+                {{$ctrl.order.job.operatorMessage}}
+              </div>
+            </div>
+          </div>
+
+          <div class="order-detail__menu">
+            <md-menu>
+              <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
+                <md-icon md-menu-origin md-font-icon="mdi-dots-vertical" class="mdi"></md-icon>
+              </md-button>
+              <md-menu-content>
+                <md-menu-item>
+                  <md-button ng-click="$ctrl.changeOrderDef()">
+                    <md-tooltip md-direction="left">Change Order/Material/Tooling</md-tooltip>
+                    <md-icon md-font-icon="mdi-pencil" class="mdi"></md-icon>Change Definition
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="$ctrl.onDeleteJob()">
+                    <md-tooltip md-direction="left">Delete this job.</md-tooltip>
+                    <md-icon md-font-icon="mdi-delete" class="mdi"></md-icon>Delete
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="$ctrl.printTemplates.length">
+                  <md-menu md-position-mode="target-right target">
+                    <md-menu-item>
+                      <md-button ng-click="$mdMenu.open($event)">
+                        <md-icon md-menu-origin md-font-icon="mdi-printer" class="mdi"></md-icon>Print
+                      </md-button>
+                    </md-menu-item>
+                    <md-menu-content>
+                      <md-menu-item ng-repeat="template in $ctrl.printTemplates">
+                        <a href="/api/job/{{$ctrl.order.ordId}}/render?template={{template.name}}" class="icon" target="_blank">
+                          <md-icon md-font-icon="mdi-file-pdf-box" class="mdi">
+                            <!-- <md-tooltip md-direction="top">View the bundle tag</md-tooltip> -->
+                          </md-icon>
+                          {{template.name}}
+                        </a>
+                      </md-menu-item>
+                    </md-menu-content>
+                  </md-menu>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+          </div>
+        </div>
+      </accordion-content>
+    </accordion>
+    <accordion is-open="true">
+      <accordion-toggle class="no-shadow" label="ITEMS"></accordion-toggle>
+
+      <accordion-content class="order-accordian-content">
+        <div class="order-items">
+          <div class="order-items__header" feature-flag="development">
+            <div class="bundles-header">
+              <div class="bundles-header__normal" ng-if="!$ctrl.selectedBundleCount()">
+                Bundles
+                <!-- remove the + until it does something-->
+                <!-- <div class="bundle-plus-icon">
+                  <md-icon class="icon-plus icon" md-font-icon></md-icon>
+                </div> -->
+              </div>
+              <div class="bundles-header__selected" ng-if="$ctrl.selectedBundleCount()">
+                <span>Bundles</span>
+                <md-icon md-font-icon="mdi-chevron-right" class="mdi"></md-icon>
+                <span class="selected_title">Selected</span>
+                <span class="selected_count">{{$ctrl.selectedBundleCount()}}</span>
+                <md-menu md-position-mode="target-left target">
+                  <md-button aria-label="Select Action" class="md-icon-button" ng-click="$mdMenu.open($event)"
+                    ng-mouseenter="$mdMenu.open()">
+                    <md-icon md-font-icon="mdi-dots-horizontal" class="mdi"></md-icon>
+                  </md-button>
+                  <md-menu-content width="2" class="category-menu" ng-mouseleave="$mdMenu.close()">
+                    <md-menu-item ng-repeat="action in $ctrl.bundlesActions" class="category-menu-item"
+                      ng-click="action.doBundlesAction(action)">
+                      <md-button> {{action.key}} </md-button>
+                    </md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+              </div>
+            </div>
+
+            <div class="bundles-view">
+              View:
+              <span>{{$ctrl.selectedBundleView.title}}</span>
+              <md-menu md-position-mode="target-right target">
+                <md-button aria-label="Select View" class="md-icon-button" ng-click="$mdMenu.open($event)">
+                  <md-icon md-font-icon="mdi-menu-down" class="mdi"></md-icon>
+                </md-button>
+                <md-menu-content width="2" class="category-menu">
+                  <md-menu-item ng-repeat="view in $ctrl.bundlesViews" class="category-menu-item"
+                    ng-click="$ctrl.changeBundleView(view)">
+                    <md-button> {{view.title}} </md-button>
+                  </md-menu-item>
+                </md-menu-content>
+              </md-menu>
+            </div>
+          </div>
+
+          <div class="bundles-content">
+            <div class="bundles-content__collapsed" ng-if="$ctrl.selectedBundleView.id === 0">
+              <div class="bundles-content__item" ng-repeat="bundle in $ctrl.order.bundlesModel">
+                <div class="bundles-content__side">
+                  <div class="bundles-content__number">{{bundle.bundleNo}}</div>
+                  <div class="bundles-content__checkbox">
+                    <md-checkbox aria-label="Select Tool" ng-checked="$ctrl.bundleCheckState[bundle.bundleNo]"
+                      md-indeterminate="$ctrl.isBundleItemIndeterminate(bundle.bundleNo)"
+                      ng-click="$ctrl.onBundleChecked(bundle.bundleNo)">
+                    </md-checkbox>
+                  </div>
+                </div>
+                <bundle-item item="bundle" isdetail="false"></bundle-item>
+              </div>
+            </div>
+
+            <div class="bundles-content__carousel" ng-if="$ctrl.selectedBundleView.id === 1">
+              <slick class="slider" settings="$ctrl.slickConfig4">
+                <div class="bundles-content__item" ng-repeat="bundle in $ctrl.order.bundlesModel">
+                  <div class="bundles-content__side">
+                    <div class="bundles-content__number">
+                      {{bundle.bundleNo}}
+                    </div>
+                    <div class="bundles-content__checkbox">
+                      <!-- Hide bundle checkboxes until we do something with them -->
+                      <md-checkbox aria-label="Select Tool" ng-checked="$ctrl.bundleCheckState[bundle.bundleNo]"
+                        md-indeterminate="$ctrl.isBundleItemIndeterminate(bundle.bundleNo)"
+                        ng-click="$ctrl.onBundleChecked(bundle.bundleNo)">
+                      </md-checkbox>
+                    </div>
+                  </div>
+                  <bundle-item item="bundle" isdetail="false"></bundle-item>
+                </div>
+              </slick>
+            </div>
+
+            <div class="bundles-content-inline" ng-if="$ctrl.selectedBundleView.id === 2">
+              <div class="bundles-content-inline__item" ng-repeat="bundle in $ctrl.order.bundlesModel">
+                <div class="bundles-content__number">{{bundle.bundleNo}}</div>
+                <bundle-item item="bundle" isdetail="true" is-checked="$ctrl.bundleCheckState[bundle.bundleNo]"
+                  is-intermidated="$ctrl.isBundleItemIndeterminate(bundle.bundleNo)"
+                  on-checked="$ctrl.onBundleChecked(bundle.bundleNo)">
+                </bundle-item>
+              </div>
+            </div>
+          </div>
+
+          <div class="order-items__header">
+            <div class="bundles-header">
+              <div class="bundles-header__normal" ng-if="!$ctrl.itemsCheckedCount()">
+                Items
+                <!-- remove the + until it does something-->
+                <!-- <div class="bundle-plus-icon">
+                  <md-icon class="icon-plus icon" md-font-icon></md-icon>
+                </div> -->
+              </div>
+              <div class="bundles-header__selected" ng-if="$ctrl.itemsCheckedCount()">
+                <span>Items</span>
+                <md-icon mc-font-icon="mdi-chevron-right" class="mdi"></md-icon>
+                <span class="selected_title">Selected</span>
+                <span class="selected_count">{{$ctrl.itemsCheckedCount()}}</span>
+                <md-menu md-position-mode="target-left target">
+                  <md-button aria-label="Select Action" class="md-icon-button" ng-click="$mdMenu.open($event)"
+                    ng-mouseenter="$mdMenu.open()">
+                    <md-icon md-font-icon="mdi-dots-horizontal" class="mdi"></md-icon>
+                  </md-button>
+                  <md-menu-content width="2" class="category-menu" ng-mouseleave="$mdMenu.close()">
+                    <md-menu-item ng-repeat="action in $ctrl.itemsActions" class="category-menu-item"
+                      ng-click="action.doItemsAction(action)">
+                      <md-button ng-disabled="!action.allowed()">
+                        {{action.key}}
+                      </md-button>
+                    </md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+              </div>
+            </div>
+            <div ng-if="$ctrl.order.allowRebundling">
+              <md-button aria-label="Move Up" class="md-icon-button" ng-if="$ctrl.canMoveSequenceUp()"
+                ng-click="$ctrl.moveSequenceUp()">
+                <md-icon md-font-icon="mdi-arrow-up-bold" class="mdi"></md-icon>
+              </md-button>
+              <md-button aria-label="Move Down" class="md-icon-button" ng-if="$ctrl.canMoveSequenceDown()"
+                ng-click="$ctrl.moveSequenceDown()">
+                <md-icon md-font-icon="mdi-arrow-down-bold" class="mdi"></md-icon>
+              </md-button>
+            </div>
+            <md-menu>
+              <div class="helpIconDiv" ng-click="$mdMenu.open($event)">
+                <md-icon md-font-icon="mdi-cog" class="mdi"></md-icon>
+              </div>
+              <md-menu-content width="2" class="ordersFilterDiv">
+                <div layout="row" class="addColumn" layout-align="center center">
+                  Add/Remove Column
+                </div>
+                <div class="vertical-scroll">
+                  <md-menu-item ng-repeat="item in $ctrl.itemHeaders" class="filter-item height-26">
+                    <div layout="row" class="filter-items-div">
+                      <md-checkbox name="{{item.title}}" aria-label="{{item.title}}" ng-checked="item.isVisible"
+                        class="filter-check" ng-click="$ctrl.onItemGridOptionsToggle(item)"><span
+                          translate="{{item.title}}"></span></md-checkbox>
+                    </div>
+                  </md-menu-item>
+                </div>
+              </md-menu-content>
+            </md-menu>
+          </div>
+          <div class="order-items__content">
+            <table>
+              <tr>
+                <th class="">
+                  <md-checkbox aria-label="Select Item" ng-checked="$ctrl.isAllJobItemChecked()"
+                    md-indeterminate="$ctrl.isJobItemIndeterminate()" ng-click="$ctrl.onJobItemToggleAll()">
+                  </md-checkbox>
+                </th>
+                <th class="" ng-repeat="col in $ctrl.itemHeaders" ng-show="col.isVisible">
+                  <span>{{col.title | translate}}</span>
+                  <md-icon md-font-icon="mdi-unfold-more-horizontal" class="mdi" ng-if="col.order === 'none'"
+                    ng-click="$ctrl.onClickItemHeader($index)"></md-icon>
+                  <md-icon md-font-icon="mdi-chevron-down" class="mdi" ng-if="col.order != 'none'"
+                    ng-class="{'mdi-flip-v': col.order === 'desc'}" ng-click="$ctrl.onClickItemHeader($index)">
+                  </md-icon>
+                </th>
+              </tr>
+              <tr ng-repeat="item in $ctrl.order.items track by $index" class="hover order-detail-item">
+                <td>
+                  <md-checkbox aria-label="Select Tool" ng-model="$ctrl.itemsCheckState[item.itemId]"
+                    ng-click="$ctrl.onItemClicked(item, $event)" ng-change="$ctrl.onItemChanged(item)"></md-checkbox>
+                </td>
+                <td ng-repeat="col in $ctrl.itemHeaders" ng-show="col.isVisible">
+                  <span ng-if="!col.isEditable && col.field!=='bundle' && col.field!=='patternName'">{{item[col.field] | unitsFormat:
+                    col.units:col.unitDecimals}}</span>
+                  <span ng-if="col.isEditable && col.field!=='bundle' && col.field!=='patternName'" editable-text="item[col.field]"
+                    onaftersave="$ctrl.onChangeItem($data, col.field, item)">{{item[col.field] | unitsFormat:
+                    col.units:col.unitDecimals}}</span>
+                  <span ng-if="col.field==='bundle'" editable-select="item[col.field]" buttons="no"
+                    onshow="$ctrl.loadBundleChoices(item)" e-ng-options="b.id as b.text for b in $ctrl.bundleChoices"
+                    onaftersave="$ctrl.onChangeItemBundle($data, item)">{{item[col.field]}}</span>
+                  <item-pattern ng-if="col.field==='patternName'" item="item" pending-save="$ctrl.savePacket.length>0"
+                    create-pattern="$ctrl.createPatternForName(patternName)"
+                    update-pattern="$ctrl.onChangePattern(patternName, item)"></item-pattern>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </accordion-content>
+    </accordion>
+
+    <accordion is-open="false">
+      <accordion-toggle class="no-shadow" label="PRODUCTION SUMMARY"></accordion-toggle>
+      <accordion-content>
+         <div ag-grid="$ctrl.productionSummaryAgGridOptions" class="ag-theme-balham order-detail-grid-container" ng-style="$ctrl.onGetSummaryHeight()"></div>
+      </accordion-content>
+    </accordion>
+
+    <accordion is-open="false">
+      <accordion-toggle class="no-shadow" label="COMPLETED BUNDLES">
+      </accordion-toggle>
+
+      <accordion-content id="bundles">
+         <div ag-grid="$ctrl.bundleAgGridOptions" class="ag-theme-balham order-detail-grid-container" ng-style="$ctrl.onGetBundleHeight()"></div>
+        <!-- <table class="production-summary-table">
+          <tr>
+            <th ng-repeat="item in $ctrl.producedBundleColumns">
+              <span translate="{{item.displayName}}">{{item.displayName}}</span>
+              <img ng-src="{{$ctrl.loadImage()}}" class="up-down-icon" ng-if="!item.checked"
+                ng-click="$ctrl.onClickBundleHeader($index)" />
+              <md-icon md-font-icon class="icon icon-chevron-down order-direction-icon"
+                ng-class="{'reserved_direction': item.order === 'desc'}" ng-if="item.checked"
+                ng-click="$ctrl.onOrderChangeBundleHeader($index)"></md-icon>
+            </th>
+            <th>
+              <span>Tag</span>
+            </th>
+          </tr>
+          <tr ng-repeat="dataItem in $ctrl.producedBundleData">
+            <td ng-repeat="column in $ctrl.producedBundleColumns">
+              {{dataItem[column.field]}}
+            </td>
+            <td>
+              <a href="/_api/bundle/{{dataItem.bundleCode}}/tag" class="icon" target="_blank">
+                <md-icon md-font-icon="mdi-file-pdf-box" class="mdi">
+                  <md-tooltip md-direction="top">View the bundle tag</md-tooltip>
+                </md-icon>
+              </a>
+              <md-button ng-click="$ctrl.printBundle(dataItem.bundleCode)">
+                <md-icon md-font-icon="mdi-printer" class="mdi">
+                  <md-tooltip md-direction="top">Print the bundle tag</md-tooltip>
+                </md-icon>
+              </md-button>
+            </td>
+          </tr>
+        </table> -->
+      </accordion-content>
+    </accordion>
+
+    <accordion is-open="false">
+      <accordion-toggle class="no-shadow" label="PRODUCTION LOG"></accordion-toggle>
+      <accordion-content>
+        <production-log ord-id="$ctrl.order.job.ordId"></production-log>
+      </accordion-content>
+    </accordion>
+
+    <accordion is-open="false">
+      <accordion-toggle class="no-shadow" label="INTEGRATION">
+      </accordion-toggle>
+
+      <accordion-content id="integration">
+         <div ag-grid="$ctrl.integrationAgGridOptions" class="ag-theme-balham order-detail-grid-container" ng-style="$ctrl.onGetIntegrationHeight()"></div>
+        <!-- <table class="production-summary-table">
+          <thead>
+            <tr>
+              <th>Channel</th>
+              <th>Item</th>
+              <th>Complete</th>
+              <th></th>
+              <th></th>
+              <th>Stage</th>
+              <th>Received</th>
+              <th>Duration</th>
+              <th>Attempts</th>
+              <th style="text-align:left">Messages</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              ng-repeat="exportEvent in $ctrl.integrationEvents | orderBy:'-receivedTime'"
+            >
+              <td>{{exportEvent.channel}}</td>
+              <td>{{exportEvent.itemId}}</td>
+              <td style="width: 70px">{{exportEvent.complete}}</td>
+              <td style="width: 25px">
+                <md-button
+                  ng-click="$ctrl.triggerExport(exportEvent.itemId)"
+                  aria-label="Export"
+                  ng-if="!exportEvent.complete"
+                >
+                  <md-tooltip>Retry export attempt</md-tooltip>
+                  <md-icon md-font-icon="mdi-upload" class="mdi"></md-icon>
+                </md-button>
+              </td>
+              <td style="width: 25px">
+                <md-button
+                  ng-click="$ctrl.cancelExport(exportEvent.documentID)"
+                  aria-label="Export"
+                  ng-if="!exportEvent.complete"
+                >
+                  <md-tooltip>Cancel export attempt</md-tooltip>
+                  <md-icon md-font-icon="mdi-close-circle-outline" class="mdi"></md-icon>
+                </md-button>
+              </td>
+              <td style="width: 70px">{{exportEvent.stage}}</td>
+              <td>{{exportEvent.receivedTime | date : 'short'}}</td>
+              <td>
+                {{exportEvent.executionDuration | timeSpan :
+                'secondsWithMs'}}s
+              </td>
+              <td>{{exportEvent.attemptCount}}</td>
+              <td>
+                <div ng-repeat="l in exportEvent.activityLog track by $index">
+                  <div style="text-align:left">{{l}}</div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table> -->
+      </accordion-content>
+    </accordion>
+  </div>
+</div>

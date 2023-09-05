@@ -1,0 +1,22 @@
+<div class="task-footer-item1">
+		<div class="sub-item1 task-coil-state" ng-if="$ctrl.parentCtrl.task.taskState=='Ready' && !$ctrl.parentCtrl.task.preferredCoils.length">No Coil</div>
+		<div class="sub-item1 task-ready-state" ng-if="$ctrl.parentCtrl.task.taskState=='Ready' &&$ctrl.parentCtrl.task.preferredCoils.length">Ready</div>
+	<div class="sub-item1 task-uncomplete" ng-if="$ctrl.parentCtrl.task.taskState=='Uncomplete'">
+		<i class="icon icon-alert-octagon"></i>
+		Cannot Complete
+	</div>
+	<div class="sub-item1 task-available" ng-if="$ctrl.parentCtrl.task.taskState=='Available'">
+		Available in 3H 10M
+	</div>
+	
+	<div class="sub-item2">
+		<span ng-if="$ctrl.parentCtrl.timeOffsetFlag">DUE</span>{{$ctrl.parentCtrl.task.requiredDate | date:$ctrl.parentCtrl.timeOffsetFlag?'h:mm a' : 'MMM/d'}}
+	</div>
+
+	<!-- <div class="sub-item3" ng-class="{'late-task': $ctrl.parentCtrl.late}">
+		{{$ctrl.parentCtrl.task.requiredDate | timeAgo}}
+	</div> -->
+	<div class="sub-item3" ng-bind-html="$ctrl.parentCtrl.task.requiredDate | taskTimeAgo">
+	</div>
+	
+</div>

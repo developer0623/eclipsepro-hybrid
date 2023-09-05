@@ -1,0 +1,106 @@
+<div id="orders" class="page-layout datatable-layout simple fullwidth white-bg order-list" layout="column">
+    <!-- CONTENT -->
+    <div class="content white-bg" layout="column" flex>
+        <!-- CONTENT -->
+        <div class="content fullpage-datatable" layout="column" flex>
+            <div class="order-toolbar" layout="row" layout-align="space-between start">
+                <div class="order-header__normal" ng-if="!$ctrl.selectedOrdIds.length">
+                    Orders
+                    <!-- remove the + until it does something-->
+                    <!-- <div class="order-plus-icon">
+            <md-icon class="icon-plus icon" md-font-icon></md-icon>
+          </div> -->
+                </div>
+                <div class="order-header__selected" ng-if="$ctrl.selectedOrdIds.length">
+                    <span>Orders</span>
+                    <md-icon class="icon-chevron-right icon"></md-icon>
+                    <span class="selected_title">Selected</span>
+                    <span class="selected_count">{{$ctrl.selectedOrdIds.length}}</span>
+                    <md-menu md-position-mode="target-left target">
+                        <md-button aria-label="Select Action" class="md-icon-button" ng-click="$mdMenu.open($event)"
+                            ng-mouseenter="$mdMenu.open()">
+                            <md-icon md-font-icon class="icon icon-dots-horizontal menu-icon"></md-icon>
+                        </md-button>
+                        <md-menu-content width="2" class="category-menu" ng-mouseleave="$mdMenu.close()">
+                            <md-menu-item ng-repeat="action in $ctrl.ordersActions" class="category-menu-item"
+                                ng-click="action.doItemsAction(action)">
+                                <md-button ng-disabled="!action.allowed()">
+                                    {{action.key}}
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </div>
+
+                <div class="grid-filter">
+                  <md-icon md-font-icon="icon-filter-outline" class="icon filter-icon"></md-icon>
+                  <div class="search-input">
+                    <input placeholder="Filter..."
+                      ng-model="$ctrl.searchTxt"
+                      ng-change="$ctrl.onFilter({searchTxt: $ctrl.searchTxt})"
+                      ng-model-options="{debounce: 200}" />
+                  </div>
+                </div>
+
+                <div class="grid-filter">
+                  
+                    <div class="age-label">Completion Age:</div>
+                    <md-select ng-model="$ctrl.daysAgo"
+                        ng-change="$ctrl.daysAgoObs.onNext({daysAgo: $ctrl.daysAgo})">
+                      <md-option ng-value="0">None</md-option>
+                      <md-option ng-value="7">7 Days</md-option>
+                      <md-option ng-value="14">14 Days</md-option>
+                      <md-option ng-value="30">30 Days</md-option>
+                      <md-option ng-value="60">60 Days</md-option>
+                      <md-option ng-value="90">90 Days</md-option>
+                      <md-option ng-value="180">180 Days</md-option>
+                      <md-option ng-value="365">365 Days</md-option>
+                      <md-option ng-value="9999">All</md-option> <!-- eventually this will not be all -->
+                    </md-select>
+                  
+                </div>
+
+                <div class="print-icon-column float-right">
+                    <md-menu>
+                        <md-button aria-label="Select Shift 1" class="md-icon-button" ng-click="$mdMenu.open($event)">
+                            <!-- <div class="helpIconDiv" ng-click="$mdMenu.open($event)"> -->
+                            <md-icon md-font-icon="icon-cog" class="icon"></md-icon>
+                            <!-- </div> -->
+                        </md-button>
+                        <md-menu-content width="2" class="ordersFilterDiv">
+                            <div layout="row" class="addColumn" layout-align="center center">
+                                Add/Remove Column
+                            </div>
+                            <div class="vertical-scroll">
+                                <md-menu-item ng-repeat="item in $ctrl.columns" class="filter-item height-26">
+                                    <div layout="row" class="filter-items-div">
+                                        <md-checkbox name="{{item.headerName}}" aria-label="{{item.headerName}}"
+                                            ng-checked="!item.hide" class="filter-check"
+                                            ng-click="$ctrl.onOrdersGridOptionsToggle(item)"><span
+                                                translate="{{item.headerName}}"></span></md-checkbox>
+                                    </div>
+                                </md-menu-item>
+                                <md-menu-divider></md-menu-divider>
+                                 <md-menu-item class="filter-items">
+                                 <div layout="row" class="filter-items-div">
+                                    <md-button class="md-raised md-primary" ng-click="$ctrl.onReset()">Reset Defaults
+                                    </md-button>
+                                 </div>
+                                 </md-menu-item>
+                            </div>
+                        </md-menu-content>
+                    </md-menu>
+                    <md-button aria-label="Select Shift 1" class="md-icon-button"
+                        ng-click="$ctrl.openPrintPreview($event)">
+                        <md-icon md-font-icon class="icon icon-printer header-icon"></md-icon>
+                    </md-button>
+                </div>
+            </div>
+
+            <div ag-grid="$ctrl.agGridOptions" class="ag-theme-balham" style="height:100%"
+            ></div>
+        </div>
+        <!-- / CONTENT -->
+    </div>
+    <!-- / CONTENT -->
+</div>

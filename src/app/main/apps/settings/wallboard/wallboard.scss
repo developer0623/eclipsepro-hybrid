@@ -1,0 +1,506 @@
+@import './detail/detail.scss';
+
+#wallboard-view {
+   .header {
+      height: 96px;
+      line-height: 96px;
+      padding: 0 24px;
+      .h2{
+          margin: 0;
+          line-height: 96px;
+      }
+      .toolbar {
+         display: flex;
+         align-items: center;
+         cursor: pointer;
+         text-decoration: none;
+         i {
+            margin-right: 5px;
+         }
+      }
+  }
+
+  > .content {
+      padding: 0;
+  }
+
+   .task-content {
+      padding: 24px;
+
+      .detail-td {
+         max-width: 300px;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         white-space: nowrap;
+      }
+
+      .edit-btn {
+         text-decoration: underline;
+         border-right: solid 1px rgb(0, 0, 238);
+         padding-right: 5px;
+         color: rgb(0, 0, 238);
+         cursor: pointer;
+      }
+      .delete-btn {
+         text-decoration: underline;
+         padding-left: 3px;
+         color: rgb(0, 0, 238);
+         cursor: pointer;
+      }
+   }
+
+   .wallboard-device-table {
+      th, td {
+         border-right: 1px solid rgba(0, 0, 0, 0.12);
+         text-align: center;
+      }
+   }
+}
+.wallboard-dialog {
+   .wallboard-toolbar {
+      background-color: #D19D30 !important;
+      h2 {
+          color: #ffffff;
+          font-size: 21px;
+          font-weight: 300;
+      }
+   }
+
+   .wallboard-dialog-content {
+      padding-bottom: 0px;
+      min-width: 400px;
+      md-input-container {
+         font-size: 16px;
+      }
+
+      textarea {
+         background-color: rgba(220, 220, 220, 0.4);
+      }
+
+      .schedule-checkbox {
+         font-size: 16px;
+      }
+
+      .wallboard-select-container {
+         margin-bottom: 42px;
+      }
+   }
+
+   .save-btn {
+      color: #ffffff !important;
+      background-color: #D19D30 !important;
+      &:disabled {
+          opacity: 0.7;
+      }
+   }
+}
+
+$andonGreen: #0cf611;
+$andonYellow: #ffe500;
+$andonRed: #f10400;
+
+.andon-frame {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.sequence-title {
+    .editable-wrap {
+        padding-right: 53px;
+    }
+    .disable-delete {
+        pointer-events: none;
+        color: rgba(0, 0, 0, 0.87);
+    }
+
+    .disable-badge {
+        border: 1px solid #f44336;
+        width: 15px;
+        height: 15px;
+        border-radius: 10px;
+        display: inline-block;
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 10px;
+        line-height: 15px;
+        right: -11px;
+        top: -6px;
+        color: rgba(0, 0, 0, 0.87);
+    }
+
+    .delete-andon {
+        font-size: 15px;
+        position: relative;
+        top: -6px;
+        left: -50px;
+        color: #f44336;
+    }
+}
+
+.andon-display {
+    font-family: $font-family-mono !important;
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+    right:0;
+    bottom: 0;
+    text-align: center;
+    overflow: hidden;
+
+    &.light-theme {
+        background: white;
+        color: rgba(0,0,0,1) !important;
+    }
+
+    &.dark-theme {
+        background: material-color('grey', '900');
+        color: rgba(255,255,255,1) !important;
+        .nv-bulletChart.nvd3 text {
+            fill: rgba(255,255,255,.54);
+        }
+    }
+
+    .andon-display-header {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        padding: 1vh 1vw;
+        .machine-status-tag .tag-label {
+            font-weight: normal;
+            color: white !important;
+        }
+        i {
+            height: auto;
+            width: auto;
+            color: white !important;
+        }
+        &.offline {
+            .machine-status-tag .tag-label,
+            i {
+                color: rgba(0,0,0,.87) !important;
+            }
+        }
+        .run-state-time {
+            font-size: 2.5vw !important;
+        }
+    }
+
+    .andon-display-content {
+        padding: 0 2vw;
+        width: 100%;
+    }
+
+    .andon-display-footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1vh 1vw;
+        text-align: left;
+        h4 {
+            margin: 0;
+        }
+    }
+
+    h1, h2, h3, h4, h5, h6, p, li {
+        text-transform: initial;
+        padding: 0;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    h1 {
+        &.andon-panel-title {
+            text-transform: uppercase;
+            margin-bottom: .1em;
+            white-space: normal;
+        }
+
+        &.andon-panel-value {
+            font-weight: 500;
+        }
+    }
+
+    p, ul, ol {
+        font-weight: 400;
+    }
+
+    ul, ol {
+        text-align: left;
+        list-style-position: inside;
+    }
+
+    .svg-container {
+        display: block;
+        position: relative;
+        margin: 1em 0;
+
+        svg {
+            width: 100%;
+        }
+    }
+    .nvd3.nv-bullet .nv-measure {
+        fill: #000 !important;
+    }
+    .nvd3.nv-sparklineplus .nv-currentValue {
+        stroke: #cbcbcb;
+        fill: #212121;
+    }
+}
+
+.andon-cards {
+   padding: 24px !important;
+}
+
+.andon-sort-helper {
+   opacity: .87;
+   box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.andon-card {
+   width: 100px;
+   min-width: 80px;
+   height: 80px;
+   margin: 12px;
+   padding: 8px 0 0;
+   line-height: 1;
+   background-color: #fff;
+   text-align: center;
+   border-radius: 2px;
+   cursor: pointer;
+   position: relative;
+   transition: box-shadow ease-in 100ms;
+
+   &.current-panel {
+       box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+   }
+
+   @media only screen and (max-width: $layout-breakpoint-xs) {
+       width: 100% ;
+       height: 80px;
+       padding: 8px;
+       margin: 12px 0;
+   }
+
+   &.add-andon-panel {
+       padding: 0;
+       text-align: center;
+       box-shadow: none;
+       background: none;
+       border: 2px dashed rgba(0,0,0,.12);
+       md-icon {
+           color: rgba(0,0,0,.35);
+       }
+   }
+   &:hover {
+       .remove-andon-panel,
+       .andon-panel-option {
+           opacity: 1;
+           transform: scale(1);
+       }
+   }
+}
+
+.andon-card-controls {
+   height: 24px;
+   line-height: 24px;
+   .andon-panel-duration {
+       font-weight: 500;
+       font-size: 14px;
+       height: 24px;
+       position: absolute;
+       bottom: 2px;
+       transform: translateX(-50%);
+       left: 50%;
+   }
+   .editable-wrap .editable-controls .editable-input {
+       width: 30px;
+       height: 20px;
+       padding: 0;
+       text-align: center;
+       font-size: 14px;
+   }
+   .editable-empty {
+       color: material-color('red', '500') !important;
+       font-style: normal !important;
+   }
+   .remove-andon-panel,
+   .andon-panel-option {
+       line-height: 16px;
+       width: 20px;
+       min-width: 20px;
+       height: 16px;
+       min-height: 16px;
+       padding: 0;
+       margin: 0;
+       position: absolute;
+       bottom: 8px;
+       right: 4px;
+       transition: all ease 400ms;
+       opacity: 0;
+       transform: scale(0);
+   }
+   .andon-panel-option {
+       left: 6px;
+       right: auto;
+       opacity: 1;
+       transform: scale(1);
+   }
+}
+
+.editable-click {
+   color: rgba(0,0,0,.87);
+   border-bottom: none;
+}
+.editable-click:hover {
+   background: none;
+   cursor: text;
+}
+
+.editable-wrap .editable-controls {
+
+   position: relative;
+
+   label {
+       position: absolute;
+       left: -6px;
+       top: -30px;
+       font-size: 1.3rem;
+       transform: translate3d(0, 6px, 0) scale(0.75);
+   }
+
+   .editable-input {
+       width: inherit;
+       background-color: transparent;
+       padding: 5px;
+       font-size: 1.6rem;
+       font-weight: 500;
+       border-bottom: 2px solid rgba(0, 0, 0, 0.35);
+   }
+
+   .md-button.md-icon-button {
+       cursor: pointer;
+       margin: 0;
+       line-height: 24px;
+   }
+}
+
+.andon-sortable-placeholder {
+   padding: 5px 0;
+   margin: 0 12px;
+   border-radius: 2px;
+   background: rgba(0,0,0,.05);
+   @media only screen and (max-width: $layout-breakpoint-xs) {
+       margin: 12px 0;
+       padding: 8px;
+   }
+}
+
+#andon-preview {
+   position: relative;
+   overflow: hidden;
+   z-index: 9;
+
+   .andon-frame {
+       @include maintain-aspect-ratio(16, 9, 0, andon-display);
+       border-bottom: solid 1px rgba(0,0,0,.12);
+       font-size: 100%;
+   }
+
+   .andon-display {
+       @include andon-font-size(1);
+
+       @media only screen and (min-width: $layout-breakpoint-xs) {
+           @include andon-font-size(0.36);
+       }
+   }
+
+   .md-icon-button {
+       line-height: 24px;
+       md-icon {
+           color: rgba(0,0,0,.35);
+       }
+   }
+}
+
+.dialog-andon-message {
+   min-width: 326px;
+
+   @media only screen and (min-width: $layout-breakpoint-sm) {
+       min-width: 480px;
+   }
+
+   label {
+       color: rgba(0,0,0,.54) !important;
+   }
+
+   .md-input {
+       border-color: rgba(0,0,0,.54) !important;
+   }
+}
+
+.pop-label {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
+
+.metrics-add-icon {
+   margin: 0 !important;
+}
+
+.shift-menu-item.metric-menu-item {
+   min-height: 34px !important;
+}
+
+.imp-mb-14 {
+   margin-bottom: 14px !important;
+}
+
+.metrics-container {
+   max-height: 300px;
+   min-height: 150px;
+   overflow-y: auto;
+   border: 1px solid #444;
+   border-radius: 5px;
+   padding: 5px 3px 0 3px;
+
+   .metric-list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 38px;
+      margin-bottom: 3px;
+   }
+   .metric-list-item-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      flex: 1;
+      border: 1px solid #444;
+      padding: 0 0 0 10px;
+      border-radius: 3px;
+      margin-left: 5px;
+   }
+
+
+   .metric-delete-btn {
+      display: none;
+      margin: 0;
+   }
+
+   .metric-list-item:hover {
+      .metric-delete-btn {
+         display: block;
+      }
+   }
+}
+
+
+

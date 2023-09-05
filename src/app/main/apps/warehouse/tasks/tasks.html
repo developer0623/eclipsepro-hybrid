@@ -1,0 +1,90 @@
+<div id="warehouse" class="page-layout simple fullwidth white-bg" ng-class="{'no-scroll': panelIsOpen }" ngsf-fullscreen>
+	<div class="header">
+        <div layout="row" layout-align="space-between">
+            <span class="h2 text-upper">WAREHOUSE: TASKS</span>
+            <div class="toolbar">
+              <md-button ui-sref="app.dashboard-eclipsepro" class="md-icon-button sidenav-toggle" ngsf-toggle-fullscreen aria-label="Toggle fullscreen" ng-click="fullscreen=!fullscreen" hide-sm>
+                  <md-tooltip md-direction="bottom">
+                      <span translate="toggleFullscreen">Toggle fullscreen</span>
+                  </md-tooltip>
+                  <md-icon ng-class="{'icon-fullscreen': !fullscreen, 'icon-fullscreen-exit': fullscreen}" md-font-icon class="icon" ></md-icon>
+              </md-button>
+            </div>
+        </div>
+  </div>
+  <!-- <div class="content md-background md-hue-1 scroll-content" infinite-scroll='doInfinite()' infinite-scroll-distance='1'> -->
+    <div class="content md-background md-hue-1 scroll-content" >
+    
+    <div class="task-content">
+
+      <div class="task-list current-task-list">
+        <div layout="row" class="task-list-header" layout-align="center start">
+          CURRENT LIST
+        </div>
+        <div layout="column">
+          <md-card class="task-part" ng-repeat="task in vm.readyTasks track by task.id">
+            <task-item task="task" state='0'></task-item>
+          </md-card>
+
+          <md-card ng-if="vm.readyTasksRemaining" class="not-showed-title">
+            {{vm.readyTasksRemaining}} tasks not shown 
+          </md-card>
+          
+        </div>
+
+        
+        
+      </div>
+      <div  class="task-list active-task-list">
+        <div layout="row" class="task-list-header" layout-align="center start">
+          ACTIVE
+        </div>
+        <div layout="column">
+          <md-card class="task-part" ng-repeat="task in vm.activeTasks track by task.id">
+            <task-item task="task" state='1'></task-item>            
+          </md-card>
+
+          <md-card ng-if="vm.activeTasksRemaining" class="not-showed-title">
+            {{vm.activeUnshownCount}} tasks not shown 
+          </md-card>
+        </div>
+      </div>
+      <div class="task-list completed-task-list">
+        <div layout="row" class="task-list-header" layout-align="center start">
+          COMPLETED
+        </div>
+        <div class="task-complete-calendar">
+          
+           <md-datepicker ng-model="vm.comFilterDate.date" md-is-open="vm.comFilterDate.isOpen" md-hide-icons="all" class="real-calendar"></md-datepicker>
+           <div class="showed-calendar">
+             <md-icon class="icon-chevron-left" md-font-icon class="icon" ng-click="onChangeDate(-1)"></md-icon>
+             <p>{{vm.comFilterDate.date | date : "MMM dd"}}<span>{{vm.comFilterDate.date | date : "yyyy"}}</span></p>
+             <md-icon class="icon-chevron-right" md-font-icon class="icon" ng-click="onChangeDate(1)"></md-icon>
+           </div>
+          
+            <md-icon class="icon-calendar open-icon" md-font-icon class="icon" ng-click="vm.comFilterDate.isOpen = true"></md-icon>
+            
+        </div>
+        <div layout="column" style="margin-top: 13px;">
+          <md-card class="task-part" ng-repeat="task in vm.completedTasks track by task.id">
+            <task-item task="task" state='2'></task-item>            
+          </md-card>
+
+          <md-card ng-if="vm.completedTasksRemaining" class="not-showed-title">
+            {{vm.completedTasksRemaining}} tasks not shown 
+          </md-card>
+          
+        </div>
+      </div>
+
+    </div>
+
+    <div layout="row" layout-align="space-around" ng-if="!vm.loading">
+      <md-progress-circular class="md-accent md-hue-1" md-diameter="70"></md-progress-circular>
+    </div>
+  </div>
+
+
+    
+
+</div>

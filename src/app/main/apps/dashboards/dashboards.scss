@@ -1,0 +1,27 @@
+@import './machines/machines.scss';
+@import './dashboard-elements.scss';
+.dashboard {
+    transform: translate3d(0, 0, 0);
+    background: #f5f5f5;
+
+    .content {
+      overflow: visible;
+      position: relative;
+    }
+
+    &.page-layout.simple.fullwidth {
+
+          > .header {
+            transition: all .6s cubic-bezier(.25,.8,.25,1);
+            height: 76px;
+            min-height: 0;
+            max-height: auto;
+            padding: 24px;
+            opacity: 1;
+            .md-button.md-icon-button {
+              height: 20px;
+              line-height: 20px;
+            }
+        }
+    }
+}

@@ -1,0 +1,671 @@
+@import "./directives/schedule-elements.scss";
+@import "./jobs/jobs.scss";
+@import "./jobs/jobs_component/jobs.component.scss";
+@import "./jobs/assigned-job.component.scss";
+@import "./jobs/assigned-jobs-wide.component.scss";
+@import "./jobs/assigned-jobs.component.scss";
+@import "./jobs/available-jobs.component.scss";
+
+#schedule {
+   &.page-layout.simple.fullwidth {
+      > .content {
+         padding: 0 !important;
+      }
+      .main-header {
+         padding-left: 24px;
+         margin: 16px 0;
+         line-height: 1.4 !important;
+      }
+      .add-button {
+         position: fixed;
+         bottom: 0px;
+         right: 0px;
+         font-size: 35px;
+         font-weight: 300;
+         margin: 0 30px 30px 0;
+         background-color: #d19d30;
+      }
+      .schedule-content {
+         md-tabs-content-wrapper {
+            top: 48px;
+            height: calc(100% - 48px);
+            overflow: hidden;
+            md-tab-content {
+               height: 100%;
+               div[md-tabs-template] {
+                  height: 100%;
+                  overflow: hidden;
+               }
+               .schedule-content {
+                  overflow-y: auto;
+               }
+               .downtime-content {
+                  overflow-y: auto;
+                  height: 100%;
+               }
+            }
+         }
+         md-tabs-wrapper {
+            border: 0 none;
+            md-tabs-canvas {
+               background-color: #545454;
+               md-pagination-wrapper {
+                  // width: 55%;
+                  .md-tab {
+                     color: #ffffff;
+                     opacity: 0.7;
+                     font-weight: 300;
+                     text-transform: capitalize;
+                     font-size: 16px !important;
+                     &.md-active {
+                        opacity: 1;
+                     }
+                  }
+               }
+            }
+         }
+         .search-div {
+            position: relative;
+            //height: 50px;
+            // margin-bottom: 16px;
+            .search-input {
+               margin-bottom: 0;
+               margin-top: 0;
+               input {
+                  font-size: 16px;
+                  border: 1px solid rgba(0, 0, 0, 0.12);
+                  height: 34px;
+                  padding: 4px 8px;
+                  // min-width: 200px;
+               }
+               .md-errors-spacer {
+                  display: none;
+               }
+               .icon {
+                  font-size: 24px;
+                  line-height: 14px;
+                  padding-top: 4px;
+               }
+            }
+            .helpIconDiv {
+               padding-top: 2px;
+               margin: auto;
+               span {
+                  cursor: pointer;
+                  margin: 0px;
+                  img {
+                     width: 30px;
+                     height: 30px;
+                  }
+               }
+            }
+         }
+         md-content {
+            padding-right: 30px;
+            padding-top: 0;
+            position: relative;
+            height: calc(100% - 70px);
+            .overview-table {
+               tbody {
+                  tr {
+                     .machine-label-td {
+                        font-size: 19px;
+                        font-weight: 500;
+                        color: #676464;
+                        text-transform: uppercase;
+                        cursor: pointer;
+                        .machineName {
+                           padding-left: 15px;
+                        }
+                        .snapshot-bar {
+                           padding-right: 16px;
+                           padding-left: 15px;
+                           > div {
+                              height: 2px;
+                              border-left: none;
+                              .snapshot-label {
+                                 display: none;
+                              }
+                           }
+                        }
+                        .schedule-run-state {
+                           padding-left: 20px;
+                           .icon {
+                              font-size: 20px;
+                              padding-top: 2px;
+                              width: 15px;
+                           }
+                           .run-state-time {
+                              font-size: 14px;
+                              text-transform: capitalize;
+                              color: #676464;
+                              padding-left: 5px;
+                              .for-text {
+                                 font-style: italic;
+                                 text-transform: lowercase;
+                                 color: #999999;
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+      .no-data {
+         padding-left: 20px;
+      }
+      .downtime-content {
+         padding: 0 !important;
+         md-list {
+            padding: 0;
+            .downtime-list-item {
+               border-bottom: 1px solid #dddddd;
+               padding: 12px 18px;
+               padding-left: 8px;
+               .downtime-div {
+                  width: 100%;
+                  .downtime-title {
+                     font-size: 18px;
+                     font-weight: 500;
+                  }
+                  .downtime-occurs {
+                     font-size: 15px;
+                     color: rgba(0, 0, 0, 0.6);
+                     font-weight: 500;
+                     margin-left: 20px;
+                  }
+               }
+            }
+         }
+      }
+   }
+}
+
+md-select-menu {
+   md-content {
+      md-option {
+         &.md-checkbox-enabled[selected] {
+            .md-icon {
+               background-color: #d19d30 !important;
+            }
+         }
+      }
+   }
+}
+
+.downtime-dialog {
+   min-width: 80%;
+   min-height: 80%;
+   .downtime-toolbar {
+      background-color: #d19d30 !important;
+      h2 {
+         color: #ffffff;
+         font-size: 21px;
+         font-weight: 300;
+      }
+   }
+   .margin-right20 {
+      margin-right: 25px;
+   }
+   .downtime-dialog-content {
+      padding: 0 20px;
+      position: relative;
+      .dialog-bottom-content {
+         position: relative;
+      }
+      .title-div {
+         margin-top: 30px;
+      }
+      .side-label {
+         margin-right: 25px;
+         color: #000000;
+         font-size: 15px;
+         font-weight: 500;
+      }
+      .datepicker-label {
+         position: absolute;
+         font-size: 12px;
+         left: 202px;
+         color: rgba(0, 0, 0, 0.54);
+         top: -13px;
+      }
+      md-datepicker {
+         .md-datepicker-button {
+            margin-top: 5px;
+         }
+      }
+      .typeLabel {
+         top: -21px !important;
+         color: rgba(0, 0, 0, 0.54);
+         opacity: 1;
+         overflow: visible;
+      }
+      .durationLabel {
+         top: -21px !important;
+      }
+      .mdTitle {
+         font-size: 17px;
+         font-weight: 400 !important;
+      }
+      md-input-container {
+         margin: 0;
+         font-size: 16px;
+         md-select {
+            .md-select-value {
+               padding-left: 10px;
+               padding-bottom: 5px;
+            }
+         }
+         .downtime-type {
+            min-width: 160px;
+            margin-right: 20px;
+         }
+         .downtime-duration {
+            width: 120px;
+            margin-right: 10px;
+         }
+         .downtime-time {
+            .md-select-value {
+               min-width: 30px !important;
+               padding-left: 0;
+               span {
+                  text-align: center;
+                  font-size: 16px;
+               }
+               .md-select-icon {
+                  display: none !important;
+               }
+            }
+            .margin-right20 {
+               margin-right: 20px;
+            }
+         }
+      }
+      .md-datepicker-input-container {
+         border-bottom-color: rgba(0, 0, 0, 0.12);
+         width: 160px;
+         margin-right: 10px;
+         .md-datepicker-expand-triangle {
+            top: 59%;
+         }
+      }
+      .downtime-repeat-details {
+         .repeatLabel {
+            position: absolute;
+            color: rgba(0, 0, 0, 0.54);
+            top: -21px;
+            opacity: 1;
+            overflow: visible;
+         }
+         .button-text-container {
+            .text-lable {
+               position: absolute;
+               top: 7px;
+               left: 3px;
+               color: rgba(0, 0, 0, 0.54);
+               font-size: 12px;
+            }
+            .repeat-button {
+               border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+               margin-right: 20px;
+               padding: 8px 6px 8px 12px;
+               span {
+                  text-transform: capitalize;
+                  font-size: 15px;
+                  padding: 9px 20px 9px 0;
+                  font-weight: normal;
+               }
+               .editIcon {
+                  transform: rotate(76deg);
+                  color: rgba(0, 0, 0, 0.54);
+                  font-size: 20px;
+                  display: inline-block;
+                  padding-left: 4px;
+               }
+            }
+         }
+         .downtime-type {
+            .md-select-value {
+               .md-select-icon {
+                  margin-left: 20px;
+                  &:after {
+                     content: "\270E" !important;
+                     transform: rotate(88deg);
+                     color: rgba(0, 0, 0, 0.54);
+                     font-size: 20px;
+                  }
+               }
+            }
+         }
+         margin-top: 20px;
+         position: relative;
+         padding-top: 15px;
+      }
+      .machines-select {
+         margin-top: 50px;
+      }
+      .graph-header-div {
+         .left-header {
+            float: left;
+         }
+         .right-header {
+            float: right;
+            margin-bottom: 0px !important;
+            span {
+               float: left;
+               padding: 19px 10px 0 0;
+               font-size: 15px;
+            }
+         }
+      }
+      .graph-content-div {
+         height: 230px;
+         border: 1px solid #7f7f7f;
+         width: 100%;
+         overflow-y: scroll;
+         padding: 0px 10px;
+         table {
+            tr {
+               th:first-child {
+                  border-right: 1px solid #e2e2e2;
+               }
+               td:first-child {
+                  margin-top: 0px !important;
+               }
+               th {
+                  font-weight: normal;
+                  .select-all {
+                     color: #d19d30;
+                     margin-top: 21px;
+                  }
+               }
+               td {
+                  .machine-name {
+                     font-size: 15px;
+                     font-weight: 500;
+                     margin: 0;
+                  }
+               }
+            }
+         }
+      }
+   }
+   .downtime-btn-group {
+      margin-bottom: 20px;
+      .md-button {
+         color: #d19d30 !important;
+         &.save-btn {
+            color: #ffffff !important;
+            background-color: #d19d30 !important;
+            &:disabled {
+               opacity: 0.7;
+            }
+         }
+         &.delete-btn {
+            color: red !important;
+            position: absolute;
+            left: 0;
+         }
+      }
+   }
+}
+
+.repeat-details-modal {
+   width: 40%;
+   md-toolbar {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      .md-toolbar-tools {
+         font-size: 18px;
+      }
+   }
+   .repeat-details-content {
+      text-align: center;
+      .md-dialog-content {
+         padding: 35px 0 0;
+         &.paddingBottom {
+            padding-bottom: 35px;
+         }
+         .common-content {
+            display: inline;
+            .option-label {
+               padding-left: 15px;
+            }
+            .side-label {
+               font-size: 15px;
+               margin-left: 5px;
+               color: #000000;
+            }
+            md-input-container {
+               width: 20%;
+               font-size: 15px;
+               font-weight: 400;
+               color: #000000;
+               margin: 0 30px;
+               &.frequency-input {
+                  margin-left: 10px;
+                  md-select {
+                     display: inline-block;
+                  }
+               }
+               &.every-input {
+                  margin-right: 0;
+               }
+               md-select {
+                  .md-select-value {
+                     padding-left: 10px;
+                     padding-bottom: 5px;
+                     text-align: left;
+                  }
+               }
+            }
+         }
+         .week-content {
+            float: right;
+            padding: 20px;
+            .week-day {
+               font-size: 14px;
+               margin: 2px;
+               color: #000000;
+               cursor: pointer;
+               font-weight: 500;
+               width: 38px;
+               display: inline-block;
+               padding: 10px 9px 9px;
+               &.isChecked {
+                  color: #fff;
+                  background: #d19d30;
+                  border-radius: 34px;
+               }
+               input {
+                  display: none;
+               }
+            }
+         }
+         .month-content {
+            width: 60%;
+            margin: 20px auto;
+            display: inline-block;
+            md-radio-button {
+               font-size: 15px;
+               color: gray;
+               display: inline;
+               margin: 25px;
+            }
+            .onTheDiv {
+               margin: 20px 0;
+               md-input-container {
+                  width: auto;
+                  font-size: 14px;
+                  text-align: left;
+                  margin: 0 15px;
+                  md-select-value {
+                     padding-left: 10px;
+                  }
+               }
+            }
+            .calendar {
+               display: block;
+               margin-top: 25px;
+               .calendar-table {
+                  display: inline;
+                  tr {
+                     td {
+                        width: 38px;
+                        height: 45px;
+                        span {
+                           &.today {
+                              color: #d19d30;
+                           }
+                           &.active {
+                              background-color: #d19d30;
+                              border-radius: 35px;
+                              color: #ffffff !important;
+                           }
+                           font-size: 14px;
+                           font-weight: 500;
+                           margin: 3px;
+                           cursor: pointer;
+                           padding: 10px 11px;
+                           display: block;
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+   .btn-group {
+      border: 0 none;
+      margin-bottom: 5px;
+      padding: 0;
+      display: inherit;
+      .md-button {
+         color: #d19d30 !important;
+         font-size: 14px;
+      }
+   }
+}
+
+.help-dialog {
+   .slider {
+      width: 1000px;
+      height: 500px;
+      overflow: hidden;
+      position: relative;
+      background: #e6e6e6;
+      margin-top: 20px;
+      .cancel {
+         position: absolute;
+         right: 0;
+         margin-top: 10px;
+         margin-right: 5px;
+         z-index: 1000;
+         padding: 15px;
+         background: url(../assets/images/helpImages/cancel.png) no-repeat;
+      }
+      .slide {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         opacity: 1;
+         -webkit-transition: opacity 0.5s ease 0s;
+         -moz-transition: opacity 0.5s ease 0s;
+         transition: opacity 0.5s ease 0s;
+         &.ng-hide {
+            opacity: 0;
+         }
+      }
+      .arrow {
+         position: absolute;
+         z-index: 1002;
+         display: block;
+         top: 50%;
+         margin-top: -35px;
+         width: 36px;
+         height: 40px;
+         outline: none;
+         cursor: pointer;
+         // background: url(../../assets/images/helpImages/blank.gif) no-repeat;
+         &.prev {
+            left: 0;
+            background-image: url(../assets/images/helpImages/left.png);
+            transition: 0.2s linear all;
+         }
+         &.next {
+            right: 0;
+            background-image: url(../assets/images/helpImages/right.png);
+            transition: 0.2s linear all;
+         }
+      }
+      .nav {
+         text-align: center;
+         display: block;
+         position: absolute;
+         z-index: 1002;
+         left: 0;
+         bottom: -4px;
+         right: 0;
+         height: 48px;
+         .wrapper {
+            margin: 0 auto;
+            width: 100%;
+            padding: 1em 0 0.8em;
+            ul {
+               margin: 0;
+               width: 100%;
+            }
+            .dots {
+               .dot {
+                  position: relative;
+                  margin: 0 3px;
+                  width: 12px;
+                  height: 12px;
+                  display: inline-block;
+                  zoom: 1;
+                  a {
+                     display: inline-block;
+                     zoom: 1;
+                     position: absolute;
+                     top: 2px;
+                     left: 2px;
+                     width: 6px;
+                     height: 6px;
+                     text-indent: 100%;
+                     white-space: nowrap;
+                     overflow: hidden;
+                     background: #fff;
+                     border: 1px solid #aaaaaa;
+                     outline: none;
+                     -webkit-box-shadow: none;
+                     -moz-box-shadow: none;
+                     box-shadow: none;
+                     -webkit-border-radius: 50%;
+                     -moz-border-radius: 50%;
+                     border-radius: 50%;
+                     -webkit-transition: background-color 0.25s,
+                        border-color 0.25s;
+                     -moz-transition: background-color 0.25s, border-color 0.25s;
+                     transition: background-color 0.25s, border-color 0.25s;
+                     &.active {
+                        border-color: #aaaaaa;
+                        background-color: #aaaaaa;
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}
+
+md-calendar {
+   md-virtual-repeat-container {
+      top: 0px !important;
+      left: 0px !important;
+   }
+}

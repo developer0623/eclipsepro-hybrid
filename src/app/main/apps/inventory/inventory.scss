@@ -1,0 +1,496 @@
+#inventory {
+    height: 100%;
+    overflow: hidden;
+
+    &.scroll-content {
+        overflow: auto !important;
+    }
+
+    .coil-type-accordian {
+        overflow: auto;
+        max-height: 700px;
+    }
+
+    .content {
+        padding: 0;
+        position: relative;
+
+        .toolbar {
+            padding: 16px 24px 0;
+            position: relative;
+            min-height: 64px;
+            z-index: 20;
+            background: #FFF;
+
+            .grid-filter {
+                // width: 68%;
+
+                .filter-icon {
+                    float: left;
+                    // padding-top: 10px;
+                }
+
+                .search-input {
+                    // width: 95%;
+                    float: left;
+                    padding-top: 5px;
+                }
+
+                input {
+                    width: 100%;
+                }
+            }
+
+            .filters-div {
+                width: 68%;
+
+                .filter-icon {
+                    float: left;
+                    padding-top: 10px;
+                }
+
+                .search-input-div {
+                    width: 95%;
+                    float: left;
+                }
+
+                .advancedSearchBox {
+                    display: inline-block;
+                    line-height: 26px;
+                    min-height: 32px;
+                    width: 100%;
+                    border-radius: 0;
+                    line-height: 30px;
+
+                    .search-parameter {
+                        background-color: #D19D30;
+
+                        a {
+                            text-decoration: none;
+
+                            .remove {
+                                font-size: 14px;
+                                top: 3px;
+                            }
+                        }
+                    }
+
+                    .search-icon {
+                        display: none;
+                    }
+
+                    .remove-all-icon {
+                        font-size: 14px;
+                        top: -1px;
+                    }
+                }
+
+                .toggle-button {
+                    background-color: #D19D30;
+                    color: #ffffff;
+                    margin: 2px 0 0 10px;
+                    float: left;
+                }
+            }
+        }
+
+        .content {
+            padding: 0;
+            // overflow: hidden;
+            position: relative;
+        }
+
+        md-tabs {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+    }
+
+
+    table.dataTable {
+
+
+        &.dtr-inline.collapsed.dtr-inline.collapsed>tbody>tr>td:first-child {
+            padding-left: 40px !important;
+
+            &:before {
+                content: "\e79d";
+                font-family: 'icomoon';
+                box-shadow: none;
+                left: 20px;
+                font-size: 16px;
+            }
+        }
+
+        thead {
+            th {
+                padding: 0 8px;
+                line-height: 48px;
+                font-size: 12px;
+                color: rgba(0, 0, 0, .54);
+
+                &:before,
+                &:after {
+                    display: inline-block;
+                    opacity: 0;
+                    content: '\e64d';
+                    transition: all ease-in 200ms;
+                    transform: rotate(180deg);
+                    color: rgba(0, 0, 0, 0.87);
+                    position: relative;
+                    font-family: 'icomoon';
+                    font-weight: normal;
+                    margin-right: 0;
+                    top: 2px;
+                    font-size: 14px;
+                }
+
+                &:hover {
+
+                    &:before,
+                    &:after {
+                        opacity: .35 !important;
+                    }
+                }
+
+                &:not(.column-numeric) {
+                    &:before {
+                        display: none;
+                    }
+
+                    &:after {
+                        margin-left: 5px;
+                    }
+                }
+
+                &.column-numeric {
+                    &:after {
+                        display: none;
+                    }
+
+                    &:before {
+                        margin-right: 5px;
+                    }
+                }
+
+                &.sorting_asc,
+                &.sorting_desc {
+
+                    &:before,
+                    &:after {
+                        opacity: 1 !important;
+                    }
+                }
+
+                &.sorting_asc {
+
+                    &:before,
+                    &:after {
+                        transform: rotate(0deg);
+                    }
+                }
+            }
+        }
+
+        tr {
+            background: transparent;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        th,
+        td {
+            white-space: nowrap;
+            position: relative;
+
+            &.w-70,
+            &.w-80 {
+                max-width: 100% !important;
+            }
+
+            &.hide {
+                display: none !important;
+                visibility: hidden !important;
+            }
+
+            &:not(.column-numeric) {
+                padding-left: 24px;
+            }
+
+            &.column-numeric {
+                text-align: right;
+                padding-right: 24px;
+            }
+
+            &.column-numeric:last-child {
+                padding-right: 40px !important;
+            }
+
+            &.has-link-icon {
+                padding-right: 20px !important;
+                position: relative;
+
+                .td-link {
+                    position: absolute;
+                    right: 0px;
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+    }
+
+
+    .dataTables_wrapper {
+
+        .top,
+        .bottom {
+            background: #FFF;
+        }
+
+        .top {
+            padding: 24px 24px 8px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .bottom {
+            max-height: 56px;
+            height: 56px;
+            min-height: 56px;
+            padding-left: 16px;
+        }
+
+        .dataTables_scroll {
+            background: #F5F5F5;
+
+            .dataTables_scrollHead {
+                box-shadow: $whiteframe-shadow-2dp;
+                min-height: 48px;
+                z-index: 1;
+
+                thead th {
+                    border-bottom: none !important;
+                }
+            }
+
+            .dataTables_scrollBody {
+
+                thead,
+                thead tr,
+                thead th,
+                thead th:before,
+                thead th:after,
+                thead th div {
+                    visibility: hidden !important;
+                    height: 0 !important;
+                    overflow: hidden !important;
+                    opacity: 0 !important;
+                    line-height: 0 !important;
+                    border-bottom: none !important;
+                }
+
+                tbody,
+                tbody td {
+                    background: #F5F5F5 !important;
+                }
+            }
+        }
+
+        .dataTables_info {
+            clear: none;
+            float: none;
+            padding-top: 6px;
+        }
+
+        .dataTables_paginate .paginate_button {
+            border: none !important;
+            background: transparent !important;
+            max-width: 80px !important;
+            width: 80px !important;
+            color: transparent !important;
+            position: relative;
+
+            &:after {
+                font-family: 'icomoon';
+                font-size: 24px;
+                position: absolute;
+                left: 50%;
+                line-height: 20px;
+                transform: translate(-50%, 0);
+                color: rgba(0, 0, 0, .54) !important;
+            }
+
+            &:active {
+                box-shadow: none !important;
+            }
+
+            &.previous:after {
+                content: "\e716";
+            }
+
+            &.next:after {
+                content: "\e717";
+            }
+        }
+    }
+
+    .accordion-content {
+        .top {
+            display: none;
+        }
+    }
+
+    md-select.simplified .md-select-value {
+        font-size: 18px;
+    }
+
+    .sidenav {
+
+        .header {
+            height: 260px;
+            min-height: 260px;
+            max-height: 260px;
+            padding: 48px 32px 24px;
+
+            .edit-button {
+                width: 100%;
+                display: block;
+
+                .md-button {
+                    width: 100%;
+                    margin: 0;
+                }
+            }
+        }
+
+        .content {
+            padding: 24px 0;
+
+            td {
+                border: none;
+                padding: 8px 24px;
+
+                &:first-child {
+                    text-align: right;
+                    padding-left: 24px;
+                    padding-right: 8px;
+                }
+
+                &:last-child {
+                    padding-right: 24px;
+                    padding-left: 8px;
+                }
+            }
+        }
+
+        &:not(.md-locked-open) {
+
+            .header {
+                height: 150px;
+                min-height: 150px;
+                max-height: 150px;
+                padding-top: 24px;
+            }
+        }
+    }
+
+    &.coil-type {
+        .child .child li:first-child {
+            display: none;
+        }
+    }
+
+    .coilTypesGrid,
+    .coilsGrid,
+    .prodGrid,
+    .coilGrid {
+        height: calc(100% - 64px);
+
+        .ui-grid-contents-wrapper {
+            .ui-grid-top-panel {
+                .ui-grid-header-cell-wrapper {
+                    .ui-grid-cell-contents {
+                        .ui-grid-icon-down-dir {
+                            &:before {
+                                position: relative;
+                                top: 3px;
+                            }
+                        }
+                    }
+
+                    .ui-grid-column-menu-button {
+                        position: absolute;
+                        right: 1px;
+                        padding: 7px 0;
+                        top: 0;
+                        width: 26px;
+
+                        &.ui-grid-column-menu-button-last-col {
+                            margin-right: 0;
+                        }
+                    }
+
+                    .ui-grid-filter-container {
+                        input {
+                            padding: 5px;
+                        }
+
+                        .ui-grid-filter-button {
+                            .ui-grid-icon-cancel {
+                                font-size: 18px;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .ui-grid-canvas {
+                .ui-grid-cell {
+                    div {
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        padding: 5px;
+
+                        .td-link {
+                            text-decoration: underline;
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .prodGrid,
+    .coilGrid {
+        height: 100% !important;
+    }
+}
+
+.edit-details-dialog {
+
+    .md-toolbar-tools .md-button {
+        margin: 0 6px;
+        height: 40px;
+        min-width: 0;
+        line-height: 24px;
+        padding: 8px;
+        width: 40px;
+        border-radius: 50%;
+    }
+
+    .md-dialog-content {
+        @media only screen and (min-width: $layout-breakpoint-xs) {
+            min-width: 600px;
+        }
+    }
+}

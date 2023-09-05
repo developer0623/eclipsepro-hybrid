@@ -1,0 +1,34 @@
+<div class="menu-title">
+  {{ $ctrl.subject }}:
+  <span>{{ $ctrl.onGetTitle() }}</span>
+</div>
+
+<md-menu md-position-mode="target-right target">
+  <md-button class="md-icon-button" ng-click="$mdMenu.open($event)" aria-label="Machines">
+    <md-icon md-font-icon class="icon icon-chevron-down menu-icon"></md-icon>
+  </md-button>
+  <md-menu-content width="{{ $ctrl.subject === 'MACHINES' ? 3 : 2 }}" class="shift-menu menu-machines">
+    <div layout="row" class="shift-menu-title">
+      {{ $ctrl.menuSubject }}:
+      <md-button aria-label="Close Menu" class="md-icon-button menu-close-icon" ng-click="$mdMenu.close()">
+        <md-icon md-font-icon class="icon icon-close"></md-icon>
+      </md-button>
+    </div>
+    <md-menu-item class="shift-menu-item">
+      <div layout="row">
+        <md-checkbox name="All" aria-label="All" ng-checked="$ctrl.allItem.isChecked"
+          md-indeterminate="$ctrl.isAllIndeterminate()" class="filter-check" ng-click="$ctrl.onClickItem($ctrl.allItem)"
+          md-prevent-menu-close="md-prevent-menu-close">All</md-checkbox>
+      </div>
+    </md-menu-item>
+
+    <md-menu-item ng-repeat="item in $ctrl.menuList" class="shift-menu-item">
+      <div layout="row">
+        <md-checkbox name="{{ item.name }}" aria-label="{{ item.name }}" ng-checked="item.isChecked"
+          class="filter-check" ng-click="$ctrl.onClickItem(item)" md-prevent-menu-close="md-prevent-menu-close">{{
+          item.name }}
+        </md-checkbox>
+      </div>
+    </md-menu-item>
+  </md-menu-content>
+</md-menu>

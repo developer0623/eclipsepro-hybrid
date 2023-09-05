@@ -1,0 +1,176 @@
+<div id="dashboard-report" class="page-layout simple fullwidth white-bg production-summary" ngsf-fullscreen>
+  <report-header subject="Scrap Summary" on-filter="$ctrl.onFilter(searchTxt)"></report-header>
+
+  <div class="summary-title-header">
+    <custom-menu class="menu-column duration" subject="GroupBy" menu-list="$ctrl.groupByList"
+      selected-item="$ctrl.selectedGroup" on-change="$ctrl.onChangeGroup(item)"></custom-menu>
+
+    <custom-menu class="menu-column duration" subject="ThenBy" menu-list="$ctrl.thenByList"
+      selected-item="$ctrl.selectedThen" on-change="$ctrl.onChangeThen(item)"></custom-menu>
+
+    <report-date-col class="date-column" start-date="$ctrl.startDate" end-date="$ctrl.endDate" duration="'day'"
+      on-change="$ctrl.onChangeDate(startDate, endDate)"></report-date-col>
+
+    <checkbox-menu class="menu-column float-right" subject="MACHINES" menu-subject="SHOW MACHINES"
+      menu-list="$ctrl.machines" on-change="$ctrl.onChangeMachines(items)"></checkbox-menu>
+
+    <div class="header-icon-column float-right">
+      <md-button href="/_api/reports/scrapsummary?{{$ctrl.fileDownloadQueryString}}&format=csv" target="_self">
+        <md-tooltip md-direction="bottom">
+          <span translate="downloadCsv"></span>
+        </md-tooltip>
+        <md-icon md-font-icon="icon-file-excel" class="icon"></md-icon>
+      </md-button>
+      <!-- <md-button aria-label="Select Shift 1" class="md-icon-button" ng-click="$ctrl.openPrintPreview($event)">
+        <md-icon md-font-icon class="icon icon-printer header-icon"></md-icon>
+      </md-button> -->
+    </div>
+  </div>
+  <div class="content md-background md-hue-1 summary-main-content" ms-scroll>
+    <div class="material-usage-content">
+      <!-- <md-virtual-repeat-container id="coil-summary-list" class="ms-scroll"> -->
+      <div ng-repeat="item in $ctrl.filteredList.groups" class="repeated-item summary-accordian-group" flex>
+        <div class="summary-accordian-item" ng-repeat="item1 in item.groups" flex>
+          <div class="summary-group-item">
+            <div class="group-header" ng-bind-html="$ctrl.onGetGroupHeader(item.key, item1.key)"></div>
+            <group-header class="group-content" header="item1.header">
+            </group-header>
+          </div>
+
+          <div class="material-usage-item sub-header">
+            <div class="main-con">Code</div>
+            <div class="main-con">Scrap Reason</div>
+            <div class="main-con">Scrap Length {{'ft' | userDisplayUnits}}</div>
+            <div class="main-con">Scrap Length %</div>
+            <div class="main-con">Total Length %</div>
+            <div class="main-con">
+              Scrap Weight {{'lbs' | userDisplayUnits}}
+            </div>
+            <div class="main-con">Scrap Weight %</div>
+            <div class="main-con">Total Weight %</div>
+            <!-- <div class="main-con">
+              Ave Length per Occur {{'ft' | userDisplayUnits}}
+            </div> -->
+            <div class="main-con">Occurrences</div>
+          </div>
+          <div ng-repeat="exemptGroup in item1.groups">
+            <div class="material-usage-item" ng-repeat="item2 in exemptGroup.reasons">
+              <div class="main-con">{{item2.key.codeValue}}</div>
+              <div class="main-con">{{item2.key.codeDescription}}</div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{item2.scrapFt | unitsFormat :"ft":1:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{item2.scrapPctOfScrapFt | unitsFormat :"%":2:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{item2.scrapPctOfTotalFt | unitsFormat :"%":2:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{item2.scrapLbs | unitsFormat :"lbs":1:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{item2.scrapPctOfScrapLbs | unitsFormat :"%":2:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{item2.scrapPctOfTotalLbs | unitsFormat :"%":2:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">{{item2.occurrences}}</span>
+              </div>
+            </div>
+            <div class="material-usage-item">
+              <div class="reason-total" ng-if="exemptGroup.key.exempt">
+                Exempt
+              </div>
+              <div class="reason-total" ng-if="!exemptGroup.key.exempt">
+                Non Exempt
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{exemptGroup.scrapFt | unitsFormat :"ft":1:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{exemptGroup.scrapPctOfScrapFt | unitsFormat :"%":2:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{exemptGroup.scrapPctOfTotalFt | unitsFormat :"%":2:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{exemptGroup.scrapLbs | unitsFormat :"lbs":1:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{exemptGroup.scrapPctOfScrapLbs | unitsFormat :"%":2:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{exemptGroup.scrapPctOfTotalLbs | unitsFormat :"%":2:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">{{exemptGroup.occurrences}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="material-usage-item">
+            <div class="reason-total">Total</div>
+            <div class="main-con">
+              <span class="num-col">
+                {{item1.scrapFt | unitsFormat :"ft":1:true}}
+              </span>
+            </div>
+            <div class="main-con">
+              <span class="num-col">
+                {{item1.scrapPctOfScrapFt | unitsFormat :"%":2:true}}
+              </span>
+            </div>
+            <div class="main-con">
+              <span class="num-col">
+                {{item1.scrapPctOfTotalFt | unitsFormat :"%":2:true}}
+              </span>
+            </div>
+            <div class="main-con">
+              <span class="num-col">
+                {{item1.scrapLbs | unitsFormat :"lbs":1:true}}
+              </span>
+            </div>
+            <div class="main-con">
+              <span class="num-col">
+                {{item1.scrapPctOfScrapLbs | unitsFormat :"%":2:true}}
+              </span>
+            </div>
+            <div class="main-con">
+              <span class="num-col">
+                {{item1.scrapPctOfTotalLbs | unitsFormat :"%":2:true}}
+              </span>
+            </div>
+            <div class="main-con">
+              <span class="num-col">{{item1.occurrences}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

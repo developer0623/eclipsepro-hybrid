@@ -1,0 +1,230 @@
+<div layout="row" class="ava-menu assign-wide-column">
+  <div class="ava-menu-content ass-wide-header" layout="row" ng-mousemove="$ctrl.onResizeColumn($event)"
+    ng-mouseup="$ctrl.onClickedColumn($event, false)">
+    <div ng-repeat="item in $ctrl.checkedColumns" class="menu-item" ng-style="$ctrl.onGetWidth(item)"
+      cdnd-draggable="item" drag-source-data="item.fieldName" cdnd-type="item"
+      ng-dblclick="$ctrl.onDbClickAvailableJobsHeader(item)" flex>
+      <div class="item-bg" cdnd-area cdnd-areatype="'header'" cdnd-allowed-types="['item']"
+        cdnd-dragover="$ctrl.dragOverAvailableHeader(event, hemi, otherhemi)"
+        cdnd-drop="$ctrl.dropOnAvailableHeader($index, otherhemi, dragSourceData)"></div>
+      {{ item.displayName | translate }}
+      <div class="item-move" ng-mousedown="$ctrl.onClickedColumn($event, true, item)">
+        <div class="col-separate-line"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="dropzone-id" class="
+    row
+    dropzone
+    assigned-jobs
+    vertical-scroll
+    scrollable
+    assigned-jobs-grid
+  " ms-scroll="$ctrl.msScrollOptions">
+  <md-virtual-repeat-container md-top-index="$ctrl.assignedTopIndex" id="vertical-container"
+    style="height: 100%; width: 100%">
+    <div class="machine-row">
+      <div class="assigned-datetime"></div>
+      <div class="machine-area" ng-class="{ 'can-drop': $ctrl.canDropToMachine }" cdnd-area cdnd-areatype="'machine'"
+        cdnd-allowed-types="['ass', 'ava']" cdnd-allowed-drag-start="$ctrl.onAllowedTypeDragStarted(cdndType)"
+        cdnd-allowed-drag-end="$ctrl.onAllowedTypeDragEnd(cdndType)" cdnd-drop="$ctrl.onDropToMachine(dragSourceData)">
+        <div id="addToMachine" class="addToMachine" style="height: {{ $ctrl.OnMachineContainerHeight() }}px" translate>
+          sendToMachine
+        </div>
+        <div class="machine-jobs">
+          {{ $ctrl.numberOfJobsOnMachine ? $ctrl.numberOfJobsOnMachine : 'No' }}
+          Jobs on Machine <span ng-if="$ctrl.machineJobsFt">({{$ctrl.machineJobsFt | unitsFormat: 'ft'}})</span>
+        </div>
+      </div>
+    </div>
+    <div md-virtual-repeat="row in $ctrl.assignedJobs" class="assigned-row-wide">
+      <div ng-repeat-start="node in row track by $index" ng-if="false"></div>
+      <!-- tried to do a ng-switch here but since it spat out a div, it messed with the flexbox. When 2+, use ng-container. -->
+      <div ng-if="node.keyColumn.fieldName === 'isOnMachine'" class="assigned-machine-start"
+        ng-class="{ 'assigned-on-machine': node.key }" style="order: 2"></div>
+      <div ng-if="node.keyColumn.fieldName === 'isOnMachine'" class="assigned-machine-end-wide"
+        ng-class="{ 'assigned-on-machine': node.key }" style="order: 5"></div>
+      <!-- These two divs (machine and assigned) are not needed but there might be something special about the dragging that we might need.-->
+      <!-- Machine -->
+      <div ng-if="
+          false && node.keyColumn.fieldName === 'id' && node.jobs[0].isOnMachine
+        " class="assigned-cell assigned-job" style="order: 4" ng-style="$ctrl.onGetNodeStyle(node.keyColumn)"
+        ng-dblclick="$ctrl.onDoubleClickAssigned(node)" cdnd-draggable="node" drag-source-data="node.ids"
+        cdnd-type="machine" cdnd-dragstart="$ctrl.onDragStart(node)" cdnd-dragover="$ctrl.onDragOver(event, node, hemi)"
+        cdnd-allowed-types="['ass', 'ava']" cdnd-area cdnd-areatype="'machine'"
+        cdnd-drop="$ctrl.onDropToSchedule(event, node, hemi, dragSourceData)">
+        <assigned-job job="node.jobs[0]" style="width: 100%; height: 100%"
+          recall-from-machine="$ctrl.onRecallFromMachine(jobIds)" unschedule="$ctrl.onUnschedule(jobIds)"
+          set-hold="$ctrl.onSetHold(jobId, toHold)">
+        </assigned-job>
+      </div>
+      <!-- Assigned -->
+      <div ng-if="
+          false && node.keyColumn.fieldName === 'id' && !node.jobs[0].isOnMachine
+        " class="assigned-cell assigned-job" style="order: 4" ng-style="$ctrl.onGetNodeStyle(node.keyColumn)"
+        ng-dblclick="$ctrl.onDoubleClickAssigned(node)" cdnd-draggable="node" drag-source-data="node.ids"
+        cdnd-type="ass" cdnd-dragstart="$ctrl.onDragStart(node)" cdnd-dragover="$ctrl.onDragOver(event, node, hemi)"
+        cdnd-allowed-types="['ass', 'ava', 'machine']" cdnd-area cdnd-areatype="'ass'"
+        cdnd-drop="$ctrl.onDropToSchedule(event, node, hemi, dragSourceData)">
+        <assigned-job job="node.jobs[0]" style="width: 100%; height: 100%" set-hold="$ctrl.onSetHold(jobId, toHold)"
+          send-to-machine="$ctrl.onSendToMachine(jobIds)" unschedule="$ctrl.onUnschedule(jobIds)"
+          set-selected="$ctrl.onSetSelected(jobIds, checked)">
+        </assigned-job>
+      </div>
+      <div ng-if="node.keyColumn.fieldName === 'id'" class="assigned-datetime" style="order: 1">
+        <div class="assigned-date" ng-if="node.jobs[0].dateChange">
+          {{ node.jobs[0].dateChange | date: 'EEE MM/dd' }}
+        </div>
+        <div class="assigned-time">
+          {{ node.jobs[0].completionDate | date: 'h:mm a' }}
+        </div>
+      </div>
+
+      <!-- Group -->
+      <div ng-if="
+          node.keyColumn.fieldName !== 'id' &&
+          node.keyColumn.fieldName !== 'isOnMachine'
+        " class="assigned-cell assigned-cell-group-wide multi-select-hover" style="order: 3"
+        ng-style="$ctrl.onGetGroupStyle(node.keyColumn, node.rowspan)" ng-dblclick="$ctrl.onDoubleClickAssigned(node)"
+        cdnd-draggable="node" drag-source-data="node.ids" cdnd-type="ass" cdnd-dragstart="$ctrl.onDragStart(node)"
+        cdnd-dragover="$ctrl.onDragOver(event, node, hemi)" cdnd-allowed-types="['ass', 'ava', 'machine']" cdnd-area
+        cdnd-areatype="'ass'" cdnd-drop="$ctrl.onDropToSchedule(event, node, hemi, dragSourceData)"
+        ng-class="{ 'summary-row': node.isSummaryRow }">
+        <div class="triangle-container" ng-if="
+            node.keyColumn.fieldName === 'requiredDateDisplay' &&
+            node.jobs[0].warningDueDate &&
+            !node.jobs[0].pastDueDate
+          ">
+          <md-tooltip md-direction="bottom">{{
+            node.jobs[0].warningText
+            }}</md-tooltip>
+          <div class="triangle triangle-yellow"></div>
+        </div>
+        <div class="triangle-container" ng-if="
+            node.keyColumn.fieldName === 'requiredDateDisplay' &&
+            node.jobs[0].pastDueDate
+          ">
+          <md-tooltip md-direction="bottom">{{
+            node.jobs[0].pastDueText
+            }}</md-tooltip>
+          <div class="triangle triangle-red"></div>
+        </div>
+        <div class="triangle-container" ng-if="
+            node.keyColumn.fieldName === 'remainingFt' &&
+            node.jobs[0].warningMaterial && $ctrl.systemPreferences.showMaterialShortageAlerts
+          ">
+          <md-tooltip md-direction="bottom">Material Shortage</md-tooltip>
+          <div class="triangle triangle-red"></div>
+        </div>
+        <div class="multi-select">
+          <md-checkbox aria-label="Select Tool" ng-checked="node.isSelected" ng-click="$ctrl.onToggleNodeChecked(node)">
+          </md-checkbox>
+        </div>
+        <div class="assigned-wide-text">
+          <span class="dont-rotatetext" ng-if="!node.srefObj">
+            {{ node.key | unitsFormat: node.keyColumn.units:0 }}
+          </span>
+          <span class="dont-rotatetext" ng-if="node.srefObj">
+            <!-- note: we are keeping the href here to show the browser link preview. preventDefault disables it -->
+            <job-detail-preview ord-id="node.ids[0]" ng-if="node.keyColumn.fieldName === 'orderCode'">
+              <a href="{{ node.href }}" ng-click="$event.preventDefault();$ctrl.onSrefClick(node)">{{ node.key }}</a>
+            </job-detail-preview>
+            <coil-type-preview material-id="node.key" ng-if="node.keyColumn.fieldName === 'materialCode'">
+              <a href="{{ node.href }}" ng-click="$event.preventDefault();$ctrl.onSrefClick(node)">
+                {{node.key}}</a>
+            </coil-type-preview>
+            <a ng-if="node.keyColumn.fieldName !== 'orderCode' && node.keyColumn.fieldName !== 'materialCode'" href="{{ node.href }}" ng-click="$event.preventDefault();$ctrl.onSrefClick(node)">{{ node.key | unitsFormat: node.keyColumn.units:0 }}</a>
+         </span>
+        </div>
+        <div class="collapse-to-summary" ng-if="
+            node.rowspan > 1 ||
+            ($index === 1 && node.isSummaryRow) ||
+            ($index > 1 && !row[$index - 1].isSummaryRow && node.isSummaryRow)
+          ">
+          <md-button class="collapse-btn" aria-label="Collapse to summary"
+            ng-class="{ 'showed-btn': node.isSummaryRow }" ng-click="$ctrl.onToggleSummarized(node)">
+            <span class="summarized-jobs" ng-if="
+                ($index === 1 && node.isSummaryRow) ||
+                ($index > 1 &&
+                  !row[$index - 1].isSummaryRow &&
+                  node.isSummaryRow)
+              ">
+              {{ node.ids.length }} jobs
+            </span>
+            <md-icon md-menu-origin md-font-icon="icon-chevron-down" ng-if="!node.isSummaryRow"></md-icon>
+            <md-icon md-menu-origin md-font-icon="icon-chevron-right" ng-if="node.isSummaryRow"></md-icon>
+          </md-button>
+        </div>
+        <div ng-if="$index === row.length - 2" style="position: absolute; right: 0px; display: flex">
+          <!-- todo: move these styles to scss file -->
+          <md-icon md-font-icon="icon-pause-circle" ng-if="node.jobs[0].hold" class="hold-icon"
+            ng-class="{ 'r-14': node.jobs[0].patternNotDefined }">
+            <md-tooltip>On hold</md-tooltip>
+          </md-icon>
+          <div ng-if="node.jobs[0].patternNotDefined" class="warning-icon-container">
+            <md-icon md-font-icon="icon-exclamation" class="warn"> </md-icon>
+            <md-tooltip>Punch Pattern not defined</md-tooltip>
+          </div>
+          <md-menu>
+            <md-button class="md-icon-button wide-schedule-menu-btn" ng-click="$mdMenu.open($event)">
+              <md-icon md-menu-origin md-font-icon="icon-dots-vertical"></md-icon>
+            </md-button>
+            <md-menu-content width="4">
+              <md-menu-item ng-if="!node.jobs[0].isOnMachine">
+                <md-button ng-click="$ctrl.onSetHold(node.jobs[0].ordId, !node.jobs[0].hold)"
+                  style="pointer-events: auto">
+                  <md-tooltip md-direction="left">Hold prevents a job from going to the machine.</md-tooltip>
+                  <md-icon md-font-icon="icon-pause-circle{{
+                      node.jobs[0].hold ? '-outline' : ''
+                    }}"></md-icon>
+                  {{ node.jobs[0].hold ? 'Remove hold' : 'Hold' }}
+                </md-button>
+              </md-menu-item>
+              <md-menu-divider ng-if="!node.jobs[0].isOnMachine"></md-menu-divider>
+              <md-menu-item ng-if="node.jobs[0].isOnMachine">
+                <md-button ng-click="$ctrl.onRecallFromMachine(node.ids)">
+                  <md-icon md-font-icon="icon-timetable"></md-icon>
+                  Recall
+                  <md-tooltip md-direction="left">Recall the job from the machine, but leave it on the
+                    schedule.
+                  </md-tooltip>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="$ctrl.onUnschedule(node.ids)">
+                  <md-icon md-font-icon="icon-calendar-remove"></md-icon>
+                  Unschedule
+                  <md-tooltip md-direction="left">Remove this job from the schedule</md-tooltip>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item ng-if="!node.jobs[0].isOnMachine">
+                <md-button ng-click="$ctrl.onSendToMachine(node.ids)" style="pointer-events: auto">
+                  <md-icon md-font-icon="icon-transfer"></md-icon>
+                  Send to machine
+                  <md-tooltip md-direction="left">Sends the job to the machine.</md-tooltip>
+                </md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+        </div>
+      </div>
+
+      <!-- /Group -->
+      <div ng-repeat-end ng-if="false"></div>
+    </div>
+    <div class="machine-row" style="margin-top: 10px">
+      <div class="assigned-datetime"></div>
+      <div class="assign-area" ng-class="{ 'can-drop': $ctrl.canDropToMachine }" cdnd-area cdnd-areatype="'ass'"
+        cdnd-allowed-types="['ass', 'ava', 'machine']"
+        cdnd-allowed-drag-start="$ctrl.onAllowedTypeDragStarted(cdndType)"
+        cdnd-allowed-drag-end="$ctrl.onAllowedTypeDragEnd(cdndType)"
+        cdnd-drop="$ctrl.onDropToScheduleEnd(dragSourceData)">
+        <div id="assignToMachine" class="assignToMachine" translate>
+          assignToMachine
+        </div>
+      </div>
+    </div>
+  </md-virtual-repeat-container>
+</div>

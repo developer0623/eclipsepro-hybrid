@@ -1,0 +1,23 @@
+<div class="add-tooling-modal-container" aria-label="Edit Property">
+    <div class="item-settings-dialog__wrapper">
+      <div class="item-settings-dialog__header">Add Tooling Code</div>
+      <md-content class="main-container">
+        <md-input-container class="md-block main-input">
+          <input ng-model="$ctrl.toolingCode" placeholder="Tooling Code" required />
+        </md-input-container>
+      </md-content>
+
+      <md-dialog-actions layout="row" class="item-settings-dialog__footer">
+        <span flex></span>
+        <div class="item-settings-dialog__button" ng-click="$ctrl.cancel()">
+          CANCEL
+        </div>
+        <div
+          class="item-settings-dialog__button x--active"
+          ng-click="$ctrl.save()"
+        >
+          Save
+        </div>
+      </md-dialog-actions>
+    </div>
+  </div>

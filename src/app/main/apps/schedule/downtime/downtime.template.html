@@ -1,0 +1,62 @@
+<div
+  id="schedule"
+  ng-init="vm.init()"
+  flex
+  layout="row"
+  class="page-layout datatable-layout simple fullwidth white-bg"
+  layout="column"
+>
+  <div class="content white-bg" layout="row" flex>
+    <md-content flex layout="column" class="schedule-content">
+      <div class="page-title">
+        <h1 translate="plannedDowntime">Planned Downtime</h1>
+      </div>
+      <md-content
+        layout="row"
+        class="md-padding schedule-content"
+        style="padding-right: 10px; height: calc(100% - 65px)"
+      >
+        <md-content
+          class="downtime-content"
+          style="
+            width: 100%;
+            height: 100%;
+            padding-right: 0px;
+            position: relative;
+          "
+        >
+          <md-list style="width: 100%; position: absolute">
+            <md-list-item
+              ng-repeat="downtime in vm.downtimeData "
+              class="downtime-list-item"
+            >
+              <div
+                class="md-list-item-text downtime-div"
+                ng-click="vm.showDowntimeDetailsModal(downtime, 'true', $event) "
+                layout="column "
+              >
+                <div class="downtime-title">{{downtime.title}}</div>
+                <div class="downtime-occurs">
+                  <span>{{downtime | repeatText}}</span
+                  ><span>&nbsp;at&nbsp;</span
+                  ><span>{{downtime.timeOfDay | buildDuration: 'false'}}</span
+                  ><span>&nbsp;for&nbsp;</span
+                  ><span>{{downtime.duration | buildDuration: 'true'}}</span
+                  ><span>&nbsp;as&nbsp;</span
+                  ><span>{{downtime.activityType}}</span>
+                </div>
+                <div class="downtime-occurs">{{ downtime.machinesText }}</div>
+              </div>
+            </md-list-item>
+          </md-list>
+        </md-content>
+      </md-content>
+      <md-button
+        class="md-fab add-button"
+        ng-click="vm.showDowntimeDetailsModal(null,'false', $event) "
+        style="position: fixed; right: 0; bottom: 0"
+        >+</md-button
+      >
+    </md-content>
+  </div>
+</div>

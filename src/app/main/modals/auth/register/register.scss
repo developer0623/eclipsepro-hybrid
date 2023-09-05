@@ -1,0 +1,63 @@
+
+
+#register-form {
+    max-width: 320px;
+    text-align: center;
+    .md-dialog-content {
+        padding-top: 30px;
+    }
+
+    .logo {
+        width: 100px;
+        height: 100px;
+        margin: 0px auto;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .logo-title {
+        margin: 10px auto 25px auto;
+    }   
+
+    md-input-container {
+        width: 100%;
+        margin: 0;
+    }
+
+    md-checkbox {
+        margin: 0;
+    }
+
+    .register-bt {
+        width: 190px;
+        margin-top: 10px;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+            background-color: rgb(71,71,71);
+            color: white;
+    }
+
+    .login-row {
+        margin-top: 10px;
+
+        .link {
+            margin-left: 3px;
+            cursor: pointer;
+            color: rgb(236,177,0);
+        }
+    }
+
+    .error-row {
+        color: #D32F2F !important;
+        font-size: 13px;
+        text-align: left;
+        md-icon {
+            color: #D32F2F !important;
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+            line-height: 18px;
+        }
+    }
+   
+}

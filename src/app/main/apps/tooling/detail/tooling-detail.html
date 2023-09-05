@@ -1,0 +1,98 @@
+<div id="dashboard-report" class="page-layout simple fullwidth white-bg production-summary" ngsf-fullscreen>
+  <div class="header back-header" layout="row" layout-align="space-between start">
+    <md-icon ui-sref="app.tooling_list" md-font-icon="icon-arrow-left" class="icon back-icon"></md-icon>
+  </div>
+  <div class="md-background md-hue-1 scroll-content">
+    <accordion is-open="true">
+      <accordion-toggle label="Details"></accordion-toggle>
+      <accordion-content>
+        <div class="machine-detail">
+          <div class="machine-detail__item" ng-repeat="item in $ctrl.toolingKeys">
+            <div class="machine-detail__title">{{item.name}}:</div>
+            <div ng-if="item.isEditable && $ctrl.userHasEditorRole" class="machine-detail__content"
+              editable-text="$ctrl.tooling[item.field]" onaftersave="$ctrl.onChangeDetail($data, item.field)">
+              {{$ctrl.tooling[item.field]}}
+            </div>
+            <div ng-if="!item.isEditable || !$ctrl.userHasEditorRole" class="machine-detail__content">
+              {{$ctrl.tooling[item.field]}}
+            </div>
+          </div>
+        </div>
+      </accordion-content>
+    </accordion>
+    <accordion is-open="true">
+      <accordion-toggle-in label="Machines">
+        <md-icon md-font-icon="icon-alert size-20" ng-if="$ctrl.tooling.hasUnassignedMachineTool">
+          <md-tooltip>This tooling is missing a required machine assignment.</md-tooltip>
+        </md-icon>
+      </accordion-toggle-in>
+
+      <accordion-content>
+        <div class="tooling-machine-container">
+          <div layout="row" layout-align="space-between center">
+            <md-button class="md-icon-button" ng-click="$ctrl.addMachine()">
+              <md-icon md-font-icon="icon-plus" class="icon"></md-icon>
+            </md-button>
+            <md-menu>
+              <div class="helpIconDiv" ng-click="$mdMenu.open($event)">
+                <md-icon md-font-icon="icon-cog" class="icon"></md-icon>
+              </div>
+              <md-menu-content width="2" class="ordersFilterDiv">
+                <div layout="row" class="addColumn" layout-align="center center">
+                  Add/Remove Column
+                </div>
+                <div class="vertical-scroll">
+                  <md-menu-item ng-repeat="item in $ctrl.showedMachineKeys" class="filter-item height-26">
+                    <div layout="row" class="filter-items-div">
+                      <md-checkbox name="{{item.name}}" aria-label="{{item.name}}" ng-checked="item.isChecked"
+                        class="filter-check" ng-click="$ctrl.onGridOptionsToggle(item)"><span
+                          translate="{{item.name}}"></span></md-checkbox>
+                    </div>
+                  </md-menu-item>
+                </div>
+              </md-menu-content>
+            </md-menu>
+          </div>
+
+          <div class="material-usage-item sub-header tooling-machine-row">
+            <div class="main-con" ng-repeat="item in $ctrl.checkedMachineKeys">
+              {{item.name}}
+            </div>
+            <div class="btn-col"></div>
+          </div>
+          <div ng-if="$ctrl.tooling && $ctrl.tooling.machines">
+            <div class="material-usage-item tooling-machine-row" ng-repeat="machine in $ctrl.tooling.machines">
+              <div class="main-con" ng-repeat="item in $ctrl.checkedMachineKeys">
+                <div ng-if="item.isEditable && $ctrl.userHasEditorRole && !item.isSelect"
+                  class="machine-detail__content" editable-text="machine[item.field]"
+                  onaftersave="$ctrl.onChangeMachineDetail($data, item.field, machine)">
+                  {{machine[item.field]}}
+                </div>
+                <div ng-if="item.isEditable && $ctrl.userHasEditorRole && item.isSelect" class="machine-detail__content"
+                  editable-select="machine[item.field]" buttons="no" e-ng-blur="$form.$submit();"
+                  e-ng-options="s.value as s.text for s in $ctrl.statuses"
+                  onaftersave="$ctrl.onChangeMachineDetail($data, item.field, machine)">
+                  {{machine[item.field]}}
+                </div>
+                <div ng-if="!item.isEditable || !$ctrl.userHasEditorRole" class="machine-detail__content">
+                  {{machine[item.field]}}
+                </div>
+                <md-icon md-font-icon="icon-alert size-20" ng-if="item.isWarning">
+                  <md-tooltip>It requires normalization.</md-tooltip>
+                </md-icon>
+              </div>
+              <div class="btn-col">
+                <md-button class="md-icon-button machine-deletebtn" ng-click="$ctrl.deleteMachine(machine)"
+                  ng-if="$ctrl.tooling.machines.length > 1 && $ctrl.userHasEditorRole">
+                  <md-icon md-font-icon="icon-delete" class="icon"></md-icon>
+                </md-button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </accordion-content>
+    </accordion>
+  </div>
+</div>

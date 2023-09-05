@@ -1,0 +1,50 @@
+
+
+#add-location-form {
+    max-width: 320px;
+    text-align: center;
+    .md-dialog-content {
+        padding-top: 5px;
+    }
+
+    md-toolbar {
+        background-color: rgba(236,177,0, 0.9);
+    }
+
+
+    md-input-container {
+        width: 100%;
+        margin: 10px 0;
+
+        input:focus {
+            border-color: rgb(236,177,0);
+        }
+    }
+
+    md-select {
+        width: 100%;
+        margin: 10px 0;
+        text-align: left;
+        &:focus {
+            .md-select-value {
+                border-color: rgb(236,177,0);
+            }
+            
+        }
+        .md-select-value {
+            color: black;
+            
+            
+        }
+    }
+
+    
+    .add-bt {
+        width: 190px;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+        background-color: rgba(236,177,0, 0.9);
+        color: white;
+    }
+
+    
+}

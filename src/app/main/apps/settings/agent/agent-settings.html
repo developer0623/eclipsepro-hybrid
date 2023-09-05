@@ -1,0 +1,51 @@
+<div id="settings" class="agent-settings page-layout simple fullwidth">
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg">
+    <span class="h2 black-text">Eclipse Agent Status</span>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content p-24" md-background-bg>
+
+    <div class="form-wrapper md-whiteframe-1dp" flex-gt-md="50" flex="100">
+
+      <div class="form-title" layout="column" layout-fill>
+        <div class="agent-id font-size-14">
+          <span class="text-inline w-120" translate="agentId">Agent ID:</span> <span class="secondary-text ml-8"
+            ng-class="{'font-size-13': $mdMedia('xs')}">{{$ctrl.systemInfoService.agentStatus.status.agentId}}</span>
+        </div>
+        <div class="agent-status font-size-14">
+          <span class="text-inline w-120" translate="status">Status:</span>
+          <span ng-if="$ctrl.systemInfoService.agentStatus.isAgentReachable" class="connected ml-8"
+            style="text-transform: uppercase;">connected</span>
+          <span ng-if="!$ctrl.systemInfoService.agentStatus.isAgentReachable" class="hint-text ml-8"
+            style="text-transform: uppercase;">disconnected <span class="secondary-text">(showing last known
+              configuration)</span></span>
+        </div>
+        <div class="agent-status font-size-14">
+          <span class="text-inline w-120" translate="eclipseVersion">Eclipse Ver:</span>
+          <span ng-if="$ctrl.systemInfoService.agentStatus.isAgentReachable" class="connected ml-8"
+            style="text-transform: uppercase;">{{$ctrl.systemInfoService.agentStatus.status.eclipseVersion}}</span>
+          <span ng-if="!$ctrl.systemInfoService.agentStatus.isAgentReachable" class="hint-text ml-8"
+            style="text-transform: uppercase;">{{$ctrl.systemInfoService.agentStatus.status.eclipseVersion}} <span
+              class="secondary-text">(showing last known configuration)</span></span>
+        </div>
+        <div class="agent-status font-size-14">
+          <span class="text-inline w-120" translate="agentUrl">Agent URL:</span>
+          <a ng-if="$ctrl.systemInfoService.agentStatus.isAgentReachable"
+            href="{{$ctrl.systemInfoService.agentStatus.agentUrl}}" class="connected ml-8" target="_blank"
+            style="text-decoration: underline">{{$ctrl.systemInfoService.agentStatus.agentUrl}}</a>
+          <a ng-if="!$ctrl.systemInfoService.agentStatus.isAgentReachable"
+            href="{{$ctrl.systemInfoService.agentStatus.agentUrl}}" class="secondary-text ml-8" target="_blank"
+            style="text-decoration: underline">{{$ctrl.systemInfoService.agentStatus.agentUrl}}</a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <!-- / CONTENT -->
+
+</div>

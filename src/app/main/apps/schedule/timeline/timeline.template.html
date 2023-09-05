@@ -1,0 +1,111 @@
+<div
+  id="schedule"
+  flex
+  layout="row"
+  class="page-layout datatable-layout simple fullwidth white-bg"
+  layout="column"
+>
+  <div class="content white-bg" layout="row" flex>
+    <md-content flex layout="column" class="schedule-content">
+      <div class="page-title">
+        <div layout="row" class="search-div" layout-wrap>
+          <div flex="auto"><h1>Timeline</h1></div>
+          <md-input-container md-no-float flex="40" class="search-input">
+            <input ng-model="$ctrl.searchText" aria-label="Search Text" />
+            <md-icon md-font-icon="icon-filter-outline" class="icon"></md-icon>
+          </md-input-container>
+          <div class="helpIconDiv">
+            <span ng-click="$ctrl.openHelpScreen()"
+              ><img ng-src="{{$ctrl.loadImage()}}"
+            /></span>
+          </div>
+        </div>
+      </div>
+      <md-content
+        layout="row"
+        class="md-padding schedule-content"
+        style="padding-right: 8px"
+      >
+        <md-content
+          class="downtime-content"
+          style="
+            width: 100%;
+            height: 100%;
+            padding-right: 0px;
+            position: relative;
+          "
+        >
+          <div
+            id="graph-div"
+            class="widget-group"
+            flex="100"
+            style="width: 100%; position: absolute"
+          >
+            <table class="signals overview-table">
+              <thead>
+                <tr>
+                  <th class="row-name"></th>
+                  <th>
+                    <timeline-x-axis
+                      height="75"
+                      display-x-domain="$ctrl.focusExtent"
+                      cursor-time="$ctrl.cursor"
+                      width="1920"
+                    ></timeline-x-axis>
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                ng-sortable="{animation:100, handle:'.drag-handle'}"
+                ng-repeat="machine in $ctrl.machineData.dashboardMachines$ | async | orderBy: $ctrl.machineSort"
+              >
+                <tr>
+                  <td
+                    class="machine-label-td"
+                    ui-sref="app.dashboards_machines_machine({id: machine.machineNumber})"
+                  >
+                    <div class="machineName">
+                      {{machine.machine.description}}
+                      <hole-count-mode-icon
+                        ng-if="machine.machine.isHoleCount"
+                      ></hole-count-mode-icon>
+                    </div>
+                    <snapshot-bar
+                      height="1"
+                      width="100%"
+                      running="machine.stats.runMinutes"
+                      exempt="machine.stats.exemptMinutes"
+                      changeover="machine.stats.changeoverMinutes"
+                      downtime="machine.stats.nonExemptMinutes"
+                      breakdown="machine.stats.breakdownMinutes"
+                      offline="machine.stats.offlineMinutes"
+                    >
+                    </snapshot-bar>
+                    <run-state-indicator
+                      state="machine.state.runState"
+                      last-run-state-change="machine.state.lastRunStateChange"
+                      is-offline="machine.state.isOffline"
+                      is-schedule="true"
+                    ></run-state-indicator>
+                  </td>
+                  <td>
+                    <timeline-block
+                      name="{{machine.machine.description}}"
+                      machine-number="{{machine.machineNumber}}"
+                      data="machine.scheduleEstimate.scheduleBlocks"
+                      display-x-domain="$ctrl.focusExtent"
+                      cursor-time="$ctrl.cursor"
+                      search-text="$ctrl.searchText"
+                      height="75"
+                      width="1920"
+                    ></timeline-block>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </md-content>
+      </md-content>
+    </md-content>
+  </div>
+</div>

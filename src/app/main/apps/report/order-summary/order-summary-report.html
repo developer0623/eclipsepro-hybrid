@@ -1,0 +1,201 @@
+<div id="dashboard-report" class="page-layout simple fullwidth white-bg production-summary" ngsf-fullscreen>
+  <report-header subject="Order Summary" on-filter="$ctrl.onFilter(searchTxt)"></report-header>
+
+  <div class="summary-title-header">
+    <checkbox-menu class="menu-column" subject="Shift" menu-subject="Shift" menu-list="$ctrl.shiftMenu"
+      on-change="$ctrl.onChangeShift(items)"></checkbox-menu>
+
+    <report-date-col class="date-column" start-date="$ctrl.startDate" end-date="$ctrl.endDate" duration="'day'"
+      on-change="$ctrl.onChangeDate(startDate, endDate)"></report-date-col>
+
+    <checkbox-menu class="menu-column float-right" subject="MACHINES" menu-subject="SHOW MACHINES"
+      menu-list="$ctrl.machines" on-change="$ctrl.onChangeMachines(items)"></checkbox-menu>
+
+    <div class="header-icon-column float-right">
+      <md-button href="/_api/reports/ordersummary?{{$ctrl.fileDownloadQueryString}}&format=csv" target="_self">
+        <md-tooltip md-direction="bottom">
+          <span translate="downloadCsv"></span>
+        </md-tooltip>
+        <md-icon md-font-icon="icon-file-excel" class="icon"></md-icon>
+      </md-button>
+      <!--         <md-button aria-label="Select Shift 1" class="md-icon-button" ng-click="$ctrl.openPrintPreview($event)">
+                <md-icon md-font-icon class="icon icon-printer header-icon"></md-icon>
+            </md-button> -->
+    </div>
+  </div>
+  <div class="content md-background md-hue-1 scroll-content">
+    <div class="material-usage-content">
+      <md-virtual-repeat-container id="coil-summary-list" class="ms-scroll">
+        <div ng-repeat="item in $ctrl.filteredList" class="order-summary-item repeated-item" md-item-size="550" flex>
+          <div class="order-summary-item-header">
+            <div class="main-con">
+              Order:<span class="sub-content">{{item.orderCode}}</span>
+            </div>
+            <div class="main-con">
+              Material:<span class="sub-content">{{item.materialCode}}</span>
+            </div>
+            <div class="main-con">
+              Tooling:<span class="sub-content">{{item.toolingCode}}</span>
+            </div>
+          </div>
+          <div class="" ng-repeat="bundle in item.bundles track by $index">
+            <div class="order-summary-bundle">
+              Bundle Id:<span class="sub-content">{{bundle.bundleIdentity}}</span>
+            </div>
+            <!-- <div class="material-usage-item sub-header">
+              <div class="main-con">Coil Number</div>
+              <div class="main-con">Coil Material</div>
+              <div class="main-con">Heat Number</div>
+              <div class="main-con">Machine</div>
+              <div class="main-con">Date</div>
+              <div class="main-con">Shift</div>
+              <div class="main-con">Employee</div>
+            </div> -->
+            <div class="summary-group-item mt-15" ng-repeat="prodRun in bundle.prodRuns">
+              <div class="group-content">
+                <div class="group-content-item">
+                  <div class="group-content-item-title">Coil Number:</div>
+                  <div class="group-content-item-content">
+                    {{ prodRun.coilSerialNumber }}
+                  </div>
+                </div>
+                <div class="group-content-item">
+                  <div class="group-content-item-title">Coil Material:</div>
+                  <div class="group-content-item-content">
+                    {{ prodRun.coilMaterial }}
+                  </div>
+                </div>
+                <div class="group-content-item">
+                  <div class="group-content-item-title">Heat Number:</div>
+                  <div class="group-content-item-content">
+                    {{ prodRun.coilHeatNumber }}
+                  </div>
+                </div>
+                <div class="group-content-item">
+                  <div class="group-content-item-title">Machine:</div>
+                  <div class="group-content-item-content">
+                    {{ prodRun.machineNumber }}
+                  </div>
+                </div>
+                <div class="group-content-item">
+                  <div class="group-content-item-title">Date:</div>
+                  <div class="group-content-item-content">
+                    {{prodRun.productionDate | date : 'MM/dd/yyyy'}}
+                  </div>
+                </div>
+                <div class="group-content-item">
+                  <div class="group-content-item-title">Shift:</div>
+                  <div class="group-content-item-content">
+                    {{prodRun.shift}}
+                  </div>
+                </div>
+                <div class="group-content-item">
+                  <div class="group-content-item-title">Employee:</div>
+                  <div class="group-content-item-content">
+                    {{prodRun.employeeNumber}}
+                  </div>
+                </div>
+              </div>
+
+              <div class="material-usage-item sub-header">
+                <div class="main-con">Bundle</div>
+                <div class="main-con">Qty</div>
+                <div class="main-con">Length</div>
+                <div class="main-con">Part Number</div>
+                <div class="main-con">Opt</div>
+                <div class="main-con">Total Good Ft</div>
+                <div class="main-con">Total Good Lbs</div>
+                <div class="main-con">Net Scrap Ft</div>
+                <div class="main-con">Net Scrap Lbs</div>
+                <div class="main-con">Reclaimed Scrap Ft</div>
+              </div>
+              <div class="material-usage-item" ng-repeat="item1 in prodRun.items">
+                <div class="main-con">
+                  <span class="num-col"> {{item1.bundle}}</span>
+                </div>
+                <div class="main-con">
+                  <span class="num-col"> {{item1.quantity}}</span>
+                </div>
+                <div class="main-con">
+                  <span class="num-col"> {{item1.partLengthIn}}</span>
+                </div>
+                <div class="main-con">
+                  <span class="num-col"> {{item1.punchPartName}}</span>
+                </div>
+                <div class="main-con">
+                  <span class="num-col"> {{item1.punchOption}}</span>
+                </div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{item1.goodFt | unitsFormat :"ft":1:true}}</span>
+                </div>
+                <div class="main-con"></div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{item1.scrapFt | unitsFormat :"ft":1:true}}</span>
+                </div>
+                <div class="main-con"></div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{item1.reclaimedScrapFt | unitsFormat :"ft":1:true}}</span>
+                </div>
+              </div>
+              <div class="material-usage-item">
+                <div class="coil-total-header">Total for Coil:</div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{prodRun.goodFt | unitsFormat :"ft":1:true}}</span>
+                </div>
+                <div class="main-con"></div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{prodRun.scrapFt | unitsFormat :"ft":1:true}}</span>
+                </div>
+                <div class="main-con"></div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{prodRun.reclaimedScrapFt | unitsFormat
+                    :"ft":1:true}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="material-usage-item">
+              <div class="coil-total-header">Total for Bundle:</div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{bundle.goodFt | unitsFormat :"ft":1:true}}</span>
+              </div>
+              <div class="main-con"></div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{bundle.scrapFt | unitsFormat :"ft":1:true}}</span>
+              </div>
+              <div class="main-con"></div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{bundle.reclaimedScrapFt | unitsFormat :"ft":1:true}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="material-usage-item">
+            <div class="coil-total-header">Total for Order:</div>
+            <div class="main-con">
+              <span class="num-col">
+                {{item.goodFt | unitsFormat :"ft":1:true}}</span>
+            </div>
+            <div class="main-con"></div>
+            <div class="main-con">
+              <span class="num-col">
+                {{item.scrapFt | unitsFormat :"ft":1:true}}</span>
+            </div>
+            <div class="main-con"></div>
+            <div class="main-con">
+              <span class="num-col">
+                {{item.reclaimedScrapFt | unitsFormat :"ft":1:true}}</span>
+            </div>
+          </div>
+        </div>
+      </md-virtual-repeat-container>
+    </div>
+  </div>
+</div>

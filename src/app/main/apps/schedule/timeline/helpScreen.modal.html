@@ -1,0 +1,21 @@
+<md-dialog class="help-dialog" ng-cloak>
+  <md-dialog-content>
+    <div class="container slider">
+      <a class="cancel" ng-click="vm.cancel()"></a>
+      <img ng-repeat="slide in vm.helpScreens" class="slide nonDraggableImage" ng-swipe-right="vm.nextSlide()"
+        ng-swipe-left="vm.prevSlide()" ng-hide="!vm.isCurrentSlideIndex($index)" ng-src="{{slide.image}}" />
+
+      <a class="arrow prev" ng-click="vm.nextSlide()" ng-hide="vm.currentIndex === 0"></a>
+      <a class="arrow next" ng-click="vm.prevSlide()" ng-hide="vm.currentIndex === vm.helpScreens.length-1"></a>
+      <nav class="nav">
+        <div class="wrapper">
+          <ul class="dots">
+            <li class="dot" ng-repeat="slide in vm.helpScreens">
+              <a ng-class="{'active':vm.isCurrentSlideIndex($index)}" ng-click="vm.setCurrentSlideIndex($index);"></a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </md-dialog-content>
+</md-dialog>

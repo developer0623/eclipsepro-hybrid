@@ -1,0 +1,154 @@
+<div id="dashboard-report" class="page-layout simple fullwidth white-bg production-summary" ngsf-fullscreen>
+  <div class="header">
+    <div layout="row" layout-align="space-between">
+      <span class="h2 text-upper">Material Demand 🧪</span>
+    </div>
+  </div>
+
+  <div class="summary-title-header">
+    <custom-menu class="menu-column duration" subject="DURATION" menu-list="$ctrl.durations"
+      selected-item="$ctrl.selectedDuration" on-change="$ctrl.onClickDurationItem(item)"></custom-menu>
+
+    <report-date-col class="date-column" start-date="$ctrl.startDate" end-date="$ctrl.endDate"
+      duration="$ctrl.selectedDuration" on-change="$ctrl.onChangeDate(startDate, endDate)"></report-date-col>
+
+    <custom-menu class="menu-column float-right status-column" subject="Schedule Status"
+      menu-list="$ctrl.scheduleStatusList" selected-item="$ctrl.selectedScheduleStatus"
+      on-change="$ctrl.onChangeStatus(item)"></custom-menu>
+
+    <div class="header-icon-column float-right">
+      <md-button href="/_api/reports/materialdemand?{{$ctrl.fileDownloadQueryString}}&format=csv" target="_self">
+        <md-tooltip md-direction="bottom">
+          <span translate="downloadCsv"></span>
+        </md-tooltip>
+        <md-icon md-font-icon="icon-file-excel" class="icon"></md-icon>
+      </md-button>
+    </div>
+  </div>
+  <div class="content md-background md-hue-1 scroll-content">
+    <div class="material-usage-header material-demand-subheader">
+      <div class="material" ng-click="$ctrl.onSortBy('material')">
+        Material
+        <i class="icon-sort-ascending sort-icon" ng-if="$ctrl.sortDir === 'asc' && $ctrl.sortKey ==='material'"></i>
+        <i class="icon-sort-descending sort-icon" ng-if="$ctrl.sortDir === 'desc' && $ctrl.sortKey ==='material'"></i>
+      </div>
+      <div class="date">
+        {{$ctrl.selectedDuration}}
+      </div>
+      <div class="main-con" ng-click="$ctrl.onSortBy('onHandFt')">
+        On Hand ({{'ft' | userDisplayUnits}})
+        <i class="icon-sort-ascending sort-icon" ng-if="$ctrl.sortDir === 'asc' && $ctrl.sortKey ==='onHandFt'"></i>
+        <i class="icon-sort-descending sort-icon" ng-if="$ctrl.sortDir === 'desc' && $ctrl.sortKey ==='onHandFt'"></i>
+      </div>
+      <div class="main-con" ng-click="$ctrl.onSortBy('demandFt')">
+        Demand ({{'ft' | userDisplayUnits}})
+        <i class="icon-sort-ascending sort-icon" ng-if="$ctrl.sortDir === 'asc' && $ctrl.sortKey ==='demandFt'"></i>
+        <i class="icon-sort-descending sort-icon" ng-if="$ctrl.sortDir === 'desc' && $ctrl.sortKey ==='demandFt'"></i>
+      </div>
+      <div class="main-con" ng-click="$ctrl.onSortBy('balanceFt')">
+        Balance ({{'ft' | userDisplayUnits}})
+        <i class="icon-sort-ascending sort-icon" ng-if="$ctrl.sortDir === 'asc' && $ctrl.sortKey ==='balanceFt'"></i>
+        <i class="icon-sort-descending sort-icon" ng-if="$ctrl.sortDir === 'desc' && $ctrl.sortKey ==='balanceFt'"></i>
+      </div>
+    </div>
+    <div class="material-usage-content">
+      <div ng-repeat="item in $ctrl.sortedSummaryList.groups track by $index">
+        <accordion is-open="false" ng-if="item.demandFt > 0">
+          <accordion-header>
+            <div class="material-usage-item item-header">
+              <div class="material">
+                <a class="td-link" ng-click="$event.stopPropagation()"
+                  ui-sref="app.inventory.coil-types.coil-type({id: item.material})">
+                  {{item.material}}
+                </a>
+              </div>
+              <div class="date"></div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{item.onHandFt | unitsFormat :"ft":1:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{item.demandFt | unitsFormat :"ft":1:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{item.balanceFt | unitsFormat :"ft":1:true}}
+                </span>
+              </div>
+            </div>
+          </accordion-header>
+
+          <accordion-content>
+            <div class="material-usage-item" ng-repeat="item1 in item.records track by $index">
+              <div class="material">
+              </div>
+              <div class="date" ng-if="item1.key.day">
+                {{item1.key.month}}/{{item1.key.day}}/{{item1.key.year}}
+              </div>
+              <div class="date" ng-if="item1.key.weekOfYear">
+                {{item1.key.year}}-{{item1.key.weekOfYear}}
+              </div>
+              <div class="date" ng-if="!item1.key.day && !item1.key.weekOfYear">
+                {{item1.key.month}}/{{item1.key.year}}
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{item1.onHandFt | unitsFormat :"ft":1:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{item1.demandFt | unitsFormat :"ft":1:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{item1.balanceFt | unitsFormat :"ft":1:true}}
+                </span>
+              </div>
+            </div>
+          </accordion-content>
+        </accordion>
+        <div class="material-usage-item item-header" ng-if="item.demandFt === 0">
+          <div class="material">
+            <a class="td-link" ng-click="$event.stopPropagation()"
+              ui-sref="app.inventory.coil-types.coil-type({id: item.material})">
+              {{item.material}}
+            </a>
+          </div>
+          <div class="date"></div>
+          <div class="main-con">
+            <span class="num-col">
+              {{item.onHandFt | unitsFormat :"ft":1:true}}
+            </span>
+          </div>
+          <div class="main-con">
+            <span class="num-col">
+              {{item.demandFt | unitsFormat :"ft":1:true}}
+            </span>
+          </div>
+          <div class="main-con">
+            <span class="num-col">
+              {{item.balanceFt | unitsFormat :"ft":1:true}}
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="material-usage-item item-header" ng-if="!!$ctrl.summaryList">
+        <div class="material"></div>
+        <div class="date"></div>
+        <div class="main-con"></div>
+        <div class="main-con">
+          <span class="num-col">
+            {{$ctrl.summaryList.remainingFt | unitsFormat :"ft":1:true}}</span>
+        </div>
+        <div class="main-con"></div>
+      </div>
+    </div>
+  </div>
+</div>

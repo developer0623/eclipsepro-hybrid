@@ -1,0 +1,32 @@
+<div id="settings" class="performace-standard page-layout simple fullwidth">
+
+	<!-- HEADER -->
+	<div class="header md-accent-bg">
+		<span class="h2 black-text">Machine Performance Standards</span>
+	</div>
+	<!-- / HEADER -->
+
+	<div class="content" md-background-bg>
+		<div class="performanceData-table" layout="column">
+			<table-header status="false"></table-header>
+			<!-- <div ng-repeat="item in $ctrl.performanceData.data" class="border-gray"
+				ng-class="{'padding-bottom': $ctrl.performanceData.status[$index], 'opacity-item': $ctrl.getOpacityItem($index)}"> -->
+			<div ng-repeat="item in $ctrl.performanceData.data" class="border-gray">
+				<table-row item="item.default" origin="item" istool="false" index="$index"
+					machinenum="item.machineNumber" on-focus="$ctrl.focused(index)"></table-row>
+				<table-header status="true" class="sub-header" ng-show="$ctrl.performanceData.status[$index]">
+				</table-header>
+				<div ng-show="$ctrl.performanceData.status[$index]">
+					<table-row item="tool" origin="item" istool="true" index="$index" ng-repeat="tool in item.toolings;"
+						parentval="item.default"></table-row>
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+
+
+
+</div>

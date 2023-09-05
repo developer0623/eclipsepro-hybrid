@@ -1,0 +1,158 @@
+<div
+  id="dashboard-explorer"
+  class="page-layout simple fullwidth dashboard"
+  ngsf-fullscreen
+>
+  <!-- HEADER -->
+  <div class="header">
+    <div layout="row" layout-align="space-between">
+      <span class="h2 text-upper">Pathfinder Good Parts Explorer</span>
+
+      <div class="toolbar">
+        <md-button ng-click="$ctrl.resetAll()">
+          <md-tooltip md-direction="bottom">
+            <span>Reset All</span>
+          </md-tooltip>
+          <md-icon md-font-icon="mdi-filter-remove" class="mdi"></md-icon>
+        </md-button>
+
+        <label class="datepicker-label">Start Date</label>
+        <md-datepicker
+          ng-model="$ctrl.dataService.startDate"
+          ng-change="$ctrl.update()"
+          md-min-date="$ctrl.dataService.minDate"
+          md-max-date="$ctrl.dataService.maxDate"
+        ></md-datepicker>
+        <label class="datepicker-label">End Date</label>
+        <md-datepicker
+          ng-model="$ctrl.dataService.endDate"
+          ng-change="$ctrl.update()"
+          md-min-date="$ctrl.dataService.minDate"
+          md-max-date="$ctrl.dataService.maxDate"
+        ></md-datepicker>
+
+        <md-button
+          href="/api/productionexplorer/device/download?startDate={{$ctrl.startDate.toISOString()}}&endDate={{$ctrl.endDate.toISOString()}}"
+          target="_self"
+        >
+          <md-tooltip md-direction="bottom">
+            <span translate="downloadCsv"></span>
+          </md-tooltip>
+          <md-icon md-font-icon="mdi-microsoft-excel" class="mdi"></md-icon>
+        </md-button>
+      </div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- MD-CONTENT -->
+  <md-content class="content md-background md-hue-1" flex>
+    <div ng-if="$ctrl.dataService.data.length === 0">
+      <h2 translate="noDataAvailable"></h2>
+    </div>
+    <!-- WIDGET GROUP -->
+    <div
+      class="widget-group"
+      layout-gt-xs="row"
+      flex="100"
+      layout-wrap
+      ng-if="$ctrl.dataService.data.length"
+    >
+      <!-- WIDGET 1 -->
+      <div class="ms-card" layout="column" flex="100">
+        <dc-time-bar-chart
+          dimension="$ctrl.cfData.byDayDimension"
+          group="$ctrl.cfData.byDayGroup"
+          chart-title="Day"
+          value-property="goodParts"
+          height="150"
+        ></dc-time-bar-chart>
+      </div>
+
+      <!-- <div class="ms-card" layout="column" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart dimension="$ctrl.cfData.byReasonDimension" top-count="8" group="$ctrl.cfData.byReasonGroup"
+          value-property="goodParts" chart-title="Reason" height="200"></dc-pareto-chart>
+      </div> -->
+
+      <!-- WIDGET 2 -->
+      <!-- <div class="ms-card" layout="column" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart dimension="$ctrl.cfData.byShiftDimension" top-count="8" group="$ctrl.cfData.byShiftGroup"
+          value-property="goodParts" chart-title="Shift" height="200">
+        </dc-pareto-chart>
+      </div> -->
+
+      <!-- WIDGET 3 -->
+      <div class="ms-card" layout="column" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart
+          dimension="$ctrl.cfData.byMachineDimension"
+          top-count="8"
+          group="$ctrl.cfData.byMachineGroup"
+          value-property="goodParts"
+          chart-title="Machine"
+          height="200"
+        ></dc-pareto-chart>
+      </div>
+
+      <!-- WIDGET 4 -->
+      <!-- <div class="ms-card" layout="column" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart dimension="$ctrl.cfData.byMaterialDimension" top-count="8" group="$ctrl.cfData.byMaterialGroup"
+          value-property="goodParts" chart-title="Material" height="200"></dc-pareto-chart>
+      </div> -->
+
+      <!-- WIDGET 5 -->
+      <div class="ms-card" layout="column" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart
+          dimension="$ctrl.cfData.byPartDimension"
+          top-count="8"
+          group="$ctrl.cfData.byPartGroup"
+          value-property="goodParts"
+          chart-title="Profile"
+          height="200"
+        ></dc-pareto-chart>
+      </div>
+
+      <!-- WIDGET 6 -->
+      <!-- <div class="ms-card" layout="column" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart dimension="$ctrl.cfData.byCustomerDimension" top-count="8" group="$ctrl.cfData.byCustomerGroup"
+          value-property="goodParts" chart-title="Customer" height="200"></dc-pareto-chart>
+      </div> -->
+
+      <!--<div class="ms-card" layout="column" flex-xs="100" flex-sm="50" flex="25">
+
+                <dc-linear-bar-chart dimension="$ctrl.cfData.byPartLengthDimension" group="$ctrl.cfData.byPartLengthGroup" value-property="goodParts" chart-title="Part Length" height="200"></dc-linear-bar-chart>
+
+            </div>-->
+
+      <!-- WIDGET 7 -->
+      <!-- <div class="ms-card" layout="column" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart dimension="$ctrl.cfData.byCoilDimension" top-count="8" group="$ctrl.cfData.byCoilGroup"
+          value-property="goodParts" chart-title="Coil" height="200"></dc-pareto-chart>
+      </div> -->
+
+      <!-- WIDGET 8 -->
+      <div class="ms-card" layout="column" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart
+          dimension="$ctrl.cfData.byOperatorDimension"
+          top-count="8"
+          group="$ctrl.cfData.byOperatorGroup"
+          value-property="goodParts"
+          chart-title="Operator"
+          height="200"
+        ></dc-pareto-chart>
+      </div>
+
+      <div class="ms-card" flex-xs="100" flex-sm="50" flex="25">
+        <dc-linear-bar-chart dimension="$ctrl.cfData.byHourOfDayDimension" group="$ctrl.cfData.byHourOfDayGroup"
+          value-property="goodParts" group-property="hourOfDay" chart-title="Hour" height="200"></dc-linear-bar-chart>
+      </div>
+
+      <!-- <div class="ms-card" layout="column" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart dimension="$ctrl.cfData.byPunchedDimension" top-count="8" group="$ctrl.cfData.byPunchedGroup"
+          value-property="goodParts" chart-title="Punched" height="200"></dc-pareto-chart>
+      </div> -->
+    </div>
+    <!-- END WIDGET GROUP -->
+  </md-content>
+  <!-- END MD CONTENT -->
+</div>
+<!-- END EXPLORER -->

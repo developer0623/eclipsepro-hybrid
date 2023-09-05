@@ -1,0 +1,16 @@
+.add-tooling-modal-container {
+    .main-container {
+        padding: 20px 20px 10px 20px;
+        min-height: 100px;
+        background-color: transparent;
+    }
+}
+
+md-input-container.main-input:not(.md-input-invalid).md-input-focused  {
+    .md-input {
+        border-color: #ecb100;
+    }
+    label {
+        color: #ecb100;
+    }
+}

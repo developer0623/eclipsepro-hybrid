@@ -1,0 +1,153 @@
+<div id="inventory" class="page-layout simple fullwidth white-bg scroll-content">
+    <!-- CONTENT -->
+    <div class="content white-bg">
+        <div class="toolbar white-bg p-0" layout="row" layout-align="space-between start">
+            <div layout="column">
+                <span class="font-size-20 mt-8 text-capitalize mb-0 line-height-26"><span translate="material">Coil
+                        Type</span>:
+                    {{$ctrl.coilType.materialCode}}</span>
+                <span class="font-size-16 secondary-text">{{$ctrl.coilType.description}}</span>
+            </div>
+
+            <div layout="row" layout-align="end">
+                <table class="font-size-14">
+                    <tbody>
+                        <tr>
+                            <th class="text-right pr-8">
+                                <span translate="onHand">Total on-hand</span>:
+                            </th>
+                            <td class="text-right pl-8 secondary-text">
+                                {{$ctrl.coilType.onHandFt | unitsFormat :"ft":1 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-right pr-8">
+                                <span translate="demand">Current demand</span>:
+                            </th>
+                            <td class="text-right pl-8 secondary-text">
+                                {{$ctrl.coilType.demandFt | unitsFormat :"ft":1 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-right pr-8">
+                                <span translate="balance">Balance</span>:
+                            </th>
+                            <td class="text-right pl-8 secondary-text">
+                                {{$ctrl.coilType.balanceFt | unitsFormat :"ft":1 }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content fullpage-datatable">
+            <!-- Details accordion -->
+            <accordion is-open="true">
+                <accordion-toggle label="Details"></accordion-toggle>
+
+                <accordion-content>
+                    <div class="p-24" layout="row" layout-wrap layout-align="space-between start" flex="100">
+                        <div class="pr-24" flex>
+                            <table class="font-size-14">
+                                <tbody>
+                                    <tr>
+                                        <th class="text-right pr-8">
+                                            <span translate="width">Width</span>:
+                                        </th>
+                                        <td class="text-right pl-8 secondary-text">
+                                            {{$ctrl.coilType.widthIn | unitsFormat :"in":2 }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right pr-8">
+                                            <span translate="thickness">Thickness</span>:
+                                        </th>
+                                        <td class="text-right pl-8 secondary-text">
+                                            {{$ctrl.coilType.thicknessIn | unitsFormat :"in":2 }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pr-24" flex>
+                            <table class="font-size-14">
+                                <tbody>
+                                    <tr>
+                                        <th class="text-right pr-8">
+                                            <span translate="gauge">Gauge</span>:
+                                        </th>
+                                        <td class="text-right pl-8 secondary-text">
+                                            {{$ctrl.coilType.gauge | unitsFormat :"ga":0 }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right pr-8">Lbs Per Feet:</th>
+                                        <!-- todo:i18n -->
+                                        <td class="text-right pl-8 secondary-text">
+                                            {{$ctrl.coilType.lbsPerFt | unitsFormat :"lbs":2 }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pr-24" flex>
+                            <table class="font-size-14">
+                                <tbody>
+                                    <tr>
+                                        <th class="text-right pr-8">
+                                            <span translate="color">Color</span>:
+                                        </th>
+                                        <td class="text-right pl-8 secondary-text text-capitalize">
+                                            {{$ctrl.coilType.color}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right pr-8">
+                                            <span translate="materialType">Type</span>:
+                                        </th>
+                                        <td class="text-right pl-8 secondary-text text-capitalize">
+                                            {{$ctrl.coilType.type}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <md-button class="md-raised grey-700-bg white-fg" ng-click="$ctrl.editDialog($event)">
+                            <md-icon class="mdi" md-font-icon="mdi-pencil"></md-icon>
+                            Edit
+                        </md-button>
+                    </div>
+                </accordion-content>
+            </accordion>
+            <!-- / Details accordion -->
+
+            <!-- Active accordion -->
+            <accordion is-open="false">
+                <accordion-toggle class="no-shadow" label="Active Inventory">
+                </accordion-toggle>
+
+                <accordion-content>
+                    <div ag-grid="$ctrl.agCoilGridOptions" class="ag-theme-balham" style="height:300px;"></div>
+                </accordion-content>
+            </accordion>
+            <!-- / Active accordion -->
+
+            <!-- Production accordion -->
+            <accordion is-open="false">
+                <accordion-toggle class="no-shadow" label="Production Summary">
+                    <!-- todo: add back search? -->
+                    <!--<dt-search dt-instance="$ctrl.dtItemsInstance"></dt-search>-->
+                </accordion-toggle>
+
+                <accordion-content>
+                    <consumption-summary material="$ctrl.materialCode" ></consumption-summary>
+                </accordion-content>
+            </accordion>
+            <!-- / Production accordion  -->
+        </div>
+        <!-- / CONTENT -->
+    </div>
+    <!-- / CONTENT -->
+</div>

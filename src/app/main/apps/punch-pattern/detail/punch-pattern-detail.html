@@ -1,0 +1,169 @@
+<div id="dashboard-report" class="page-layout simple fullwidth white-bg production-summary" ngsf-fullscreen>
+   <div class="header back-header" layout="row" layout-align="space-between start">
+      <md-icon ui-sref="app.punch-patterns_list" md-font-icon="icon-arrow-left" class="icon back-icon"></md-icon>
+      <div class="punch-detail-btn-container">
+         <md-button aria-label="Save Changes" class="md-raised md-primary" ng-click="$ctrl.saveChanges()"
+            ng-if="$ctrl.patternIsModified" ng-disabled="$ctrl.disableSave">
+            <md-icon class="icon-content-save-all icon" md-font-icon></md-icon>
+            <md-tooltip>Save changes</md-tooltip>
+            Save Changes
+         </md-button>
+
+         <md-button aria-label="Cancel Changes" class="md-raised md-primary" ng-click="$ctrl.cancelUnsavedChanges()"
+            ng-if="$ctrl.patternIsModified">
+            <md-tooltip>Cancel Changes</md-tooltip>
+            Cancel Changes
+         </md-button>
+      </div>
+   </div>
+   <div class="content md-background md-hue-1">
+      <div class="machine-detail">
+         <div class="machine-detail__item">
+            <div class="machine-detail__title">
+               <span translate="patternName"></span>:
+            </div>
+            <div class="machine-detail__content" ng-if="!$ctrl.patternIsNew">
+               {{$ctrl.pattern.patternName}}
+            </div>
+            <div class="machine-detail__content" ng-if="$ctrl.patternIsNew"
+               editable-text="$ctrl.pattern.patternName"
+               onaftersave="$ctrl.onChangePatternDetail($data, '/patternName')">
+              {{$ctrl.pattern.patternName}}
+            </div>
+         </div>
+         <div class="machine-detail__item">
+            <div class="machine-detail__title">
+               <span translate="created"></span>:
+            </div>
+            <div class="machine-detail__content">
+               {{$ctrl.pattern.importDate | date : 'MM/dd/yyyy'}}
+            </div>
+         </div>
+         <div class="machine-detail__item">
+            <div class="machine-detail__content">
+               <md-checkbox ng-model="$ctrl.pattern.isMacro" aria-label="check"
+                  ng-change="$ctrl.updatePunchDetail()">
+                  <span translate="patternMacro"></span>
+               </md-checkbox>
+            </div>
+         </div>
+         <div class="machine-detail__item">
+            <div class="machine-detail__title">
+               <span translate="defaultLength"></span> ({{'in' | userDisplayUnits : true}}):
+            </div>
+            <div class="machine-detail__content">
+               <span editable-number="$ctrl.pattern.defaultLength" e-step="any" onaftersave="$ctrl.updatePunchDetail()">
+                  {{$ctrl.pattern.defaultLength}}</span><!--$ctrl.updatePattern({patternName: $data, item: $ctrl.item})-->
+            </div>
+         </div>
+         <div class="machine-detail__item">
+            <div class="machine-detail__title">
+               <span translate="lastUsed"></span>:
+            </div>
+            <div class="machine-detail__content">
+               {{$ctrl.pattern.lastUsedDate | date : 'MM/dd/yyyy'}}
+            </div>
+         </div>
+         <div class="machine-detail__item">
+            <div class="machine-detail__content">
+               <md-checkbox ng-model="$ctrl.pattern.isPermanent" aria-label="check"
+                  ng-change="$ctrl.updatePunchDetail()">
+                  <span translate="permanent"></span>
+               </md-checkbox>
+            </div>
+         </div>
+      </div>
+      <md-tabs md-dynamic-height md-border-bottom md-selected="$ctrl.selectedTabIndex">
+         <md-tab label="Punches" md-on-select="$ctrl.selectTab(0)">
+            <div class="xl-list-container punch-list-container">
+               <div class="material-usage-item sub-header">
+                  <div class="main-con" ng-repeat="item in $ctrl.punchColumns">
+                     {{item.displayName | translate}} <span ng-if="item.field === 'xOffset' || item.field === 'yOffset'">({{'in' | userDisplayUnits}})</span>
+                  </div>
+                  <div class="main-con"></div>
+                  <div class="main-con"></div>
+               </div>
+               <div class="material-usage-content">
+                  <punch-row ng-repeat="punch in $ctrl.punches | orderBy:'sequence'" 
+                     punch="punch" available-macros="$ctrl.availableMacros" is-macro="$ctrl.pattern.isMacro"
+                     index="$index" is-first="$first", is-last="$last"
+                     update-detail="$ctrl.updatePunchDetail()" move-down="$ctrl.movePunchDown(punchIdx)"
+                     delete="$ctrl.deletePunchRow(sequence)"></punch-row>
+                  <div ng-if="$ctrl.addNew" class="add-new">
+                     <punch-row punch="$ctrl.newPunch" available-macros="$ctrl.availableMacros"  is-macro="$ctrl.pattern.isMacro"
+                        is-new="'true'" save-new="$ctrl.saveNewPunch()" cancel="$ctrl.cancelNewPunch()"></punch-row>
+                  </div>
+               </div>
+            </div>
+         </md-tab>         
+         <md-tab label="XL Patterns" md-on-select="$ctrl.selectTab(1)">
+            <div class="xl-list-container">
+               <div class="material-usage-item sub-header">
+                  <div class="main-con" ng-repeat="item in $ctrl.xlPatternsColumns">
+                     {{item.displayName | translate}}
+                  </div>
+               </div>
+               <div class="material-usage-content">
+                  <!-- <div
+                     class="material-usage-item"
+                     ng-repeat="pattern in $ctrl.xlPatterns"
+                  > -->
+                  <!--  <div
+                        class="main-con"
+                        ng-repeat="item in $ctrl.xlPatternsColumns"
+                     >
+                        {{item.field === "operations" ?
+                        pattern[item.field].length : item.field === "dontSave"
+                        && pattern[item.field] ? "YES" : item.field ===
+                        "dontSave" && !pattern[item.field] ? "NO" :
+                        pattern[item.field]}}
+                     </div>
+                  </div> -->
+                  <accordion ng-repeat="pattern in $ctrl.pattern.machinePatterns" class="xl-row"
+                     is-open="pattern.isOpen">
+                     <accordion-header on-close="$ctrl.onClose(pattern)">
+                        <div class="material-usage-item item-header">
+                           <div class="main-con" ng-repeat="item in $ctrl.xlPatternsColumns">
+                              {{item.field === "operations" ?
+                              pattern[item.field].length : item.field ===
+                              "dontSave" && pattern[item.field] ? "YES" :
+                              item.field === "dontSave" && !pattern[item.field]
+                              ? "NO" : pattern[item.field]}}
+                           </div>
+                        </div>
+                        <div></div>
+                     </accordion-header>
+
+                     <accordion-content>
+                        <div class="material-usage-item sub-header">
+                           <div class="main-con" ng-repeat="item in $ctrl.xlPatternSubColumns">
+                              {{item.displayName | translate}}
+                           </div>
+                        </div>
+                        <div class="material-usage-content">
+                           <div class="material-usage-item" ng-repeat="operation in pattern.operations">
+                              <div class="main-con" ng-repeat="item in $ctrl.xlPatternSubColumns">
+                                 {{ item.field === "xReference" ?
+                                 $ctrl.referenceColumns[operation[item.field]].text :
+                                 item.field === "yReference" ?
+                                 $ctrl.yReferenceColumns[operation[item.field]].text
+                                 : operation[item.field] }}
+                              </div>
+                           </div>
+                           <div></div>
+                        </div>
+                     </accordion-content>
+                  </accordion>
+               </div>
+            </div>
+         </md-tab>
+         <!-- <md-tab label="Where Used" md-on-select="vm.selectTab()"></md-tab> -->
+         <md-tab label="History" md-on-select="$ctrl.selectTab(2)">
+            <production-log pattern-name="$ctrl.patternName"></production-log>
+         </md-tab>
+      </md-tabs>
+      <md-button ng-if="$ctrl.selectedTabIndex === 0" class="md-fab add-button" ng-click="$ctrl.addPunch(); editableForm.$show()"
+         style="position: fixed; right: 0; bottom: 0">+
+      </md-button>
+   </div>
+</div>

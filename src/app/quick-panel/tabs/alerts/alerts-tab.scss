@@ -1,0 +1,51 @@
+#quick-panel {
+
+    md-tabs.md-eclipse-pro-theme-theme md-ink-bar {
+        color: rgba(0,0,0,.54);
+        background: rgba(0,0,0,.35);
+    }
+
+    md-list-item:hover {
+        cursor: pointer;
+    }
+
+    .alert-title {
+        text-overflow: ellipsis;
+        white-space: normal;
+        display: flex;
+    }
+
+    .alert-des {
+        padding-left: 24px;
+        i {
+            position: relative;
+            top: 2px;
+        }
+    }
+
+    .alerts-tab {
+        a:hover {
+            text-decoration: none;
+        }
+
+        .alerts-tab-progress {
+
+            .md-bar {
+                background-color: #2196F3;
+            }
+
+            .md-container {
+                background-color: rgba(33, 150, 243, 0.3);
+            }
+        }
+
+        hr{
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        md-list-item.md-2-line{
+            justify-content: left;
+        }
+    }
+}

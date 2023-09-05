@@ -1,0 +1,389 @@
+<div id="settings" class="page-layout simple fullwidth">
+  <!-- HEADER -->
+  <div class="header">
+    <div layout="row" layout-align="space-between">
+      <span class="h2" translate="Integration">INTEGRATION</span>
+    </div>
+  </div>
+  <!-- / HEADER -->
+  <!-- CONTENT -->
+  <div
+    class="content md-background md-hue-1 settings-integration"
+    md-background-bg
+  >
+    <md-tabs
+      md-dynamic-height
+      md-border-bottom
+      md-selected="$ctrl.selectedTabIndex"
+    >
+      <md-tab
+        ng-repeat="tab in $ctrl.integrationTabs"
+        label="{{tab.label}}"
+        md-on-select="$ctrl.selectTab()"
+      >
+        <md-button
+          class="config-add-btn"
+          ng-click="$ctrl.onAddConfig(tab.key, tab.label)"
+          aria-label="Config Add"
+          ng-if="tab.key !== 'coilValidation'"
+          ng-hide="!$ctrl.userHasAdminRole"
+        >
+          <md-tooltip class="integration-tooltip">Add</md-tooltip>
+          <md-icon md-font-icon="icon-plus" class="icon"></md-icon>
+        </md-button>
+        <table class="simple hover dataTable config-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th class="config-table-settings">Settings</th>
+              <th>Enable</th>
+              <th class="config-table-actions">Actions</th>
+              <th>Messages</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="config in tab.items track by $index">
+              <td>{{config.type | configType : tab.key}}</td>
+              <td>
+                <div class="integration-setting-item" ng-repeat="(key, value) in config.settings">
+                  <span translate="{{key}}">{{key}}</span>: {{value}}
+                </div>
+              </td>
+              <td>
+                <md-checkbox
+                  ng-change="$ctrl.onChangeEnable(config, tab.key, config.enabled)"
+                  ng-model="config.enabled"
+                  aria-label="Disabled"
+                >
+                </md-checkbox>
+              </td>
+              <td>
+                <md-button
+                  class="edit-btn"
+                  ng-click="$ctrl.onEditConfig(config, tab.key, tab.label)"
+                  aria-label="Config Edit"
+                  ng-hide="!$ctrl.userHasAdminRole"
+                >
+                  <md-tooltip class="integration-tooltip">Edit</md-tooltip>
+                  <md-icon md-font-icon="icon-pencil" class="icon"></md-icon>
+                </md-button>
+                <md-button
+                  class="edit-btn"
+                  ng-if="config.enabled && tab.enableRun"
+                  ng-click="$ctrl.onRunConfig(config.id)"
+                  aria-label="Config Run"
+                >
+                  <md-tooltip class="integration-tooltip">Run</md-tooltip>
+                  <md-icon md-font-icon="icon-send" class="icon"></md-icon>
+                </md-button>
+              </td>
+              <td>
+                <div ng-repeat="message in config.messages track by $index">
+                  <div>{{message}}</div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div layout="row" class="table-title black-text" layout-align="space-between center">
+          {{tab.label}} Events
+          <md-checkbox
+            class="complete-checkbox"
+            ng-if="tab.key === 'coilValidation' || tab.key === 'export'"
+            ng-model="$ctrl.hideComplete"
+            aria-label="Show/Hide Complete"
+          >
+            Hide Complete
+          </md-checkbox>
+        </div>
+        <div class="ms-responsive-table-wrapper">
+          <table class="simple hover dataTable event-table" ng-if="tab.key === 'orderImport'">
+            <thead>
+              <tr>
+                <th>Settings</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Imported</th>
+                <th>Rejected</th>
+                <th>Messages</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="importEvent in $ctrl.orderImportEvents">
+                <td>
+                  <a href="#{{importEvent.settingsId}}">
+                    <md-icon md-font-icon="icon-cog" class="icon"></md-icon>
+                  </a>
+                </td>
+                <td>{{importEvent.start | date : 'short'}}</td>
+                <td>{{importEvent.state}}</td>
+                <td>
+                  {{importEvent.importedCount}}/{{importEvent.recordCount}}
+                </td>
+                <td>
+                  {{importEvent.rejectedCount}}/{{importEvent.recordCount}}
+                </td>
+                <td>
+                  <div ng-repeat="reject in importEvent.rejects">
+                    <div>
+                      {{reject.recordTitle}} ({{reject.externalSystemRecordId}})
+                    </div>
+                    <ul>
+                      <li ng-repeat="msg in reject.failureMessages track by $index">
+                        {{msg}}
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="simple hover dataTable event-table" ng-if="tab.key === 'coilImport'">
+            <thead>
+              <tr>
+                <th>Settings</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Imported</th>
+                <th>Rejected</th>
+                <th>Messages</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="importEvent in $ctrl.coilImportEvents">
+                <td>
+                  <a href="#{{importEvent.settingsId}}">
+                    <md-icon md-font-icon="icon-cog" class="icon"></md-icon>
+                  </a>
+                </td>
+                <td>{{importEvent.start | date : 'short'}}</td>
+                <td>{{importEvent.state}}</td>
+                <td>
+                  {{importEvent.importedCount}}/{{importEvent.recordCount}}
+                </td>
+                <td>
+                  {{importEvent.rejectedCount}}/{{importEvent.recordCount}}
+                </td>
+                <td>
+                  <div ng-repeat="reject in importEvent.rejects">
+                    <div>{{reject.externalSystemRecordId}}</div>
+                    <ul>
+                      <li ng-repeat="msg in reject.failureMessages track by $index">
+                        {{msg}}
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="simple hover dataTable event-table" ng-if="tab.key === 'export'">
+            <thead>
+              <tr>
+                <th>Channel</th>
+                <th>Item</th>
+                <th>Related</th>
+                <th>Complete</th>
+                <th></th>
+                <th></th>
+                <th>Stage</th>
+                <th>Received</th>
+                <th>Duration</th>
+                <th>Messages</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                ng-repeat="exportEvent in $ctrl.exportEvents | orderBy:'-receivedTime' | filter:$ctrl.filterHideComplete"
+              >
+                <td>{{exportEvent.channel}}</td>
+                <td>{{exportEvent.itemId}}</td>
+                <td><link-helper document-id="exportEvent.relatedId" label="exportEvent.relatedDesc"></link-helper></td>
+                <td style="width: 70px">{{exportEvent.complete}}</td>
+                <td style="width: 25px">
+                  <md-button
+                    ng-click="$ctrl.triggerExport(exportEvent.itemId)"
+                    aria-label="Export"
+                    ng-if="!exportEvent.complete"
+                  >
+                    <md-tooltip>Retry export attempt</md-tooltip>
+                    <md-icon md-font-icon="icon-upload" class="icon"></md-icon>
+                  </md-button>
+                </td>
+                <td style="width: 25px">
+                  <md-button
+                    ng-click="$ctrl.cancelExport(exportEvent.id)"
+                    aria-label="Export"
+                    ng-if="!exportEvent.complete"
+                  >
+                    <md-tooltip>Cancel export attempt</md-tooltip>
+                    <md-icon md-font-icon="icon-close-circle-outline" class="icon"></md-icon>
+                  </md-button>
+                </td>
+                <td style="width: 70px">{{exportEvent.stage}}</td>
+                <td>{{exportEvent.receivedTime | date : 'short'}}</td>
+                <td>
+                  {{exportEvent.executionDuration | timeSpan :
+                  'secondsWithMs'}}s
+                </td>
+                <td>
+                  <div ng-repeat="l in exportEvent.activityLog track by $index">
+                    <div>{{l}}</div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="simple hover dataTable event-table" ng-if="tab.key === 'materialImport'">
+            <thead>
+              <tr>
+                <th>Settings</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Imported</th>
+                <th>Rejected</th>
+                <th>Messages</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="importEvent in $ctrl.materialImportEvents">
+                <td>
+                  <a href="#{{importEvent.settingsId}}">
+                    <md-icon md-font-icon="icon-cog" class="icon"></md-icon>
+                  </a>
+                </td>
+                <td>{{importEvent.start | date : 'short'}}</td>
+                <td>{{importEvent.state}}</td>
+                <td>
+                  {{importEvent.importedCount}}/{{importEvent.recordCount}}
+                </td>
+                <td>
+                  {{importEvent.rejectedCount}}/{{importEvent.recordCount}}
+                </td>
+                <td>
+                  <div ng-repeat="reject in importEvent.rejects">
+                    <div>{{reject.externalSystemRecordId}}</div>
+                    <ul>
+                      <li ng-repeat="msg in reject.failureMessages track by $index">
+                        {{msg}}
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="simple hover dataTable event-table" ng-if="tab.key === 'scheduleSync'">
+            <thead>
+              <tr>
+                <th>Settings</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Imported</th>
+                <th>Rejected</th>
+                <th>Messages</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="importEvent in $ctrl.scheduleSyncEvents">
+                <td>
+                  <a href="#{{importEvent.settingsId}}">
+                    <md-icon md-font-icon="icon-cog" class="icon"></md-icon>
+                  </a>
+                </td>
+                <td>{{importEvent.start | date : 'short'}}</td>
+                <td>{{importEvent.state}}</td>
+                <td>
+                  {{importEvent.importedCount}}/{{importEvent.recordCount}}
+                </td>
+                <td>
+                  {{importEvent.rejectedCount}}/{{importEvent.recordCount}}
+                </td>
+                <td>
+                  <div ng-repeat="reject in importEvent.rejects">
+                    <div>{{reject.externalSystemRecordId}}</div>
+                    <ul>
+                      <li ng-repeat="msg in reject.failureMessages track by $index">
+                        {{msg}}
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="simple hover dataTable event-table" ng-if="tab.key === 'coilValidation'">
+            <thead>
+              <tr>
+                <th>Channel</th>
+                <th>Item</th>
+                <th>Complete</th>
+                <th>Stage</th>
+                <th>Received</th>
+                <th>Duration</th>
+                <th>Messages</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                ng-repeat="exportEvent in $ctrl.coilValidationEvents | orderBy:'-receivedTime' | filter:$ctrl.filterHideComplete"
+              >
+                <td>{{exportEvent.channel}}</td>
+                <td>{{exportEvent.itemId}}</td>
+                <td>{{exportEvent.complete}}</td>
+                <td>{{exportEvent.stage}}</td>
+                <td>{{exportEvent.receivedTime | date : 'short'}}</td>
+                <td>
+                  {{exportEvent.executionDuration | timeSpan : 'secondsWithMs'
+                  || '0'}}s
+                </td>
+                <td>
+                  <div ng-repeat="l in exportEvent.activityLog track by $index">
+                    <div>{{l}}</div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="simple hover dataTable event-table" ng-if="tab.key === 'webhook'">
+            <thead>
+              <tr>
+                <th>Event Id</th>
+                <th>Settings</th>
+                <th>Date</th>
+                <th>Messages</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="event in $ctrl.webhookEvents">
+                <td>{{event.id}}</td>
+                <td>
+                  <a href="#{{event.settingsId}}">
+                    <md-icon md-font-icon="icon-cog" class="icon"></md-icon>
+                  </a>
+                </td>
+                <td>{{event.start | date : 'short'}}</td>
+                <td>
+                  <pre>{{event.request}}</pre>
+                  <pre>{{event.response}}</pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </md-tab>
+      <md-tab
+        label="Test import file 🧪"
+        md-on-select="$ctrl.selectTab()"
+        feature-flag="experimental"
+      >
+        <import-file-test-form></import-file-test-form>
+      </md-tab>
+    </md-tabs>
+  </div>
+</div>

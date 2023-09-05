@@ -1,0 +1,139 @@
+<div id="settings" class="page-layout simple fullwidth">
+   <!-- HEADER 
+   <div class="header">
+      <div layout="row" layout-align="space-between">
+         <span class="h2" translate="Printing">Printing</span>
+         <div class="toolbar"></div>
+      </div>
+   </div>-->
+   <!-- / HEADER -->
+   <!-- CONTENT -->
+   <div class="content" md-background-bg>
+            <div class="task-content">
+               <div class="task-list active-task-list">
+                  <div layout="column">
+                     <div
+                        class="simple-table-container md-whiteframe-2dp mb-24"
+                     >
+                        <div
+                           layout="row"
+                           class="table-title black-text"
+                           layout-align="center start"
+                        ><md-icon ui-sref="app.printing({tab: 2})" md-font-icon="icon-arrow-left" class="icon back-icon"></md-icon>
+                           Print Templates
+                           <label
+                              for="template-upload"
+                              class="custom-template-upload"
+                           >
+                              <i class="icon-plus"></i>
+                           </label>
+                           <input
+                              custom-file
+                              id="template-upload"
+                              type="file"
+                              ng-model="$ctrl.files"
+                              ng-change="$ctrl.onTemplateUpload('template-upload')"
+                           />
+                        </div>
+                        <!--select template-->
+                        <md-input-container>
+                           <md-select
+                              ng-model="$ctrl.selectedTemplate"
+                           >
+                              <md-option
+                                 ng-value="template"
+                                 ng-repeat="template in $ctrl.printTemplates | filter: {type: 'Bundle'}"
+                                 >{{template.name}}</md-option
+                              >
+                           </md-select>
+                        </md-input-container>
+                        <md-input-container>
+                           <md-select
+                              ng-model="$ctrl.selectedBundleCode"
+                              ng-change="$ctrl.onUpdatePreview()"
+                           >
+                              <md-option
+                                 ng-value="bundle.bundleCode"
+                                 ng-repeat="bundle in $ctrl.recentBundles"
+                                 >{{bundle.bundleCode}}</md-option
+                              >
+                           </md-select>
+                        </md-input-container>
+                        <!--select data-->
+                        <!--select format-->
+
+                        <div class="ms-responsive-table-wrapper">
+                           <table class="simple hover dataTable">
+                              <thead>
+                                 <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Size</th>
+                                    <th>Download</th>
+                                    <th>Preview</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <tr>
+                                    <td>{{$ctrl.selectedTemplate.name}}</td>
+                                    <td>{{$ctrl.selectedTemplate.type}}</td>
+                                    <td>
+                                       {{$ctrl.selectedTemplate.pageHeightIn}}h x
+                                       {{$ctrl.selectedTemplate.pageWidthIn}}w
+                                    </td>
+                                    <td>
+                                       <md-button
+                                          class="md-icon-button download-btn"
+                                          href="/_api/printing/printTemplates/{{$ctrl.selectedTemplate.name}}/download"
+                                          target="_blank"
+                                       >
+                                          <md-icon
+                                             md-font-icon="icon-download"
+                                             class="icon"
+                                          ></md-icon>
+                                       </md-button>
+                                       <md-button
+                                          class="md-icon-button"
+                                          href="/_api/printing/printTemplates/{{$ctrl.selectedTemplate.name}}/metadata?bundleCode={{$ctrl.selectedBundleCode}}"
+                                          target="_blank"
+                                       >
+                                          <md-icon
+                                             md-font-icon="mdi-code-json"
+                                             class="mdi"
+                                          ></md-icon>
+                                       </md-button>
+                                       <md-button
+                                          class="md-icon-button"
+                                          href="/_api/printing/printTemplates/{{$ctrl.selectedTemplate.name}}/preview?output=html&bundleCode={{$ctrl.selectedBundleCode}}"
+                                          target="_blank"
+                                       >
+                                          <md-icon
+                                             md-font-icon="mdi-file-code-outline"
+                                             class="mdi"
+                                          ></md-icon>
+                                       </md-button>
+                                       <md-button
+                                          class="md-icon-button"
+                                          href="/_api/printing/printTemplates/{{$ctrl.selectedTemplate.name}}/preview?output=pdf&bundleCode={{$ctrl.selectedBundleCode}}"
+                                          target="_blank"
+                                       >
+                                          <md-icon
+                                             md-font-icon="mdi-file-pdf-box"
+                                             class="mdi"
+                                          ></md-icon>
+                                       </md-button>
+                                    </td>
+                                    <td>
+                                       <img ng-src="{{$ctrl.selectedTemplate.previewUrl}}"
+                                       />
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+   </div>
+</div>

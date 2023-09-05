@@ -1,0 +1,22 @@
+<div class="print-summary-state">
+  <div class="chart-content" ng-if="!$ctrl.state">
+    <div class="main-area mainarea{{order}}" ng-style="$ctrl.getMainArea(order)" ng-repeat="order in [0, 1, 2]"></div>
+
+    <div class="target-pos" ng-style="$ctrl.getTargetPos()"></div>
+    <div class="value-area valuearea{{$ctrl.getValueState()}}" ng-style="$ctrl.getValueArea()"></div>
+  </div>
+  <div class="chart-content" ng-if="$ctrl.state">
+    <div class="main-area mainarea{{2 - order}}" ng-style="$ctrl.getMainArea(order)" ng-repeat="order in [0, 1, 2]">
+    </div>
+
+    <div class="target-pos" ng-style="$ctrl.getTargetPos()"></div>
+    <div class="value-area valuearea{{2 - $ctrl.getValueState()}}" ng-style="$ctrl.getValueArea()"></div>
+  </div>
+  <!-- <div class="axis-content" ng-if="$ctrl.data.maxValue !== 1">
+    <div class="axis-number">{{$ctrl.data.minValue}}</div>
+    <div class="axis-number" ng-style="$ctrl.getRangePos(0)">{{$ctrl.data.okRangeStart}}</div>
+    <div class="axis-number" ng-style="$ctrl.getRangePos(1)">{{$ctrl.data.okRangeEnd}}</div>
+    <div class="axis-number">{{$ctrl.data.maxValue}}</div>
+  </div> -->
+
+</div>

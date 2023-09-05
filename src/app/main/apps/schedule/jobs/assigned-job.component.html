@@ -1,0 +1,109 @@
+<div class="jobitem-group-item multi-select-hover  hover-item">
+  <div layout="row" ng-if="$ctrl.job.scheduleState.pendingAction">
+    <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+    <md-tooltip>Action in progress: {{$ctrl.job.scheduleState.legacyStatus}}</md-tooltip> <!-- todo: improve the action text -->
+  </div>
+  <div class="multi-select">
+    <md-checkbox aria-label="Select Tool" ng-checked="$ctrl.job.isSelected" ng-click="$ctrl.onToggleSelection()">
+    </md-checkbox>
+  </div>
+  <div class="triangle-container" ng-if="$ctrl.job.warningDueDate && !$ctrl.job.pastDueDate">
+    <md-tooltip md-direction="bottom">{{$ctrl.job.warningText}}</md-tooltip>
+    <div class="triangle triangle-yellow"></div>
+  </div>
+  <div class="triangle-container"
+      ng-if="$ctrl.job.pastDueDate || ($ctrl.job.warningMaterial && $ctrl.systemPreferences.showMaterialShortageAlerts) || $ctrl.job.patternNotDefined">
+    <md-icon md-font-icon="mdi-stamper" class="mdi" ng-if="$ctrl.job.patternNotDefined">
+      <md-tooltip>Punch pattern not defined</md-tooltip>
+    </md-icon>
+    <md-icon md-font-icon="mdi-clipboard-check-outline" class="mdi"
+        ng-if="$ctrl.job.warningMaterial && $ctrl.systemPreferences.showMaterialShortageAlerts">
+      <md-tooltip md-direction="bottom">Material Shortage</md-tooltip>
+    </md-icon>
+    <md-icon md-font-icon="mdi-calendar" class="mdi" ng-if="$ctrl.job.pastDueDate">
+      <md-tooltip md-direction="bottom">{{$ctrl.job.pastDueText}}</md-tooltip>
+    </md-icon>
+    <div class="triangle triangle-red"></div>
+  </div>
+
+  <div class="item-bg22 jobitem-item-group" layout="column" flex>
+    <div layout="row" class="job-id jobitem-item-row">
+      <div>
+        <job-detail-preview ord-id="$ctrl.job.ordId">
+          <a ui-sref="app.orders.detail({id: {{$ctrl.job.ordId}}})">{{$ctrl.job.orderCode}}</a>
+        </job-detail-preview>
+        <span feature-flag="in-development"> ({{$ctrl.job.sequence}}:{{$ctrl.job.status}})</span>
+      </div>
+      <div>
+        <md-icon md-font-icon="icon-pause-circle" ng-if="$ctrl.job.hold">
+          <md-tooltip>On hold</md-tooltip>
+        </md-icon>
+      </div>
+    </div>
+<!-- todo: make these fields configurable -->
+    <div layout="row" class="job-sys jobitem-item-row" flex layout-align="space-between">
+      <div>{{$ctrl.job.customerName}}</div>
+      <div>{{$ctrl.job.requiredDate | amsDate}}</div>
+    </div>
+    <div layout="row" class="job-state jobitem-item-row">
+      <div flex="35">
+        <p class="job-item-title">Complete:</p>
+        <p class="job-item-content">{{$ctrl.job.completePct | unitsFormat :"%":0}}</p>
+      </div>
+      <div flex="55">
+        <p class="job-item-title">Remaining:</p>
+        <p class="job-item-content">{{$ctrl.job.remainingFt | unitsFormat: 'ft'}} &nbsp;
+          <duration-display milliseconds="$ctrl.job.remainingRuntime" />
+        </p>
+      </div>
+      <!--menu-->
+      <div flex="10">
+        <md-menu>
+          <md-button class="cell-menu-btn" ng-click="$mdMenu.open($event)">
+            <md-icon md-menu-origin md-font-icon="icon-dots-vertical"></md-icon>
+          </md-button>
+          <md-menu-content width="4">
+            <md-menu-item ng-if="!$ctrl.job.isOnMachine">
+              <md-button ng-click="$ctrl.onToggleHold()" style="pointer-events: auto">
+                <md-tooltip md-direction="left">Hold prevents a job from going to the machine.</md-tooltip>
+                <md-icon md-font-icon="icon-pause-circle{{$ctrl.job.hold ? '-outline' : ''}}"></md-icon>
+                {{$ctrl.job.hold ? 'Remove hold' : 'Hold'}}
+              </md-button>
+            </md-menu-item>
+            <md-menu-divider ng-if="!$ctrl.job.isOnMachine"></md-menu-divider>
+            <md-menu-item ng-if="$ctrl.job.isOnMachine">
+              <md-button ng-click="$ctrl.onRecallFromMachine()">
+                <md-icon md-font-icon="icon-timetable"></md-icon>
+                Recall
+                <md-tooltip md-direction="left">Recall the job from the machine, but leave it on the schedule.
+                </md-tooltip>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="$ctrl.onUnschedule()">
+                <md-icon md-font-icon="icon-calendar-remove"></md-icon>
+                Unschedule
+                <md-tooltip md-direction="left">Remove this job from the schedule</md-tooltip>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item ng-if="!$ctrl.job.isOnMachine">
+              <md-button ng-click="$ctrl.onSendToMachine()" style="pointer-events: auto">
+                <md-icon md-font-icon="icon-transfer"></md-icon>
+                Send to machine
+                <md-tooltip md-direction="left">Sends the job to the machine.</md-tooltip>
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </div>
+    </div>
+  </div>
+   <div class="action-container">
+      <md-icon md-font-icon="mdi-arrow-up" class="mdi s20 assign-up-btn" ng-if="$ctrl.isFirsthide" ng-click="$ctrl.onMove1('up')"></md-icon>
+      <md-icon md-font-icon="mdi-arrow-down" class="mdi s20 assign-down-btn" ng-if="$ctrl.isLasthide" ng-click="$ctrl.onMove1('down')"></md-icon>
+   </div>
+  <!-- todo: Make this progress bar pinned to the bottom of the cell -->
+  <!-- <div layout="row" ng-if="$ctrl.job.completePct > 0">
+    <md-progress-linear md-mode="determinate" value="$ctrl.job.completePct * 100"></md-progress-linear>
+  </div> -->
+</div>

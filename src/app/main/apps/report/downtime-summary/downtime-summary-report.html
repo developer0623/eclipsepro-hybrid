@@ -1,0 +1,153 @@
+<div id="dashboard-report" class="page-layout simple fullwidth white-bg production-summary" ngsf-fullscreen>
+  <report-header subject="Downtime Summary" on-filter="$ctrl.onFilter(searchTxt)"></report-header>
+
+  <div class="summary-title-header">
+    <custom-menu class="menu-column duration" subject="GroupBy" menu-list="$ctrl.groupByList"
+      selected-item="$ctrl.selectedGroup" on-change="$ctrl.onChangeGroup(item)"></custom-menu>
+
+    <custom-menu class="menu-column duration" subject="ThenBy" menu-list="$ctrl.thenByList"
+      selected-item="$ctrl.selectedThen" on-change="$ctrl.onChangeThen(item)"></custom-menu>
+
+    <report-date-col class="date-column" start-date="$ctrl.startDate" end-date="$ctrl.endDate" duration="'day'"
+      on-change="$ctrl.onChangeDate(startDate, endDate)"></report-date-col>
+
+    <checkbox-menu class="menu-column float-right" subject="MACHINES" menu-subject="SHOW MACHINES"
+      menu-list="$ctrl.machines" on-change="$ctrl.onChangeMachines(items)"></checkbox-menu>
+    <div class="print-icon-column float-right">
+      <md-button aria-label="Select Shift 1" class="md-icon-button" ng-click="$ctrl.openPrintPreview($event)">
+        <md-icon md-font-icon class="icon icon-printer header-icon"></md-icon>
+      </md-button>
+    </div>
+
+    <div class="header-icon-column float-right">
+      <md-button class="md-icon-button"
+        href="/_api/reports/downtimesummary?{{$ctrl.fileDownloadQueryString}}&format=csv" target="_self">
+        <md-tooltip md-direction="bottom">
+          <span translate="downloadCsv"></span>
+        </md-tooltip>
+        <md-icon md-font-icon="icon-file-excel" class="icon"></md-icon>
+      </md-button>
+    </div>
+  </div>
+  <div class="content md-background md-hue-1 summary-main-content" ms-scroll>
+    <div id="main-print-body" class="material-usage-content">
+      <!-- <md-virtual-repeat-container id="coil-summary-list" class="ms-scroll"> -->
+      <div ng-repeat="group1 in $ctrl.filteredList.groups" class="repeated-item summary-accordian-group" flex>
+        <div class="summary-accordian-item" ng-repeat="group2 in group1.groups" flex>
+          <div class="summary-group-item">
+            <div class="group-header" ng-bind-html="$ctrl.onGetGroupHeader(group1.key, group2.key)"></div>
+            <group-header class="group-content" header="group2.header">
+            </group-header>
+          </div>
+
+          <div class="material-usage-item sub-header">
+            <div class="main-con">Code</div>
+            <div class="main-con">Delay Reason</div>
+            <div class="main-con">Minutes</div>
+            <div class="main-con">% Downtime</div>
+            <div class="main-con">% Total Time</div>
+            <!-- <div class="main-con">Ave Time per Occur</div> -->
+            <div class="main-con">Occurrences</div>
+          </div>
+          <div ng-repeat="exemptGroup in group2.groups">
+            <div ng-repeat="bucketGroup in exemptGroup.groups">
+              <div ng-repeat="reason in bucketGroup.reasons" class="material-usage-item">
+                <div class="main-con">{{reason.key.codeValue}}</div>
+                <div class="main-con">{{reason.codeDescription}}</div>
+                <div class="main-con">
+                  <span class="num-col"> {{reason.downMinutes}} </span>
+                </div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{reason.downPctOfDown | unitsFormat :"%":2:true}}
+                  </span>
+                </div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{reason.downPctOfTotal | unitsFormat :"%":2:true}}
+                  </span>
+                </div>
+                <!-- <div class="main-con"></div> -->
+                <div class="main-con">
+                  <span class="num-col">{{reason.occurrences}}</span>
+                </div>
+              </div>
+              <!-- /reasons -->
+              <div class="material-usage-item">
+                <div class="reason-total">
+                  {{bucketGroup.key.codeBucket || "Undefined"}}
+                </div>
+                <div class="main-con">
+                  <span class="num-col"> {{bucketGroup.downMinutes}} </span>
+                </div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{bucketGroup.downPctOfDown | unitsFormat :"%":2:true}}
+                  </span>
+                </div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{bucketGroup.downPctOfTotal | unitsFormat :"%":2:true}}
+                  </span>
+                </div>
+                <!-- <div class="main-con"></div> -->
+                <div class="main-con">
+                  <span class="num-col">{{bucketGroup.occurrences}}</span>
+                </div>
+              </div>
+            </div>
+            <!-- /bucketGroup -->
+            <div class="material-usage-item">
+              <div class="reason-total" ng-if="exemptGroup.key.exempt">
+                Exempt
+              </div>
+              <div class="reason-total" ng-if="!exemptGroup.key.exempt">
+                Non-Exempt
+              </div>
+              <div class="main-con">
+                <span class="num-col"> {{exemptGroup.downMinutes}} </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{exemptGroup.downPctOfDown | unitsFormat :"%":2:true}}
+                </span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{exemptGroup.downPctOfTotal | unitsFormat :"%":2:true}}
+                </span>
+              </div>
+              <!-- <div class="main-con"></div> -->
+              <div class="main-con">
+                <span class="num-col">{{exemptGroup.occurrences}}</span>
+              </div>
+            </div>
+          </div>
+          <!-- /exemptGroup -->
+          <div class="material-usage-item">
+            <div class="reason-total">Total</div>
+            <div class="main-con">
+              <span class="num-col"> {{group2.downMinutes}} </span>
+            </div>
+            <div class="main-con">
+              <span class="num-col">
+                {{group2.downPctOfDown | unitsFormat :"%":2:true}}
+              </span>
+            </div>
+            <div class="main-con">
+              <span class="num-col">
+                {{group2.downPctOfTotal | unitsFormat :"%":2:true}}
+              </span>
+            </div>
+            <!-- <div class="main-con"></div> -->
+            <div class="main-con">
+              <span class="num-col">{{group2.occurrences}}</span>
+            </div>
+          </div>
+        </div>
+        <!-- /group2 -->
+      </div>
+      <!-- /group1 -->
+    </div>
+  </div>
+</div>

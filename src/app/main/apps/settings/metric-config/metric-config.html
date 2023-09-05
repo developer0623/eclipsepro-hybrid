@@ -1,0 +1,128 @@
+<div id="settings" class="page-layout simple fullwidth">
+   <!-- HEADER -->
+   <div class="header">
+      <div layout="row" layout-align="space-between">
+         <span class="h2" translate="metricConfiguration"
+            >METRIC CONFIGURATION</span
+         >
+      </div>
+   </div>
+   <!-- / HEADER -->
+
+   <!-- CONTENT -->
+   <div class="content settings-metric-config" md-background-bg>
+      <div
+         class="simple-table-container md-whiteframe-2dp mb-24"
+         ng-repeat="machine in $ctrl.machines | orderBy:'description'"
+      >
+         <a
+            ui-sref="app.dashboards_machines_machine({ id: machine.machineNumber})"
+            class="table-title black-text"
+         >
+            {{machine.description}}
+         </a>
+
+         <div class="ms-responsive-table-wrapper">
+            <table id="metric-config" class="simple hover dataTable">
+               <thead>
+                  <tr>
+                     <th translate="show">Show</th>
+                     <th translate="showInMini">Show in Mini</th>
+                     <th translate="metric">Metric</th>
+                     <th></th>
+                     <th translate="okLower">Ok Lower</th>
+                     <th translate="okUpper">Ok Upper</th>
+                     <th translate="target">Target</th>
+                     <th translate="max">Max</th>
+                     <th translate="preview">Preview</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr ng-repeat="metric in machine.settings track by $index">
+                     <td>
+                        <md-checkbox
+                           class="md-primary"
+                           ng-model="metric.showInLarge"
+                           aria-label="Show"
+                           ng-change="$ctrl.updateMetric(machine,metric.metricId,'showInLarge');"
+                        >
+                        </md-checkbox>
+                     </td>
+                     <td>
+                        <md-checkbox
+                           class="md-primary"
+                           ng-model="metric.showInMini"
+                           aria-label="Show in Mini"
+                           ng-change="$ctrl.updateMetric(machine,metric.metricId,'showInMini');"
+                        ></md-checkbox>
+                     </td>
+                     <td>{{metric.metricId | translate}}</td>
+                     <td><help-icon header="metric.metricId" help="metric.definition.nameToolTip"></help-icon></td>
+                     <td class="td-numeric">
+                        <div
+                           editable-number="metric.okRangeStartUser"
+                           buttons="no"
+                           e-ng-blur="$form.$submit();"
+                           onshow="$ctrl.focusSelect($form)"
+                           onaftersave="$ctrl.updateMetric(machine,metric.metricId,'okRangeStart');"
+                        >
+                           {{metric.okRangeStart | unitsFormat
+                           :metric.definition.primaryUnits:1:false:false}}
+                        </div>
+                     </td>
+                     <td class="td-numeric">
+                        <div
+                           editable-number="metric.okRangeEndUser"
+                           buttons="no"
+                           e-ng-blur="$form.$submit();"
+                           onshow="$ctrl.focusSelect($form)"
+                           onaftersave="$ctrl.updateMetric(machine,metric.metricId,'okRangeEnd');"
+                        >
+                           {{metric.okRangeEnd | unitsFormat
+                           :metric.definition.primaryUnits:1:false:false}}
+                        </div>
+                     </td>
+                     <td class="td-numeric">
+                        <div
+                           editable-number="metric.targetValueUser"
+                           buttons="no"
+                           e-ng-blur="$form.$submit();"
+                           onshow="$ctrl.focusSelect($form)"
+                           onaftersave="$ctrl.updateMetric(machine,metric.metricId,'targetValue');"
+                        >
+                           {{metric.targetValue | unitsFormat
+                           :metric.definition.primaryUnits:1:false:false}}
+                        </div>
+                     </td>
+                     <td class="td-numeric">
+                        <div
+                           editable-number="metric.maxValueUser"
+                           buttons="no"
+                           e-ng-blur="$form.$submit();"
+                           onshow="$ctrl.focusSelect($form)"
+                           onaftersave="$ctrl.updateMetric(machine,metric.metricId,'maxValue')"
+                        >
+                           {{metric.maxValue | unitsFormat
+                           :metric.definition.primaryUnits:1:false:false}}
+                        </div>
+                     </td>
+                     <td>
+                        <bullet-chart-preview
+                           current="metric.targetValue*.95"
+                           min-value="metric.minValue"
+                           ok-lower="metric.okRangeStart"
+                           ok-upper="metric.okRangeEnd"
+                           target="metric.targetValue"
+                           max-value="metric.maxValue"
+                           lower-is-better="metric.lowerIsBetter"
+                           height="17"
+                        ></bullet-chart-preview>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+   <!-- / CONTENT -->
+</div>

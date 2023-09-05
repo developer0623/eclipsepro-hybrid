@@ -1,0 +1,30 @@
+<job-detail-preview
+   ord-id="$ctrl.id"
+   ng-if="$ctrl.docType=='JobDetail' && $ctrl.idFound"
+>
+   <a class="td-link ml-5" ui-sref="app.orders.detail({id: $ctrl.id})">
+      <span ng-if="!$ctrl.hideType">Order:</span>
+      {{$ctrl.label || $ctrl.id}}
+   </a>
+</job-detail-preview>
+<span ng-if="$ctrl.docType=='Coil' && $ctrl.idFound"><a class="td-link ml-5" ui-sref="app.inventory.coils.coil({id: $ctrl.id})"><span ng-if="!$ctrl.hideType">Coil:</span>{{$ctrl.label || $ctrl.id}}</a></span>
+<punch-pattern-preview
+   pattern-id="$ctrl.id"
+   ng-if="$ctrl.docType=='PunchPattern' && $ctrl.idFound"
+>
+   <a class="td-link ml-5" ui-sref="app.punch-patterns_list.detail({id: $ctrl.id})">
+      <span ng-if="!$ctrl.hideType">Pattern:</span>
+      {{$ctrl.label || $ctrl.id}}
+   </a>
+</punch-pattern-preview>
+<coil-type-preview
+   material-id="$ctrl.id"
+   ng-if="$ctrl.docType=='Material' && $ctrl.idFound"
+>
+   <a class="td-link ml-5" ui-sref="app.inventory.coil-types.coil-type({id: $ctrl.id})">
+      <span ng-if="!$ctrl.hideType">Material:</span>
+      {{$ctrl.label || $ctrl.id}}
+   </a>
+      <!-- <span ng-if="!$ctrl.idFound">{{$ctrl.label}}</span> -->
+</coil-type-preview>
+<span ng-if="$ctrl.knownType==false">{{$ctrl.docType}}~{{$ctrl.documentId}}</span>

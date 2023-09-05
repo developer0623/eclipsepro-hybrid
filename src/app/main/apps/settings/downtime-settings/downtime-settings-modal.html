@@ -1,0 +1,54 @@
+<div
+   class="downtime-settings-dialog downtime-settings-container"
+   aria-label="config-dialog"
+>
+   <div class="main-container md-whiteframe-1dp">
+      <div class="main-item main-header">
+         <div class="code-col">Code</div>
+         <div class="des-col">Description</div>
+         <div class="main-col">Category</div>
+      </div>
+      <div class="main-item" ng-repeat="dc in $ctrl.downtimeCodes">
+         <div class="code-col">{{dc.code}}</div>
+         <div class="des-col">{{dc.description}}</div>
+         <div class="main-col">
+            <md-menu>
+               <md-button
+                  class="black-fg"
+                  ng-click="$mdMenu.open()"
+                  aria-label="Language"
+                  md-menu-origin
+                  md-menu-align-target
+               >
+                  <div layout="row" layout-align="center center">
+                     <span class="iso">
+                        <span translate="downtimeCode_{{dc.category}}"></span>
+                        <md-icon
+                           md-font-icon="icon-menu-down"
+                           class="icon"
+                        ></md-icon>
+                     </span>
+                  </div>
+               </md-button>
+
+               <md-menu-content
+                  width="3"
+                  id="language-menu-content"
+                  class="md-background-bg"
+               >
+                  <md-menu-item ng-repeat="dcc in $ctrl.downtimeCodeCategories">
+                     <md-button
+                        ng-click="$ctrl.setCodeCategory(dc, dcc)"
+                        aria-label="Set code category"
+                     >
+                        <span layout="row" layout-align="start center">
+                           <span translate="{{dcc.translateKey}}"></span>
+                        </span>
+                     </md-button>
+                  </md-menu-item>
+               </md-menu-content>
+            </md-menu>
+         </div>
+      </div>
+   </div>
+</div>

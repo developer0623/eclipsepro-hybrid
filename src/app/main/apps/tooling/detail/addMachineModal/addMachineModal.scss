@@ -1,0 +1,64 @@
+.edit-property-modal-container {
+    
+
+    .main-container {
+        padding: 20px 50px 10px 50px;
+        min-height: 300px;
+        background-color: transparent;
+    }
+
+    .list-container {
+        border: 1px solid #d4d4d4;
+        border-radius: 3px;
+    }
+
+    .property-item-row {
+        display: flex;
+        border-bottom: 1px solid #d4d4d4;
+        min-height: 40px;
+        padding-left: 12px;
+        align-items: center;
+        font-size: 13px;
+        &:last-child {
+            border-bottom: none;
+        }
+        &:hover {
+            background-color: whitesmoke;
+            .property-deletebtn {
+                display: block !important;
+            }
+        }
+
+        
+    }
+
+    .property-deletebtn {
+        display: none;
+    }
+
+    .property-item-header {
+        font-weight: bold;
+        &:hover {
+            background-color: transparent;
+        }
+    }
+
+    .key-col {
+        width: 35%;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+    }
+    .main-col {
+        flex: 1;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+    }
+    .select-col {
+        width: 50px;
+    }
+    .radio-cal {
+        flex: 1
+    }
+}

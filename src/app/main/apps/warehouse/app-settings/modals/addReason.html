@@ -1,0 +1,36 @@
+<md-dialog aria-label="Login">
+  <form ng-cloak id="add-reason-form">
+    
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Add Reason</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-font-icon="icon-close" class="icon"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <md-input-container flex md-no-float>
+            <md-select ng-model="reason.codeSet" placeholder="CodeSet">
+              <md-option value="NonpreferredReasons">Nonpreferred Reasons</md-option>
+              <md-option value="OverrideReasons">Override Reasons</md-option>
+              <md-option value="UnattainableReasons">Cannot Complete Reasons</md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-input-container flex md-no-float>
+            <input ng-model="reason.reason" type="input" placeholder="Reason">
+        </md-input-container>
+
+        <md-button class="add-bt" aria-label="Add" ng-click="add()">
+            Add
+        </md-button>
+        
+      </div>
+    </md-dialog-content>
+  </form>
+</md-dialog>

@@ -1,0 +1,21 @@
+{
+    "navigation": {
+        "dashboards": "Dashboards",
+        "machines": "Machines",
+        "productionExplorer": "Production Explorer",
+        "downtime": "Downtime",
+        "goodProduction": "Good Production",
+        "oee": "OEE",
+        "scrap": "Scrap",
+        "targetOee": "Target OEE",
+        "settings": "Settings",
+        "metricConfiguration": "Metric Configuration",
+        "andonDisplay": "Andon Display",
+        "agentStatus": "Agent Status",
+        "systemPreferences": "System Preferences",
+        "logout": "Log Out",
+        "serverVersion": "Server Version",
+        "latest": "Latest",
+        "updateAvailable": "Update Available"
+    }
+}

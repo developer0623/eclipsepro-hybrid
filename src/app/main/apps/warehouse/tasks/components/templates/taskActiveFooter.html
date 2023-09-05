@@ -1,0 +1,19 @@
+<div class="task-footer-item1">
+	<div class="sub-item1 gray-color">
+		{{$ctrl.parentCtrl.task.userName}}
+	</div>
+
+	<div class="sub-item2">
+		<span ng-if="$ctrl.parentCtrl.timeOffsetFlag">DUE</span>{{$ctrl.parentCtrl.task.requiredDate |
+		date:$ctrl.parentCtrl.timeOffsetFlag?'h:mm a' : 'MMM/d'}}
+	</div>
+
+	<div class="sub-item3" ng-if="$ctrl.parentCtrl.state === 1"
+		ng-bind-html="$ctrl.parentCtrl.task.requiredDate | taskTimeAgo">
+	</div>
+
+	<div class="sub-item3" ng-if="$ctrl.parentCtrl.state === 2">
+		0<span class='time-sign'>M</span>
+	</div>
+
+</div>

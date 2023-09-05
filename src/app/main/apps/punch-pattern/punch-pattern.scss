@@ -1,0 +1,52 @@
+.punch-pattern-detail-edit {
+  div {
+    width: 100%;
+    height: 20px;
+  }
+}
+
+.punch-detail-btn-container {
+  position: relative;
+  top: -10px;
+}
+
+.punch-list-container {
+  .btn-col {
+    width: 45px;
+  }
+
+  .arrow-col {
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .arrow-btn {
+    margin: 0;
+    padding: 0;
+    width: 25px;
+    display: none;
+  }
+
+  .punch-deletebtn {
+    margin: 0;
+    padding: 0;
+    width: 25px;
+    display: none;
+  }
+
+  .material-usage-item {
+    padding-left: 0;
+  }
+
+  .material-usage-item:hover {
+    .arrow-btn {
+      display: block;
+    }
+
+    .punch-deletebtn {
+      display: block !important;
+    }
+  }
+}

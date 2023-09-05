@@ -1,0 +1,212 @@
+<md-dialog aria-label="Downtime" class="downtime-dialog" ng-cloak>
+  <md-toolbar class="downtime-toolbar">
+    <div class="md-toolbar-tools">
+      <h2>Planned Downtime Details</h2>
+    </div>
+  </md-toolbar>
+  <md-dialog-content flex>
+    <div class="md-dialog-content downtime-dialog-content">
+      <div class="title-div">
+        <md-input-container class="md-block mdTitle">
+          <input
+            ng-model="vm.downtime.title"
+            required
+            placeholder="Downtime Title"
+          />
+        </md-input-container>
+      </div>
+      <div class="dialog-bottom-content">
+        <md-input-container>
+          <label class="typeLabel">Type</label>
+          <md-select
+            ng-model="vm.downtime.activityType"
+            required
+            placeholder=" Select"
+            class="downtime-type"
+            aria-label="activityType"
+          >
+            <md-option ng-repeat="type in vm.Types" value="{{type}}"
+              >{{type}}</md-option
+            >
+          </md-select>
+        </md-input-container>
+        <label class="datepicker-label">Starts</label>
+        <md-datepicker
+          ng-model="vm.downtime.startDate"
+          md-placeholder="Enter date"
+        ></md-datepicker>
+        <md-input-container>
+          <md-select
+            ng-model="vm.startTime.hours"
+            class="downtime-time"
+            aria-label="startTime hours"
+          >
+            <md-option ng-repeat="hour in vm.hours" value="{{hour}}"
+              >{{hour}}</md-option
+            >
+          </md-select>
+        </md-input-container>
+        <span>:</span>
+        <md-input-container>
+          <md-select
+            ng-model="vm.startTime.mins"
+            class="downtime-time"
+            aria-label="startTime mins"
+          >
+            <md-option ng-repeat="min in vm.mins" value="{{min}}"
+              >{{min}}</md-option
+            >
+          </md-select>
+        </md-input-container>
+        <md-input-container>
+          <md-select
+            ng-model="vm.startTime.meridian"
+            class="downtime-time margin-right20"
+            aria-label="startTime meridian"
+          >
+            <md-option
+              ng-repeat="meridian in vm.meridianData"
+              value="{{meridian}}"
+              >{{meridian}}</md-option
+            >
+          </md-select>
+        </md-input-container>
+        <md-input-container>
+          <label class="durationLabel">Duration</label>
+          <md-select
+            ng-model="vm.duration.hours"
+            class="downtime-duration"
+            aria-label="duration hours"
+          >
+            <md-option ng-repeat="hour in vm.durationHours" value="{{hour}}">
+              {{hour}}</md-option
+            >
+          </md-select>
+        </md-input-container>
+        <label class="side-label">Hrs</label>
+        <md-input-container>
+          <md-select
+            ng-model="vm.duration.mins"
+            class="downtime-duration"
+            aria-label="duration mins"
+          >
+            <md-option ng-repeat="min in vm.durationMins" value="{{min}}">
+              {{min}}</md-option
+            >
+          </md-select>
+        </md-input-container>
+        <label class="side-label">Mins</label>
+      </div>
+      <div class="downtime-repeat-details">
+        <md-input-container ng-show="!vm.downtime.occursText">
+          <label class="repeatLabel">Repeat</label>
+          <md-select
+            ng-model="vm.downtime.occurs"
+            md-on-open="vm.openOccursData()"
+            md-on-close="vm.closeOccursData()"
+            ng-change="vm.openRepeatPopup(oldValue)"
+            ng-focus="oldValue=vm.downtime.occurs"
+            placeholder="Select"
+            class="downtime-type"
+            aria-label="occurs"
+          >
+            <md-option ng-repeat="item in vm.occursData" value="{{item.value}}"
+              >{{item.label}}</md-option
+            >
+          </md-select>
+        </md-input-container>
+        <span class="button-text-container" ng-show="vm.downtime.occursText">
+          <label class="text-lable">Repeat</label>
+          <button
+            ng-show="vm.downtime.occursText"
+            class="repeat-button"
+            ng-click="vm.openRepeatPopup()"
+          >
+            <span>{{vm.downtime.occursText}}</span
+            ><i class="editIcon">&#9998;</i>
+          </button>
+        </span>
+        <md-input-container ng-show="vm.downtime.occurs !== 'OneTime'">
+          <label class="repeatLabel">End Repeat</label>
+          <md-select
+            ng-model="vm.downtime.endRepeat"
+            placeholder=" Select"
+            class="downtime-duration"
+            aria-label="endRepeat"
+          >
+            <md-option
+              ng-repeat="item in vm.endRepeatData"
+              value="{{item.value}}"
+            >
+              {{item.label}}</md-option
+            >
+          </md-select>
+        </md-input-container>
+        <md-input-container
+          ng-show="vm.downtime.endRepeat === 'After' && vm.downtime.occurs !== 'OneTime'"
+        >
+          <md-select
+            ng-model="vm.downtime.occurenceCount"
+            class="downtime-duration"
+            aria-label="Occurence Count"
+          >
+            <md-option ng-repeat="count in vm.repeatCount" value="{{count}}"
+              >{{count}}</md-option
+            >
+          </md-select>
+        </md-input-container>
+        <label
+          class="side-label"
+          ng-show="vm.downtime.endRepeat === 'After' && vm.downtime.occurs !== 'OneTime'"
+          >Time(s)</label
+        >
+        <md-datepicker
+          ng-show="vm.downtime.endRepeat === 'OnDate' && vm.downtime.occurs !== 'OneTime'"
+          ng-model="vm.downtime.endDate"
+          md-placeholder="Enter date"
+        ></md-datepicker>
+      </div>
+      <div layout="row" class="machines-select">
+        <md-input-container>
+          <label class="typeLabel">Machines</label>
+          <md-select
+            ng-model="vm.selectedMachines"
+            required
+            placeholder="Select"
+            data-md-container-class="selectdemoSelectHeader"
+            aria-label="selected machines"
+            class="downtime-type"
+            multiple
+          >
+            <md-optgroup label="machines">
+              <!--<md-option>Select All</md-option>-->
+              <md-option
+                ng-value="machine"
+                ng-repeat="machine in vm.machinesData"
+                >{{machine.description}}</md-option
+              >
+            </md-optgroup>
+          </md-select>
+        </md-input-container>
+      </div>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row" class="downtime-btn-group">
+    <md-button
+      class="delete-btn"
+      ng-show="vm.showDelete"
+      ng-click="vm.deleteDowntime('true')"
+    >
+      DELETE
+    </md-button>
+    <md-button ng-click="vm.cancel()"> CANCEL </md-button>
+    <md-button
+      class="md-raised save-btn"
+      ng-click="vm.saveDowntimeDetails('false')"
+      style="margin-right: 20px"
+      ng-disabled="!vm.downtime.title || !vm.downtime.activityType || !vm.selectedMachines"
+    >
+      SAVE
+    </md-button>
+  </md-dialog-actions>
+</md-dialog>

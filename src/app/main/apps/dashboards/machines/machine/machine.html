@@ -1,0 +1,215 @@
+<div id="dashboard-machines" layout="column" class="page-layout datatable-layout simple fullwidth scroll-tab-dashboards" ngsf-fullscreen>
+    <md-content class="schedule-content schedule-content-grid">
+        <div class="header machine-back-icon-container" layout="row" layout-align="space-between start">
+            <md-icon ui-sref="app.dashboards_machines_machines" md-font-icon="icon-arrow-left" class="icon back-icon"></md-icon>
+        </div>
+        <ams-md-tabs
+            class="jobsTabs machines-tabs"
+            md-border-bottom
+            md-selected="$ctrl.selectedTabIndex"
+            md-dynamic-height="true"
+        >
+            <ams-md-tab
+                ng-repeat="machine in $ctrl.dashboardMachines track by machine.machineNumber"
+                label="{{machine.machine.description}}"
+                ng-click="$ctrl.selectTab(machine.machineNumber, $index)"
+            >
+            </ams-md-tab>
+        </ams-md-tabs>
+
+        <div
+            layout="row"
+            layout-align="space-between"
+            ng-class="{'ph-16 pt-24': $ctrl.mdMedia('xs'), 'ph-24 pt-32': $ctrl.mdMedia('gt-xs')}"
+            class="pb-16 machine-status-container"
+        >
+            <div class="h3 margin0">{{$ctrl.selectedMachine.machine.description}}</div>
+            <hole-count-mode-icon
+                ng-if="$ctrl.selectedMachine.machine.isHoleCount"
+            ></hole-count-mode-icon>
+            <lockout-indicator
+                lockout="$ctrl.selectedMachine.state.lockout"
+            ></lockout-indicator>
+            <!-- todo: format this better (move to the left maybe) -->
+            <run-state-indicator
+                state="$ctrl.selectedMachine.state.runState"
+                last-run-state-change="$ctrl.selectedMachine.state.lastRunStateChange"
+                is-offline="$ctrl.selectedMachine.state.isOffline"
+            ></run-state-indicator>
+        </div>
+        <!-- end machine status -->
+        <snapshot-bar
+            width="100%"
+            running="$ctrl.selectedStats.runMinutes"
+            exempt="$ctrl.selectedStats.exemptMinutes"
+            changeover="$ctrl.selectedStats.changeoverMinutes"
+            downtime="$ctrl.selectedStats.nonExemptMinutes"
+            breakdown="$ctrl.selectedStats.breakdownMinutes"
+            class="snapshot-bar"
+            ng-class="{'ph-16 pb-24 border-bottom': $ctrl.mdMedia('xs'), 'ph-24 pb-40': $ctrl.mdMedia('gt-xs')}"
+        >
+        </snapshot-bar>
+        <div
+            class="metric-large-container"
+            ng-class="{'border-bottom' : $ctrl.mdMedia('gt-xs'), 'p-16 border-bottom' : $ctrl.mdMedia('xs'), 'ph-32' : $ctrl.mdMedia('sm') || $ctrl.mdMedia('md') || $ctrl.mdMedia('lg'), 'ph-40' : $ctrl.mdMedia('gt-lg')}"
+        >
+            <metric-large
+                ng-repeat="metric in $ctrl.selectedMachine.metricSettings.settings | filter:{ showInLarge:true }"
+                ng-if="!!$ctrl.machineData.metricDefinitions[metric.metricId]"
+                metric="metric"
+                metric-definition="$ctrl.machineData.metricDefinitions[metric.metricId]"
+                current-primary="$ctrl.selectedStats[$ctrl.machineData.metricDefinitions[metric.metricId].primaryDataKey]"
+                current-secondary="$ctrl.selectedStats[$ctrl.machineData.metricDefinitions[metric.metricId].secondaryDataKey]"
+                stats-history="$ctrl.selectedMachine.statsHistory[$ctrl.machineData.metricDefinitions[metric.metricId].historyKey]"
+                class="metric-large-item"
+        ></metric-large>
+
+        </div>
+
+        <shift-select class="shift-select-container ph-24 pb-16 border-left" available-shifts="$ctrl.availableShifts" shift-index="$ctrl.shiftIndex"
+            update-shift-index="$ctrl.updateShiftIndex({shiftIdx})"></shift-select>
+        <shift-summary
+            class="shift-summary-container ph-24 pb-16 border-bottom border-left"
+            machine-state="$ctrl.selectedMachine.state"
+            shift-stats="$ctrl.selectedStats"
+        ></shift-summary>
+        <div class="ph-24 pt-16 pb-8 machine-info-container border-left">
+            <div class="h3 pb-16 text-upper margin0 machine-info-title">Machine Info</div>
+            <table
+                class="line-height-2 table-aligned text-nowrap"
+                ng-class="{'font-size-13': $ctrl.mdMedia('md'), 'font-size-14': $ctrl.mdMedia('lg'), 'font-size-15': $ctrl.mdMedia('gt-lg')}"
+            >
+
+                <colgroup>
+                <col style="width: 55%" />
+                <col style="width: 45%" />
+                </colgroup>
+                <tbody>
+                <tr>
+                    <td class="secondary-text" translate="softwareModel">
+                    Software Model
+                    </td>
+                    <td>{{$ctrl.selectedMachine.machine.softwareModel}}</td>
+                </tr>
+                <tr>
+                    <td class="secondary-text" translate="softwareVersion">
+                    Software Version
+                    </td>
+                    <td title="UART Version: {{$ctrl.selectedMachine.machine.uartVersion}}">
+                    {{$ctrl.selectedMachine.machine.softwareVersion}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="secondary-text" translate="serialNumber">
+                    Serial Number
+                    </td>
+                    <td>{{$ctrl.selectedMachine.machine.serialNumber}}</td>
+                </tr>
+                <tr>
+                    <td class="secondary-text" translate="switchCode">Switch</td>
+                    <td>{{$ctrl.selectedMachine.machine.switchCode}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="widget-group pr-24 pl-24 pro-log-container" feature-flag="in-development" ng-if="false">
+                <div>{{$ctrl.selectedMachine.scheduleEstimate.asOf | timeAgo}}</div>
+                <table>
+                    <thead><tr><th>start</th><th>activity</th><th>order</th><th>duration</th><th>remaining</th></tr></thead>
+                    <tbody>
+                        <tr ng-repeat="block in $ctrl.debugActivities | orderBy:['startDateTime', 'activityType']">
+                            <td style="padding:8px;">{{block.startDateTime | amsDateTime}}</td>
+                            <td style="padding:8px;">{{block.activityType}}</td>
+                            <td style="padding:8px;">{{block.orderCode}}</td>
+                            <td style="padding:8px;text-align: right;">{{block.duration | timeSpan:'secondsWithMs'}}</td>
+                            <td style="padding:8px;text-align: right;">{{block.remainingFt | unitsFormat:'ft'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <schedule-summary
+            class="schedule-summary-container"
+            schedule-summary="$ctrl.selectedMachine.scheduleSummary"
+            shift-stats="$ctrl.selectedStats"
+        ></schedule-summary>
+
+        <div
+            ng-class="{'border-bottom ph-16' : $ctrl.mdMedia('xs'), 'border-right ph-24' : $ctrl.mdMedia('gt-xs')}"
+            class="pv-32 item-h"
+            >
+            <div
+                class="h3 pb-16 text-upper margin0"
+                translate="topDowntimeReasons"
+            >
+                Top Downtime Reasons
+            </div>
+            <pareto
+                data="$ctrl.selectedStats.downtimePareto"
+                name="name"
+                type="min"
+                value="durationMinutes"
+                occurances="instanceCount"
+                top-items="5"
+                bar-width="130"
+                bar-height="10"
+            ></pareto>
+        </div>
+        <div
+            ng-class="{'ph-16' : $ctrl.mdMedia('xs'), 'ph-24' : $ctrl.mdMedia('gt-xs')}"
+            class="pv-32 item-i"
+            >
+            <div
+                class="h3 pb-16 text-upper margin0"
+                translate="topScrapReasons"
+            >
+                Top Scrap Reasons
+            </div>
+            <pareto
+                data="$ctrl.selectedStats.scrapPareto"
+                name="name"
+                type="ft"
+                value="lengthFeet"
+                occurances="instanceCount"
+                top-items="5"
+                bar-width="130"
+                bar-height="10"
+            ></pareto>
+        </div>
+
+        <table id="graph-div" class="signals overview-table p-24 schedule-graph-container">
+        <thead>
+            <tr>
+            <th class="row-name h3">SCHEDULE</th>
+            <th class="timeline">
+                <timeline-x-axis height="50" display-x-domain="$ctrl.focusExtent" cursor-time="$ctrl.cursor"
+                width="1920"></timeline-x-axis>
+            </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td></td>
+            <td ng-mouseover="$ctrl.disableScroll($event)" ng-mouseleave="$ctrl.enableScroll()">
+                <timeline-block name="{{$ctrl.selectedMachine.machine.description}}"
+                machine-number="{{$ctrl.selectedMachine.machineNumber}}"
+                data="$ctrl.selectedMachine.scheduleEstimate.scheduleBlocks"
+                display-x-domain="$ctrl.focusExtent" cursor-time="$ctrl.cursor" height="50" width="1920">
+                </timeline-block>
+            </td>
+            </tr>
+        </tbody>
+        </table>
+
+        <div class="widget-group pr-24 pl-24 shift-history-container" feature-flag="experimental">
+            <span>SHIFT HISTORY 🧪</span>
+            <shift-history-chart shifts="$ctrl.shifts"></shift-history-chart>
+        </div>
+        <div class="widget-group pr-24 pl-24 pro-log-container">
+            <span class="h3">PRODUCTION LOG</span>
+            <production-log machines="$ctrl.machineNumber"
+            shift-code="$ctrl.selectedStats.startShiftCode"></production-log>
+        </div>
+    </md-content>
+
+</div>

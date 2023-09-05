@@ -1,0 +1,23 @@
+<div class="menu-title">
+  {{ $ctrl.subject }}:
+  <span>
+    {{ $ctrl.selectedItem.name ? $ctrl.selectedItem.name : $ctrl.selectedItem }}
+  </span>
+</div>
+
+<md-menu md-position-mode="target-right target">
+  <md-button class="md-icon-button" ng-click="$mdMenu.open($event)" aria-label="Change date">
+    <md-icon md-font-icon class="icon icon-chevron-down menu-icon"></md-icon>
+  </md-button>
+  <md-menu-content width="2" class="duration-menu">
+    <md-menu-item ng-repeat="item in $ctrl.menuList" class="duration-menu-item" ng-class="{
+        'selected-menu-item':
+          item === $ctrl.selectedItem ||
+          item.selector === $ctrl.selectedItem.selector
+      }">
+      <md-button class="date-menu-item-btn" ng-click="$ctrl.onChange({item})" aria-label="Change date">
+        {{ item.name ? item.name : item }}
+      </md-button>
+    </md-menu-item>
+  </md-menu-content>
+</md-menu>

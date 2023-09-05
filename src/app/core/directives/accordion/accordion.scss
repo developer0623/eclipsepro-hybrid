@@ -1,0 +1,115 @@
+@import '../../global-scss/partials/animations.scss';
+.accordion {
+    position: relative;
+    background: #fff;
+    // border-bottom: solid 1px rgba(0,0,0,.12);
+    max-height: 1349px;
+    min-height: 48px;
+    height: auto;
+    @include transitionDuration(300ms);
+    @include easingOutQuadTimingFunction();
+    overflow: hidden;
+  
+    .accordian-header-closed-icon {
+      position: absolute;
+      top: 2px;
+      left: -12px;
+      margin: 0;
+      transition-property: transform;
+      transition-duration: 0.3s;
+    }
+  
+    &.accordion-closed {
+      @include transitionDuration(300ms);
+      max-height: 49px !important;
+      min-height: 49px !important;
+      height: 49px !important;
+  
+      .accordian-header-closed-icon {
+        transform: rotate(-90deg);
+      }
+      .accordian-closed-icon {
+        display: block !important;
+      }
+      .accordian-open-icon {
+        display: none !important;
+      }
+    }
+    .accordion-toggle-button {
+      background: #b3b3b3b3;
+      padding-left: 20px;
+      // possibly bad design choice by Ricky:
+      border-bottom-style: outset;
+    }
+    .pos-right {
+      margin-left: auto;
+    }
+    // removing the zebra
+    // &:nth-child(even) {
+    //   .accordion-toggle-button {
+    //     background: #808080;
+    //   }
+    // }
+  }
+  
+  .accordian-header {
+    position: relative;
+    height: auto !important;
+    max-height: initial !important;
+  }
+  
+  .accordion-toggle {
+    position: relative;
+    height: 48px;
+    max-height: 48px;
+    font-size: 15px;
+    z-index: 10;
+    box-shadow: $whiteframe-shadow-2dp;
+    @include easingOutQuadTimingFunction();
+  
+    &.no-shadow {
+      box-shadow: none;
+    }
+  
+    .accordion-toggle-button {
+      cursor: pointer;
+      .accordian-closed-icon {
+        display: none;
+      }
+      .accordian-open-icon {
+        display: block;
+      }
+    }
+  
+    > div:first-child {
+      height: 48px;
+    }
+  
+    .md-button {
+      line-height: 20px;
+    }
+  
+    .accordion-closed & {
+      box-shadow: none;
+    }
+  }
+  
+  .accordion-content {
+    @include transitionDuration(300ms);
+    @include easingOutQuadTimingFunction();
+    background: #fff;
+    position: relative;
+    z-index: 9;
+    opacity: 1;
+    max-height: 1350px;
+    display: inherit;
+    overflow: hidden;
+  
+    .accordion-closed & {
+      @include transitionDuration(300ms);
+      padding: 0;
+      opacity: 0;
+      max-height: 0;
+    }
+  }
+  

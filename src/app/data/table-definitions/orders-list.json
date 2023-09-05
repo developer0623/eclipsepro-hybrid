@@ -1,0 +1,42 @@
+[
+    {
+        "title": "Order",
+        "data": "orderCode"
+    },
+    {
+        "title": "Material",
+        "data": "materialCode"
+    },
+    {
+        "title": "Tooling",
+        "data": "toolingCode"
+    },
+    {
+        "title": "Length",
+        "data": "totalFt",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Remaining",
+        "data": "remainingFt",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Status",
+        "data": "status"
+    },
+    {
+        "title": "Machine",
+        "data": "machineNumber",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Sequence",
+        "data": "sequence",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Customer",
+        "data": "customerName"
+    }
+]

@@ -1,0 +1,102 @@
+<div id="dashboard-report" class="page-layout simple fullwidth white-bg production-summary" ngsf-fullscreen>
+  <report-header subject="Coil Summary" on-filter="$ctrl.onFilter(searchTxt)"></report-header>
+
+  <div class="summary-title-header">
+    <custom-menu class="menu-column duration" subject="DURATION" menu-list="$ctrl.durations"
+      selected-item="$ctrl.selectedDuration" on-change="$ctrl.onClickDurationItem(item)"></custom-menu>
+
+    <report-date-col class="date-column" start-date="$ctrl.startDate" end-date="$ctrl.endDate"
+      duration="$ctrl.selectedDuration" on-change="$ctrl.onChangeDate(startDate, endDate)"></report-date-col>
+
+    <checkbox-menu class="menu-column float-right" subject="MACHINES" menu-subject="SHOW MACHINES"
+      menu-list="$ctrl.machines" on-change="$ctrl.onChangeMachines(items)"></checkbox-menu>
+
+    <div class="header-icon-column float-right">
+      <md-button href="/_api/reports/coilsummary?{{$ctrl.fileDownloadQueryString}}&format=csv" target="_self">
+        <md-tooltip md-direction="bottom">
+          <span translate="downloadCsv"></span>
+        </md-tooltip>
+        <md-icon md-font-icon="icon-file-excel" class="icon"></md-icon>
+      </md-button>
+      <!--         <md-button aria-label="Select Shift 1" class="md-icon-button" ng-click="$ctrl.openPrintPreview($event)">
+                <md-icon md-font-icon class="icon icon-printer header-icon"></md-icon>
+            </md-button> -->
+    </div>
+  </div>
+  <div class="content md-background md-hue-1 scroll-content">
+    <div class="material-usage-header">
+      <div class="main-con">Coil Number</div>
+      <div class="main-con">Coil Material</div>
+      <div class="main-con">Heat Number</div>
+      <div class="desc">Desc</div>
+      <div class="main-con">Good {{'ft' | userDisplayUnits}}</div>
+      <div class="main-con">Scrap {{'ft' | userDisplayUnits}}</div>
+      <div class="main-con">Load Count</div>
+    </div>
+    <div class="material-usage-content">
+      <md-virtual-repeat-container id="coil-summary-list" class="ms-scroll">
+        <div md-virtual-repeat="item in $ctrl.filteredList" class="repeated-item" flex>
+          <accordion class="test" is-open="item.isOpen">
+            <accordion-header on-close="$ctrl.onClose(item)">
+              <div class="material-usage-item item-header">
+                <div class="main-con">
+                  <a class="td-link" ng-click="$event.stopPropagation()"
+                    ui-sref="app.inventory.coils.coil({id: item.coil.coilId})">{{item.coil.coilId}}</a>
+                </div>
+                <div class="main-con">
+                  <a class="td-link" ng-click="$event.stopPropagation()"
+                    ui-sref="app.inventory.coil-types.coil-type({id: item.coil.materialCode})">{{item.coil.materialCode}}</a>
+                </div>
+                <div class="main-con">{{item.coil.heatNumber}}</div>
+                <div class="desc">{{item.coil.description}}</div>
+                <div class="main-con">{{item.summary.goodFt | unitsFormat :"ft":1:true}}</div>
+                <div class="main-con">{{item.summary.scrapFt | unitsFormat :"ft":1:true}}</div>
+                <div class="main-con">{{item.summary.loadCount}}</div>
+              </div>
+            </accordion-header>
+
+            <accordion-content>
+              <div class="material-usage-item sub-header">
+                <div class="main-con">Used on Order</div>
+                <div class="main-con">Machine</div>
+                <div class="main-con">Customer</div>
+                <div class="main-con">Date Used</div>
+                <!-- <div class="main-con">Start {{'ft' | userDisplayUnits}}</div> -->
+                <div class="main-con">Good {{'ft' | userDisplayUnits}}</div>
+                <div class="main-con">Scrap {{'ft' | userDisplayUnits}}</div>
+                <div class="main-con">Other {{'ft' | userDisplayUnits}}</div>
+                <div class="main-con">Net Chg {{'ft' | userDisplayUnits}}</div>
+              </div>
+              <div class="material-usage-item" ng-repeat="item1 in item.usages">
+                <div class="main-con">
+                  <a class="td-link" ng-click="$event.stopPropagation()"
+                    ui-sref="app.orders.detail({id: item1.ordId})">{{item1.orderCode}}</a>
+                </div>
+                <div class="main-con">{{item1.machineNumber}}</div>
+                <div class="main-con">{{item1.customerName}}</div>
+                <div class="main-con">{{item1.date | date : 'MM/dd/yyyy'}}</div>
+                <!-- <div class="main-con"></div> -->
+                <div class="main-con">
+                  <span class="num-col">
+                    {{item1.goodFt | unitsFormat :"ft":1:true}}</span>
+                </div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{item1.scrapFt | unitsFormat :"ft":1:true}}</span>
+                </div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{item1.otherFt | unitsFormat :"ft":1:true}}</span>
+                </div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{item1.netChangeFt | unitsFormat :"ft":1:true}}</span>
+                </div>
+              </div>
+            </accordion-content>
+          </accordion>
+        </div>
+      </md-virtual-repeat-container>
+    </div>
+  </div>
+</div>

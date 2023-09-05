@@ -1,0 +1,35 @@
+<div class="add-pattern-modal-container" aria-label="Add Pattern">
+  <div class="item-settings-dialog__wrapper">
+    <div class="item-settings-dialog__header">Add Pattern</div>
+    <md-content class="main-container">
+      <form name="patternForm">
+        <md-input-container class="md-block main-input">
+          <input ng-model="$ctrl.patternName" name="patternName" ng-change="$ctrl.onChangeVal()"
+            placeholder="Pattern Name" required />
+          <div class="pattern-error" ng-show="$ctrl.err">{{$ctrl.err}}</div>
+          <div ng-messages="patternForm.patternName.$error">
+            <div ng-message="required">Pattern Name is required.</div>
+          </div>
+        </md-input-container>
+      </form>
+    </md-content>
+    <!-- <md-content>
+      <md-list class="error-list">
+        <md-list-item class="error-item">
+          <i class="icon icon-close"></i>
+          <p>{{$ctrl.err}}</p>
+        </md-list-item>
+      </md-list>
+    </md-content> -->
+
+    <md-dialog-actions layout="row" class="item-settings-dialog__footer">
+      <span flex></span>
+      <div class="item-settings-dialog__button" ng-click="$ctrl.cancel()">
+        CANCEL
+      </div>
+      <div class="item-settings-dialog__button x--active" ng-click="$ctrl.save()">
+        Save
+      </div>
+    </md-dialog-actions>
+  </div>
+</div>

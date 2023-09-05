@@ -1,0 +1,30 @@
+<!-- <div class="item-circle" ng-style="$ctrl.compareHistorical($ctrl.item.fpmPlan, $ctrl.item.fpmHist)"></div> -->
+<!-- <div class="editable-div">
+	<input ng-model="$ctrl.item.fpmPlan" ng-focus="$ctrl.focusSelect($event)" ng-blur="$ctrl.destroyFocus($event)" ng-class="{'focused':$ctrl.focused, 'diffval':$ctrl.compareParent('fpmPlan')}">
+</div> -->
+
+<div class="performance-standard-cell">
+	<div class="cell-default" performance-tooltip tooltip-content="$ctrl.value" dbl-click-callback="$ctrl.onEdit(event)"
+		click-callback="$ctrl.openDialog(event)" ng-if="!$ctrl.isEdit && !$ctrl.state">
+		<span ng-if="$ctrl.value.length">{{$ctrl.minValue}}</span>
+		<span ng-if="!$ctrl.value.length">0</span>
+		<span class="second-span" ng-if="$ctrl.minValue !== $ctrl.maxValue"> - {{$ctrl.maxValue}}</span>
+	</div>
+	<div class="cell-edit" ng-if="!$ctrl.isEdit && $ctrl.state" performance-tooltip tooltip-content="$ctrl.value"
+		ng-class="{'is_focus': $ctrl.state}">
+		<span ng-if="$ctrl.value.length">{{$ctrl.minValue}}</span>
+		<span class="second-span" ng-if="$ctrl.minValue !== $ctrl.maxValue"> - {{$ctrl.maxValue}}</span>
+		<md-button aria-label="Select Category" class="md-icon-button edit-button" ng-if="$ctrl.isFocus"
+			ng-click="$ctrl.openDialog($event)">
+			<md-icon class="icon-pencil icon edit-icon" md-font-icon></md-icon>
+		</md-button>
+	</div>
+	<div class="cell-edit" ng-if="$ctrl.isEdit" performance-tooltip tooltip-content="$ctrl.value"
+		tooltip-focus="$ctrl.isFocus" ng-class="{'is_focus': $ctrl.state}">
+		<input type="number" ng-model="$ctrl.value[0].fpm" ng-focus="$ctrl.focus(true)" ng-blur="$ctrl.focus(false)" />
+		<md-button aria-label="Select Category" class="md-icon-button edit-button" ng-if="$ctrl.isFocus"
+			ng-click="$ctrl.openDialog($event)">
+			<md-icon class="icon-pencil icon edit-icon" md-font-icon></md-icon>
+		</md-button>
+	</div>
+</div>

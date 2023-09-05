@@ -1,0 +1,235 @@
+<!-- large panel widget -->
+<div class="ms-widget">
+    <div class="ms-widget-front white-bg">
+        <div layout="row" layout-wrap flex="noshrink">
+
+            <!-- left col -->
+            <div layout="column" flex-md="70" flex-lg="70" flex-gt-lg="75" flex="100" flex="noshrink" ng-class="{'border-right border-2': self.$mdMedia('gt-sm')}">
+
+                <!-- machine overview -->
+
+                <!-- machine status -->
+                <div layout="row" layout-align="space-between" ng-class="{'ph-16 pt-24': self.$mdMedia('xs'), 'ph-24 pt-32': self.$mdMedia('gt-xs')}" class="pb-16">
+                    <div class="h3  margin0">{{$ctrl.machine.description}}</div>
+                    <run-state-indicator state="$ctrl.machineState.runState" last-run-state-change="$ctrl.machineState.lastRunStateChange" is-offline="$ctrl.machineState.isOffline"></run-state-indicator>
+                </div>
+                <!-- end machine status -->
+
+                <!-- snapshot bar -->
+                <div layout="row" ng-class="{'ph-16 pb-24 border-bottom': self.$mdMedia('xs'), 'ph-24 pb-40': self.$mdMedia('gt-xs')}">
+                    <snapshot-bar width="100%" running="$ctrl.shiftStats.runMinutes" exempt="$ctrl.shiftStats.exemptMinutes" changeover="$ctrl.shiftStats.changeoverMinutes" downtime="$ctrl.shiftStats.nonExemptMinutes" breakdown="$ctrl.shiftStats.breakdownMinutes">
+                    </snapshot-bar>
+                </div>
+                <!-- end snapshot bar -->
+
+                <!-- metrics -->
+                <div layout="row" layout-align="start center" layout-wrap ng-class="{'border-bottom' : self.$mdMedia('gt-xs')}">
+
+                    <!-- todo: move to controller -->
+                    <!-- metric -->
+                    <div class="large-panel-metric" layout="row" layout-align="start center" flex-xs="100" flex="33" ng-repeat="metric in $ctrl.metricConfiguration" ng-class="{'p-16 border-bottom' : self.$mdMedia('xs'), 'pb-32 ph-32' : self.$mdMedia('sm') || self.$mdMedia('md') || self.$mdMedia('lg'), 'pb-32 ph-40' : self.$mdMedia('gt-lg')}">
+                        <div layout="column" flex ng-class="$ctrl.metricStatus(metric, $ctrl.shiftStats)">
+                            <div class="h3 secondary-text text-upper pb-8  margin0" ng-class="{'pl-8': self.$mdMedia('xs')}" translate="{{$ctrl.metricDefinitions[metric.metricId].metricId}}">{{$ctrl.metricDefinitions[metric.metricId].metricId}}</div>
+                            <div layout="row" layout-align="start">
+                                <div flex="40" ng-class="{'pb-8': self.$mdMedia('gt-xs'), 'font-size-24 pb-8 pl-8': self.$mdMedia('xs'), 'font-size-32': !self.$mdMedia('xs') || !self.$mdMedia('gt-lg'), 'font-size-36': self.$mdMedia('gt-lg')}" class="line-height-1 font-weight-500">
+                                    {{$ctrl.shiftStats[$ctrl.metricDefinitions[metric.metricId].primaryDataKey] | unitsFormat :$ctrl.metricDefinitions[metric.metricId].primaryUnits:3:true:true}}<sup ng-class="{'font-size-16': self.$mdMedia('gt-xs'), 'font-size-12': self.$mdMedia('xs')}">{{$ctrl.metricDefinitions[metric.metricId].primaryUnits | userDisplayUnits}}</sup>
+                                    <div class="line-height-1 font-size-13 black-text text-nowrap" style="position: relative; top: 3px; left: 3px;">
+                                        {{$ctrl.shiftStats[$ctrl.metricDefinitions[metric.metricId].secondaryDataKey] | unitsFormat :$ctrl.metricDefinitions[metric.metricId].secondaryUnits:1}}
+                                    </div>
+                                </div>
+                                <!--todo:unit display filter-->
+                                <div flex="60" ng-class="{'pr-8 pb-8': self.$mdMedia('gt-md')}" class="sparkline-container">
+                                    <sparkline current="$ctrl.shiftStats[$ctrl.metricDefinitions[metric.metricId].primaryDataKey]" type="$ctrl.metricDefinitions[metric.metricId].primaryUnits" stats="statsHistory[$ctrl.metricDefinitions[metric.metricId].historyKey]"></sparkline>
+                                </div>
+                            </div>
+                            <div class="font-size-12 secondary-text pb-8 text-nowrap hide">{{$ctrl.shiftStats[$ctrl.metricDefinitions[metric.metricId].secondaryDataKey] | number: 0 }} {{$ctrl.metricDefinitions[metric.metricId].secondaryUnits}} &nbsp;</div>
+                            <div ng-class="{'pb-16': self.$mdMedia('gt-xs')}" class="bullet-container">
+                                <bullet-chart current="$ctrl.shiftStats[$ctrl.metricDefinitions[metric.metricId].primaryDataKey]" type="$ctrl.metricDefinitions[metric.metricId].primaryUnits" min-value="metric.minValue" ok-lower="metric.okRangeStart" ok-upper="metric.okRangeEnd" target="metric.targetValue"
+                                    max-value="metric.maxValue" lower-better="$ctrl.metricDefinitions[metric.metricId].lowerIsBetter"></bullet-chart>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end metric -->
+
+                </div>
+                <!-- end metrics -->
+
+                <!-- render this section if self.$mdMedia(small or medium) -->
+                <!-- shift summary -->
+                <div ng-if="self.$mdMedia('xs') || self.$mdMedia('sm')" layout="row" layout-wrap ng-class="{'border-bottom': self.$mdMedia('sm')}">
+                    <div layout="column" flex-xs="100" flex-sm="50" ng-class="{'border-right': self.$mdMedia('sm'), 'border-bottom': self.$mdMedia('xs')}" class="ph-24 pv-32">
+                        <div class="h3 pb-16 text-upper  margin0" translate="currentShift">Current Shift</div>
+                        <shift-summary machine-state="$ctrl.machineState" shift-stats="$ctrl.shiftStats"></shift-summary>
+                    </div>
+                    <!-- end shift summary -->
+
+                    <!-- schedule summary -->
+                    <div layout="column" flex-xs="100" flex-sm="50" ng-class="{'border-bottom': self.$mdMedia('xs')}" class="ph-24 pv-32">
+                        <div class="h3 pb-16 text-upper margin0" translate="$ctrl.scheduleSummary">Schedule Summary</div>
+
+                        <table class="line-height-2 table-aligned pb-8 font-size-15">
+                            <colgroup>
+                                <col style="width: 30%;" />
+                                <col style="width: 70%;" />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td class="secondary-text" translate="currentOrder">Current Order</td>
+                                    <td>
+                                        <a class="td-link" ng-click="$event.stopPropagation()" ui-sref="app.orders.order({id: $ctrl.scheduleSummary.currentOrderId})">{{$ctrl.scheduleSummary.currentOrderCode || "n/a"}}</a>
+                                        <span class="font-size-12 text-nowrap w-65 text-right" style="display: inline-block"> {{($ctrl.scheduleSummary.currentOrderRemainingFeet  | unitsFormat :"ft":0) || "n/a"}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="secondary-text" translate="material">Material</td>
+                                    <td><a class="td-link" ng-click="$event.stopPropagation()" ui-sref="app.inventory.coil-types.coil-type({id: $ctrl.scheduleSummary.currentMaterialCode})">{{$ctrl.scheduleSummary.currentMaterialCode || "n/a"}}</a> <span class="font-size-12 text-nowrap w-65 text-right"
+                                            style="display: inline-block"> {{($ctrl.scheduleSummary.currentMaterialRemainingFeet  | unitsFormat :"ft":0) || "n/a"}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="secondary-text" translate="tooling">Tooling</td>
+                                    <td>{{$ctrl.scheduleSummary.currentToolingCode || "n/a"}} <span class="font-size-12 text-nowrap w-65 text-right" style="display: inline-block"> {{($ctrl.scheduleSummary.currentToolingRemainingFeet  | unitsFormat :"ft":0) || "n/a"}}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="line-height-2 table-aligned font-size-15">
+                            <colgroup>
+                                <col style="width: 30%;" />
+                                <col style="width: 70%;" />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td class="secondary-text" translate="nextOrder">Next Order</td>
+                                    <td>
+                                        <a class="td-link" ng-click="$event.stopPropagation()" ui-sref="app.orders.order({id: $ctrl.scheduleSummary.nextOrderId})">{{$ctrl.scheduleSummary.nextOrderCode || "n/a"}}</a>
+                                        <span class="font-size-12 text-nowrap w-65 text-right" style="display: inline-block">{{($ctrl.scheduleSummary.nextOrderFeet  | unitsFormat :"ft":0) || "n/a"}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="secondary-text" translate="material">Material</td>
+                                    <td><a class="td-link" ng-click="$event.stopPropagation()" ui-sref="app.inventory.coil-types.coil-type({id: $ctrl.scheduleSummary.nextMaterialCode})">{{$ctrl.scheduleSummary.nextMaterialCode || "n/a"}}</a> <span class="font-size-12 text-nowrap w-65 text-right"
+                                            style="display: inline-block">{{($ctrl.scheduleSummary.nextMaterialFeet  | unitsFormat :"ft":0) || "n/a"}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="secondary-text" translate="tooling">Tooling</td>
+                                    <td>{{$ctrl.scheduleSummary.nextToolingCode || "n/a"}} <span class="font-size-12 text-nowrap w-65 text-right" style="display: inline-block">{{($ctrl.scheduleSummary.nextToolingFeet  | unitsFormat :"ft":0) || "n/a"}}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- end schedule summary -->
+
+                </div>
+                <!-- end section render if self.$mdMedia(small or medium) -->
+
+                <!-- end machine overview -->
+
+                <!-- pareto -->
+                <div layout="row" layout-wrap>
+
+                    <!-- downtime -->
+                    <div layout="column" flex-gt-xs="50" flex="100" ng-class="{'border-bottom ph-16' : self.$mdMedia('xs'), 'border-right ph-24' : self.$mdMedia('gt-xs')}" class="pv-32">
+                        <div class="h3 pb-16 text-upper  margin0" translate="topDowntimeReasons">Top Downtime Reasons</div>
+                        <pareto data="$ctrl.shiftStats.downtimePareto" name="name" type="min" value="durationMinutes" occurances="instanceCount" top-items="5" bar-width="130" bar-height="10"></pareto>
+                    </div>
+                    <!-- end downtime -->
+
+                    <!-- scrap -->
+                    <div layout="column" flex-gt-xs="50" flex="100" ng-class="{'ph-16' : self.$mdMedia('xs'), 'ph-24' : self.$mdMedia('gt-xs')}" class="pv-32">
+                        <div class="h3 pb-16 text-upper  margin0" translate="topScrapReasons">Top Scrap Reasons</div>
+                        <pareto data="$ctrl.shiftStats.scrapPareto" name="name" type="ft" value="lengthFeet" occurances="instanceCount" top-items="5" bar-width="130" bar-height="10"></pareto>
+                    </div>
+                    <!-- end scrap -->
+
+                </div>
+                <!-- end pareto -->
+
+            </div>
+            <!-- end left col -->
+
+            <!-- render this section if self.$mdMedia(> medium) -->
+
+            <!-- right col -->
+            <div ng-if="self.$mdMedia('gt-sm')" layout="column" flex-md="30" flex-lg="30" flex-gt-lg="25" flex="noshrink" class="pv-32">
+
+                <!--shift summary -->
+                <div class="ph-24 pb-16 border-bottom">
+                    <div class="h3 pb-16 text-upper  margin0" translate="currentShift">Current Shift</div>
+                    <shift-summary machine-state="$ctrl.machineState" shift-stats="$ctrl.shiftStats"></shift-summary>
+                </div>
+
+                <div class="ph-24 pt-16 pb-8">
+                    <table class="line-height-2 table-aligned" ng-class="{'font-size-13': self.$mdMedia('md'), 'font-size-14': self.$mdMedia('lg'), 'font-size-15': self.$mdMedia('gt-lg')}">
+                        <colgroup>
+                            <col style="width: 30%;" />
+                            <col style="width: 70%;" />
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <td class="secondary-text" translate="currentOrder">Current Order</td>
+                                <td>
+                                    <a class="td-link" ng-click="$event.stopPropagation()" ui-sref="app.orders.order({id: $ctrl.scheduleSummary.currentOrderId})">{{$ctrl.scheduleSummary.currentOrderCode || "n/a"}}</a>
+                                    <md-tooltip ng-if="self.$mdMedia('md')"><span translate="remainingFeet">Remaining Feet</span>: {{$ctrl.scheduleSummary.currentOrderRemainingFeet || "0"}} ft</md-tooltip>
+                                    <span ng-if="!self.$mdMedia('md')" class="text-nowrap w-65 text-right" style="display: inline-block" ng-class="{'font-size-12': !self.$mdMedia('gt-lg'), 'font-size-13': self.$mdMedia('gt-lg')}">{{($ctrl.scheduleSummary.currentOrderRemainingFeet  | unitsFormat :"ft":0) || "n/a"}}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="secondary-text" translate="material">Material</td>
+                                <td>
+                                    <a class="td-link" ng-click="$event.stopPropagation()" ui-sref="app.inventory.coil-types.coil-type({id: $ctrl.scheduleSummary.currentMaterialCode})">{{$ctrl.scheduleSummary.currentMaterialCode || "n/a"}}</a>
+                                    <md-tooltip ng-if="self.$mdMedia('md')"><span translate="remainingMaterial">Remaining Material</span>: {{$ctrl.scheduleSummary.currentMaterialRemainingFeet || "0"}} ft</md-tooltip>
+                                    <span ng-if="!self.$mdMedia('md')" class="text-nowrap w-65 text-right" style="display: inline-block" ng-class="{'font-size-12': !self.$mdMedia('gt-lg'), 'font-size-13': self.$mdMedia('gt-lg')}">{{($ctrl.scheduleSummary.currentMaterialRemainingFeet  | unitsFormat :"ft":0) || "n/a"}}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="secondary-text" translate="tooling">Tooling</td>
+                                <td>
+                                    {{$ctrl.scheduleSummary.currentToolingCode || "n/a"}}
+                                    <md-tooltip ng-if="self.$mdMedia('md')"><span translate="remainingTooling">Remaining Tooling</span>: {{$ctrl.scheduleSummary.currentToolingRemainingFeet || "0"}} ft</md-tooltip>
+                                    <span ng-if="!self.$mdMedia('md')" class="text-nowrap w-65 text-right" style="display: inline-block" ng-class="{'font-size-12': !self.$mdMedia('gt-lg'), 'font-size-13': self.$mdMedia('gt-lg')}">{{($ctrl.scheduleSummary.currentToolingRemainingFeet  | unitsFormat :"ft":0) || "n/a"}}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="ph-24">
+                    <table class="line-height-2 table-aligned" ng-class="{'font-size-13': self.$mdMedia('md'), 'font-size-14': self.$mdMedia('lg'), 'font-size-15': self.$mdMedia('gt-lg')}">
+                        <colgroup>
+                            <col style="width: 30%;" />
+                            <col style="width: 70%;" />
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <td class="secondary-text" translate="nextOrder">Next Order</td>
+                                <td>
+                                    <a class="td-link" ng-click="$event.stopPropagation()" ui-sref="app.orders.order({id: $ctrl.scheduleSummary.nextOrderId})">{{$ctrl.scheduleSummary.nextOrderCode || "n/a"}}</a>
+                                    <md-tooltip ng-if="self.$mdMedia('md')"><span translate="scheduledFeet">Scheduled Feet</span>: {{$ctrl.scheduleSummary.nextOrderFeet || "0"}} ft</md-tooltip>
+                                    <span ng-if="!self.$mdMedia('md')" class="text-nowrap w-65 text-right" style="display: inline-block" ng-class="{'font-size-12': !self.$mdMedia('gt-lg'), 'font-size-13': self.$mdMedia('gt-lg')}">{{($ctrl.scheduleSummary.nextOrderFeet  | unitsFormat :"ft":0) || "n/a"}}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="secondary-text" translate="material">Material</td>
+                                <td>
+                                    <a class="td-link" ng-click="$event.stopPropagation()" ui-sref="app.inventory.coil-types.coil-type({id: $ctrl.scheduleSummary.nextMaterialCode})">{{$ctrl.scheduleSummary.nextMaterialCode || "n/a"}}</a>
+                                    <md-tooltip ng-if="self.$mdMedia('md')"><span translate="materialScheduled">Material Scheduled</span>: {{$ctrl.scheduleSummary.nextMaterialFeet || "0"}} ft</md-tooltip>
+                                    <span ng-if="!self.$mdMedia('md')" class="text-nowrap w-65 text-right" style="display: inline-block" ng-class="{'font-size-12': !self.$mdMedia('gt-lg'), 'font-size-13': self.$mdMedia('gt-lg')}">{{($ctrl.scheduleSummary.nextMaterialFeet  | unitsFormat :"ft":0) || "n/a"}}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="secondary-text" translate="tooling">Tooling</td>
+                                <td>
+                                    {{$ctrl.scheduleSummary.nextToolingCode || "n/a"}}
+                                    <md-tooltip ng-if="self.$mdMedia('md')"><span translate="toolingScheduled">Tooling Scheduled</span>: {{$ctrl.scheduleSummary.nextToolingFeet || "0"}} ft</md-tooltip>
+                                    <span ng-if="!self.$mdMedia('md')" class="text-nowrap w-65 text-right" style="display: inline-block" ng-class="{'font-size-12': !self.$mdMedia('gt-lg'), 'font-size-13': self.$mdMedia('gt-lg')}">{{($ctrl.scheduleSummary.nextToolingFeet  | unitsFormat :"ft":0) || "n/a"}}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- end shift summary -->
+
+            </div>
+            <!-- end right col -->
+
+            <!-- end section render if self.$mdMedia(> medium) -->
+
+        </div>
+    </div>
+</div>
+<!-- end large panel widget -->

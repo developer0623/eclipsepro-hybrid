@@ -1,0 +1,11 @@
+<div class="summary-timebar">
+  <div class="chart-content">
+      <div class="main-area" ng-style="$ctrl.getMainArea(order)" ng-repeat="order in [0, 1, 2, 3, 4, 5]"></div>
+  </div>
+  <div class="summary-timebar__bottom" ng-style="$ctrl.getBottomWidth()">
+    <div class="summary-timebar__line"></div>
+    <div class="summary-timebar__date">{{$ctrl.data.durationTime | date: "HH'H' mm'M' ss'S'"}}</div>
+    <div class="summary-timebar__line"></div>
+  </div>
+  
+</div>

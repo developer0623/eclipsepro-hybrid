@@ -1,0 +1,110 @@
+<div class="page-layout simple fullwidth settings" ng-class="{'no-scroll': panelIsOpen }" ngsf-fullscreen>
+   <div class="header">
+      <div layout="row" layout-align="space-between">
+         <span class="h2 text-upper">LICENSING: LICENSE</span>
+         <div class="toolbar">
+            <md-button ng-click="$ctrl.triggerSendInstallInfo()" aria-label="Send Installation Info">
+               <md-tooltip md-direction="bottom">
+                  <span translate="">Send Installation Info</span>
+               </md-tooltip>
+               <md-icon md-font-icon="icon-cloud-upload" class="icon"></md-icon>
+            </md-button>
+            <md-button ng-click="$ctrl.triggerLicenseUpdate()" aria-label="Request License Update">
+               <md-tooltip md-direction="bottom">
+                  <span translate="">Request License Update</span>
+               </md-tooltip>
+               <md-icon md-font-icon="icon-sync" class="icon"></md-icon>
+            </md-button>
+            <md-button ng-click="$ctrl.addLicenseFile()" aria-label="Add License">
+               <md-tooltip md-direction="bottom">
+                  <span translate="">Add License</span>
+               </md-tooltip>
+               <md-icon md-font-icon="icon-plus" class="icon"></md-icon>
+            </md-button>
+         </div>
+      </div>
+   </div>
+
+   <div class="content md-background md-hue-1">
+
+      <md-content scroll-glue-right>
+
+         <div layout="column" ng-if="$ctrl.license">
+
+            <div>
+            </div>
+
+            <table class="simple dataTable" style="width: 100%;">
+               <tbody>
+                  <tr>
+                     <td style="width: 25%;"> Server Id: </td>
+                     <td> {{$ctrl.license.serverId}} </td>
+                  </tr>
+                  <!-- tr>
+                  <td style="width: 25%;"> Creators: </td>
+                  <td> {{$ctrl.license.creators}} </td>
+               </tr -->
+                  <tr>
+                     <td style="width: 25%;"> Last Update: </td>
+                     <td> {{$ctrl.license.lastUpdate | amsDateTime}} (<span
+                           style="font-style: italic">{{$ctrl.license.updateCount}} licenses issued</span>)</td>
+                  </tr>
+               </tbody>
+            </table>
+
+
+
+            <div class="simple-table-container md-whiteframe-2dp mb-24">
+               <div layout="row" class="table-title black-text">
+                  Modules
+               </div>
+               <div class="ms-responsive-table-wrapper">
+                  <table class="simple hover dataTable">
+                     <thead>
+                        <tr>
+                           <th>Module</th>
+                           <th>Expiry</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr ng-repeat="m in $ctrl.license.modules | orderBy:'name'">
+                           <td>{{m.name}}</td>
+                           <td>{{m.expiry | amsDateTime}}</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+
+
+            <div class="simple-table-container md-whiteframe-2dp mb-24">
+               <div layout="row" class="table-title black-text">
+                  Machines
+               </div>
+               <div class="ms-responsive-table-wrapper">
+                  <table class="simple hover dataTable">
+                     <thead>
+                        <tr>
+                           <th>Machine</th>
+                           <th>Module</th>
+                           <th>Expiry</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr ng-repeat="m in $ctrl.license.machines | orderBy:['unitNum','name']">
+                           <td> {{m.unitNum}} </td>
+                           <td> {{m.name}} </td>
+                           <td> {{m.expiry | amsDateTime}} </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+
+         </div>
+
+
+      </md-content>
+
+   </div>
+</div>

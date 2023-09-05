@@ -1,0 +1,59 @@
+<div id="settings" class="agent-settings page-layout simple fullwidth">
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg">
+    <span class="h2 black-text">Eclipse Pro Update</span>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+
+  <md-card>
+    <md-card-content>
+      <h3>An update is available to install. </h3>
+      <div class="form-title" layout="column" layout-fill>
+        <div class="agent-id font-size-14">
+          <span class="text-inline w-120">Current Version:</span>
+          <span class="secondary-text ml-8">{{$ctrl.systemInfo.updateInfo.installedVersion.version}}</span>
+          <span class="secondary-text ml-60">{{$ctrl.systemInfo.updateInfo.installedVersion.published |
+            amsDateTime}}</span>
+        </div>
+        <div class="agent-id font-size-14">
+          <span class="text-inline w-120">Latest Version:</span>
+          <span class="secondary-text ml-8">{{$ctrl.systemInfo.updateInfo.latestReleaseVersion.version}}</span>
+          <span class="secondary-text ml-60"><a href="https://www.amscontrols.com/kb/eclipse-pro-release-notes/"
+              target="_blank">Release Notes</a></span>
+          <span class="secondary-text ml-60">{{$ctrl.systemInfo.updateInfo.latestReleaseVersion.published |
+            amsDateTime}}</span>
+        </div>
+      </div>
+      <br />
+      <p>Please contact AMS Support for assistance. <a href="http://www.amscontrols.com/support"
+          target="_blank">www.amscontrols.com/support</a></p>
+      <br />
+      <md-checkbox ng-model="showAdvanced">Show Advanced</md-checkbox>
+    </md-card-content>
+    <md-card-content ng-if="showAdvanced">
+      <h4>To update, open Powershell as Administrator and run the following command:</h4>
+      <p>iex ((new-object
+        net.webclient).DownloadString('https://dynamic.amscontrols.com/eclipse/pro/eclipse-pro-install.ps1'))</p>
+    </md-card-content>
+    <md-card-content ng-if="showAdvanced">
+      <h4>🧪 Or, try the experimental auto upgrade.</h4>
+      <md-button ng-href="/api/selfupgrade" class="md-raised setting-update-btn" target="_self">Launch Upgrade
+      </md-button>
+    </md-card-content>
+  </md-card>
+
+  <!-- / CONTENT -->
+
+  <!--
+     TODO:
+      - Setting to allow prerelease
+      - Show current version and available version (+ prerelease if checked)
+      - Change log between versions
+      - (very future) kick off update
+      - i18n
+   -->
+
+</div>

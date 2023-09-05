@@ -1,0 +1,22 @@
+<div layout="row">
+	<div class="flex-145" layout-align="end end" layout="row">
+		<div class="header-first-item" flex ng-if="!$ctrl.status">Machine Name<br /><span>Specific Tooling Status</span>
+		</div>
+
+		<div class="header-first-item sub-item" flex="40" ng-if="$ctrl.status">Override<br />Machine</div>
+	</div>
+
+	<div ng-class="{'flex-18':$index==3}" class="flex-225" ng-repeat="header in $ctrl.headers" layout="row">
+		<div flex layout="column">
+			<div flex class="main-header">{{header.title}}</div>
+			<div flex class="low-header" ng-if="!$ctrl.status">{{header.lowTitle}}</div>
+			<div flex layout="row" class="header-content">
+				<!-- <div flex ng-repeat="content in header.content">{{content}}</div> -->
+				<div flex class="item-his-color">Historical</div>
+				<div flex class="item-plan-color">Planning</div>
+				<div flex class="item-target-color">Target</div>
+			</div>
+		</div>
+		<div flex="20" ng-if="$index !== 3"></div>
+	</div>
+</div>

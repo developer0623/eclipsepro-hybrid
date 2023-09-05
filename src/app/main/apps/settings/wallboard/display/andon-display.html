@@ -1,0 +1,225 @@
+<div class="andon-display" layout="column" flex="100" layout-align="center center" ng-class="{'light-theme': theme === 'light', 'dark-theme': theme === 'dark'}">
+
+    <div class="andon-display-header" layout="row" flex="100" layout-align="end" ng-class="{'offline': machineState.runState=='O', 'halted': machineState.runState=='H', 'running': machineState.runState=='R'}">
+        <run-state-indicator state="machineState.runState" last-run-state-change="machineState.lastRunStateChange" is-offline="machineState.isOffline"></run-state-indicator>
+    </div>
+
+    <div class="andon-display-content">
+
+        <div ng-if="viewKey===''" layout="column" layout-align="center center" flex="100">
+            <h1 class="andon-panel-title" translate="initializing">Initializing&hellip;</h1>
+        </div>
+
+        <div ng-repeat="panel in sequence.panels | filter: {viewKey: 'message'}" ng-if="viewKey === 'message' && playKey === panel.playKey" layout="column" layout-align="center center" flex="100">
+            <div btf-markdown="panel.message"></div>
+        </div>
+
+        <div ng-repeat="panel in sequence.panels | filter: {viewKey: 'shiftOEE'}" ng-if="viewKey === 'shiftOEE' && playKey === panel.playKey">
+            <div ng-if="!panel.chart" layout="column" layout-align="center center" flex="100">
+                <h1 class="andon-panel-title" translate="oEE">OEE</h1>
+                <h1 class="andon-panel-value">{{shiftStats.oEE | unitsFormat :"%":1}}</h1>
+            </div>
+            <div class="text-left" ng-if="panel.chart" layout="row" layout-align="start center" flex="100">
+                <div layout="column" flex="45" flex-offset="5" layout-align="center start">
+                    <h1 class="andon-panel-title" translate="oEE">OEE</h1>
+                    <h1 class="andon-panel-value">{{shiftStats.oEE | unitsFormat :"%":1}}</h1>
+                </div>
+                <div layout="column" flex="45" ng-repeat="metric in metricConfiguration | filter: {metricId: 'oEE'}">
+                    <div class="svg-container">
+                        <sparkline display="$parent.display" current="shiftStats[metricDefinitions[metric.metricId].primaryDataKey] | unitsValue :metricDefinitions[metric.metricId].primaryUnits:1" stats="statsHistory[metricDefinitions[metric.metricId].historyKey]"></sparkline>
+                    </div>
+                    <div class="svg-container">
+                        <bullet-chart display="$parent.display" current="shiftStats[metricDefinitions[metric.metricId].primaryDataKey] | unitsValue :metricDefinitions[metric.metricId].primaryUnits:1" min-value="metric.minValue" ok-lower="metric.okRangeStart" ok-upper="metric.okRangeEnd" target="metric.targetValue" max-value="metric.maxValue" lower-is-better="metricDefinitions[metric.metricId].lowerIsBetter"></bullet-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-repeat="panel in sequence.panels | filter: {viewKey: 'shiftTarget'}" ng-if="viewKey === 'shiftTarget' && playKey === panel.playKey">
+            <div ng-if="!panel.chart" layout="column" layout-align="center center" flex="100">
+                <h1 class="andon-panel-title" translate="target">Target</h1>
+                <h1 class="andon-panel-value">{{shiftStats.targetPct | unitsFormat :"%":1}}</h1>
+            </div>
+            <div class="text-left" ng-if="panel.chart" layout="row" layout-align="start center" flex="100">
+                <div layout="column" flex="45" flex-offset="5" layout-align="center start">
+                    <h1 class="andon-panel-title" translate="target">Target</h1>
+                    <h1 class="andon-panel-value">{{shiftStats.targetPct | unitsFormat :"%":1}}</h1>
+                </div>
+                <!-- <div layout="column" flex="45" ng-repeat="metric in metricConfiguration | filter: {metricId: 'target'}">
+                    <div class="svg-container">
+                        <sparkline display="$parent.display" current="shiftStats[metricDefinitions[metric.metricId].primaryDataKey] | unitsValue :metricDefinitions[metric.metricId].primaryUnits:1" stats="statsHistory[metricDefinitions[metric.metricId].historyKey]"></sparkline>
+                    </div>
+                    <div class="svg-container">
+                        <bullet-chart display="$parent.display" current="shiftStats[metricDefinitions[metric.metricId].primaryDataKey] | unitsValue :metricDefinitions[metric.metricId].primaryUnits:1" min-value="metric.minValue" ok-lower="metric.okRangeStart" ok-upper="metric.okRangeEnd" target="metric.targetValue" max-value="metric.maxValue" lower-is-better="metricDefinitions[metric.metricId].lowerIsBetter"></bullet-chart>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+
+        <div ng-repeat="panel in sequence.panels | filter: {viewKey: 'shiftFootage'}" ng-if="viewKey === 'shiftFootage' && playKey === panel.playKey">
+            <div ng-if="!panel.chart" layout="column" layout-align="center center" flex="100">
+                <h1 class="andon-panel-title" translate="goodFootage">Good Footage</h1>
+                <h1 class="andon-panel-value">{{shiftStats.goodFeet | unitsFormat :"ft":0}}</h1>
+            </div>
+            <div class="text-left" ng-if="panel.chart" layout="row" layout-align="start center" flex="100">
+                <div layout="column" flex="45" flex-offset="5" layout-align="center start">
+                    <h1 class="andon-panel-title" translate="goodFootage">Good Footage</h1>
+                    <h2 class="andon-panel-value">{{shiftStats.goodFeet | unitsFormat :"ft":0}}</h2>
+                </div>
+                <div layout="column" flex="45" ng-repeat="metric in metricConfiguration | filter: {metricId: 'good'}">
+                    <div class="svg-container">
+                        <sparkline display="$parent.display" current="shiftStats[metricDefinitions[metric.metricId].primaryDataKey] | unitsValue :metricDefinitions[metric.metricId].primaryUnits:1" stats="statsHistory[metricDefinitions[metric.metricId].historyKey]"></sparkline>
+                    </div>
+                    <div class="svg-container">
+                        <bullet-chart display="$parent.display" current="shiftStats[metricDefinitions[metric.metricId].primaryDataKey] | unitsValue :metricDefinitions[metric.metricId].primaryUnits:1" min-value="metric.minValue" ok-lower="metric.okRangeStart" ok-upper="metric.okRangeEnd" target="metric.targetValue" max-value="metric.maxValue" lower-is-better="metricDefinitions[metric.metricId].lowerIsBetter"></bullet-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-repeat="panel in sequence.panels | filter: {viewKey: 'shiftRun'}" ng-if="viewKey === 'shiftRun' && playKey === panel.playKey">
+            <div ng-if="!panel.chart" layout="column" layout-align="center center" flex="100">
+                <h1 class="andon-panel-title" translate="run">Run</h1>
+                <h1 class="andon-panel-value">{{shiftStats.runPct | unitsFormat :"%":1}}</h1>
+                <h1 class="andon-panel-value">{{shiftStats.avgFPM | unitsFormat :"fpm":0}}</h1>
+            </div>
+            <div class="text-left" ng-if="panel.chart" layout="row" layout-align="start center" flex="100">
+                <div layout="column" flex="45" flex-offset="5" layout-align="center start">
+                    <h1 class="andon-panel-title" translate="run">Run</h1>
+                    <h1 class="andon-panel-value">{{shiftStats.runPct | unitsFormat :"%":1}}</h1>
+                    <h1 class="andon-panel-value">{{shiftStats.avgFPM | unitsFormat :"fpm":0}}</h1>
+                </div>
+                <div layout="column" flex="45" ng-repeat="metric in metricConfiguration | filter: {metricId: 'runTimePct'}">
+                    <div class="svg-container">
+                        <sparkline display="$parent.display" current="shiftStats[metricDefinitions[metric.metricId].primaryDataKey] | unitsValue :metricDefinitions[metric.metricId].primaryUnits:1" stats="statsHistory[metricDefinitions[metric.metricId].historyKey]"></sparkline>
+                    </div>
+                    <div class="svg-container">
+                        <bullet-chart display="$parent.display" current="shiftStats[metricDefinitions[metric.metricId].primaryDataKey] | unitsValue :metricDefinitions[metric.metricId].primaryUnits:1" min-value="metric.minValue" ok-lower="metric.okRangeStart" ok-upper="metric.okRangeEnd" target="metric.targetValue" max-value="metric.maxValue" lower-is-better="metricDefinitions[metric.metricId].lowerIsBetter"></bullet-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="viewKey==='operatorName'" layout="column" layout-align="center center" flex="100">
+            <h1 class="andon-panel-title" translate="operatorLabel">Operator</h1>
+            <h1 class="andon-panel-value">{{machineState.employeeName}}</h1>
+        </div>
+
+        <div ng-if="viewKey==='currentOrder'" layout="column" layout-align="center center" flex="100">
+            <h1 class="andon-panel-title" translate="currentOrder">Current Order</h1>
+            <h2 class="andon-panel-value">{{scheduleSummary.currentCustomerName}}</h2>
+            <h2 class="andon-panel-value">{{scheduleSummary.currentOrderCode}}</h2>
+            <h2 class="andon-panel-value">{{scheduleSummary.currentMaterialCode}}</h2>
+            <h2 class="andon-panel-value">{{scheduleSummary.currentToolingCode}}</h2>
+        </div>
+        <div ng-if="viewKey==='nextOrder'" layout="column" layout-align="center center" flex="100">
+            <h1 class="andon-panel-title" translate="nextOrder">Next Order</h1>
+            <h2 class="andon-panel-value">{{scheduleSummary.nextOrderCustomerName}}</h2>
+            <h2 class="andon-panel-value">{{scheduleSummary.nextOrderCode}}</h2>
+            <h2 class="andon-panel-value">{{scheduleSummary.nextMaterialCode}}</h2>
+            <h2 class="andon-panel-value">{{scheduleSummary.nextToolingCode}}</h2>
+        </div>
+
+        <div ng-if="viewKey==='currentBundle'" layout="column" layout-align="center center" flex="100">
+            <h1 class="andon-panel-title" translate="currentBundle">Current Bundle</h1>
+            <h2 class="andon-panel-value">{{scheduleSummary.currentBundleNumber}}</h2>
+            <h1 class="andon-panel-title" translate="completedParts">Completed Parts</h1>
+            <h2 class="andon-panel-value">{{scheduleSummary.currentBundleQuantityDone}} / {{scheduleSummary.currentBundleQuantity}}</h2>
+        </div>
+
+        <div ng-if="viewKey==='upcomingBundles'" layout="column" layout-align="center center" flex="100">
+            <h1 class="andon-panel-title" translate="upcomingBundles"></h1>
+            <h2 style="font-style: italic;">&lsaquo;&lsaquo;Preview not available&rsaquo;&rsaquo;</h2>
+        </div>
+
+        <div ng-repeat="panel in sequence.panels | filter: {viewKey: 'shiftScrap'}" ng-if="viewKey === 'shiftScrap' && playKey === panel.playKey">
+            <div ng-if="!panel.chart" layout="column" layout-align="center center" flex="100">
+                <h1 class="andon-panel-title" translate="scrap">Scrap</h1>
+                <h1 class="andon-panel-value">{{(shiftStats.scrapFeet | unitsFormat :"ft":0) || "0"}} ({{shiftStats.scrapPct | unitsFormat :"%":1}})</h1>
+            </div>
+            <div class="text-left" ng-if="panel.chart" layout="row" layout-align="start center" flex="100">
+                <div layout="column" flex="45" flex-offset="5" layout-align="center start">
+                    <h1 class="andon-panel-title" translate="scrap">Scrap</h1>
+                    <h1 class="andon-panel-value">{{(shiftStats.scrapFeet | unitsFormat :"ft":0) || "0"}}</h1>
+                    <h1 class="andon-panel-value">({{shiftStats.scrapPct | unitsFormat :"%":0}})</h1>
+                </div>
+                <div layout="column" flex="45" ng-repeat="metric in metricConfiguration | filter: {metricId: 'scrapPct'}">
+                    <div class="svg-container">
+                        <sparkline display="$parent.display" current="shiftStats[metricDefinitions[metric.metricId].primaryDataKey] | unitsValue :metricDefinitions[metric.metricId].primaryUnits:1" stats="statsHistory[metricDefinitions[metric.metricId].historyKey]"></sparkline>
+                    </div>
+                    <div class="svg-container">
+                        <bullet-chart display="$parent.display" current="shiftStats[metricDefinitions[metric.metricId].primaryDataKey] | unitsValue :metricDefinitions[metric.metricId].primaryUnits:1" min-value="metric.minValue" ok-lower="metric.okRangeStart" ok-upper="metric.okRangeEnd" target="metric.targetValue" max-value="metric.maxValue" lower-is-better="metricDefinitions[metric.metricId].lowerIsBetter"></bullet-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="viewKey==='nextMaterial'" layout="column" layout-align="center center" flex="100">
+            <h1 class="andon-panel-title" translate="nextMaterial">Next Material</h1>
+            <h1 class="andon-panel-value">{{scheduleSummary.nextMaterialCode || "n/a"}} ({{(scheduleSummary.nextMaterialFeet  | unitsFormat :"ft":0) || "n/a"}})</h1>
+            <h1 class="andon-panel-value"><span translate="changeIn">Change in</span>: {{scheduleSummary.currentMaterialRemainingFeet | unitsFormat :"ft":0 || "0"}}</h1>
+        </div>
+
+        <div ng-if="viewKey==='orderProgress'" layout="column" layoutalign="center center" flex="100">
+            <h1 class="andon-panel-title" translate="orderProgress">Order Progress</h1>
+            <h1 class="andon-panel-value">Quantity: {{scheduleSummary.currentItemQty}}</h1>
+            <h1 class="andon-panel-value">Completed: {{scheduleSummary.currentItemQtyDone}}</h1>
+        </div>
+
+        <div ng-if="viewKey==='currentWarehouseTask'" layout="column" layout-align="center center" flex="100">
+            <h1 class="andon-panel-title" translate="currentWarehouseTask">Current Warehouse Task</h1>
+            <!-- <task-item task="currTask" state="currTask.magicState"></task-item> -->
+            <h2 style="font-style: italic;">&lsaquo;&lsaquo;Preview not available&rsaquo;&rsaquo;</h2>
+        </div>
+
+        <div ng-if="viewKey==='scheduledFootage'" layout="column" layout-align="center center" flex="100">
+            <h1 class="andon-panel-title" translate="scheduledFootage">Scheduled Footage</h1>
+            <h1 class="andon-panel-value">{{scheduleSummary.scheduledFeetTotal | unitsFormat:"ft":0 }}</h1>
+        </div>
+
+        <div ng-if="viewKey==='orderUser1'" layout="column" layout-align="center center" flex="100">
+            <h1 class="andon-panel-title" translate="userUser1"></h1>
+            <h1 class="andon-panel-value">{{currentJob.user1}}</h1>
+        </div>
+        <div ng-if="viewKey==='orderUser2'" layout="column" layout-align="center center" flex="100">
+            <h1 class="andon-panel-title" translate="userUser2"></h1>
+            <h1 class="andon-panel-value">{{currentJob.user2}}</h1>
+        </div>
+        <div ng-if="viewKey==='orderUser3'" layout="column" layout-align="center center" flex="100">
+            <h1 class="andon-panel-title" translate="orderUser3"></h1>
+            <h1 class="andon-panel-value">{{currentJob.user3}}</h1>
+        </div>
+        <div ng-if="viewKey==='orderUser4'" layout="column" layout-align="center center" flex="100">
+            <h1 class="andon-panel-title" translate="orderUser4"></h1>
+            <h1 class="andon-panel-value">{{currentJob.user4}}</h1>
+        </div>
+        <div ng-if="viewKey==='orderUser5'" layout="column" layout-align="center center" flex="100">
+            <h1 class="andon-panel-title" translate="orderUser5"></h1>
+            <h1 class="andon-panel-value">{{currentJob.user5}}</h1>
+        </div>
+        <div ng-if="viewKey==='itemUserAll'" layout="column" layout-align="center center" flex="100">
+            <h4><span translate="itemUser1"></span>: <span>{{currentItem.user1}}</span></h4>
+            <h4><span translate="itemUser2"></span>: <span>{{currentItem.user2}}</span></h4>
+            <h4><span translate="itemUser3"></span>: <span>{{currentItem.user3}}</span></h4>
+            <h4><span translate="itemUser4"></span>: <span>{{currentItem.user4}}</span></h4>
+            <h4><span translate="itemUser5"></span>: <span>{{currentItem.user5}}</span></h4>
+        </div>
+
+        <div ng-if="viewKey==='longestPart'" layout="column" layout-align="center center" flex="100">
+            <h1 class="andon-panel-title" translate="longestPart"></h1>
+            <h1 class="andon-panel-value">{{currentJob.longestLengthIn | unitsFormat:"in":0}}</h1>
+        </div>
+
+        <div ng-if="viewKey==='shortestPart'" layout="column" layout-align="center center" flex="100">
+            <h1 class="andon-panel-title" translate="shortestPart"></h1>
+            <h1 class="andon-panel-value">{{currentJob.shortestLengthIn | unitsFormat:"in":0}}</h1>
+        </div>
+
+    </div>
+
+    <div class="andon-display-footer" layout="row" flex="100" layout-align="space-between center">
+        <h4>{{machine.description}}</h4>
+        <current-time></current-time>
+    </div>
+
+</div>

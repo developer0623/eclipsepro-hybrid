@@ -1,0 +1,125 @@
+$zone-color: #ccc;
+$zone-color2: #ddd;
+.user-class {
+	.first-td {
+		width: 150px;
+		text-align: center;
+	}
+	.nth-td {
+		width: 110px;
+		text-align: center;
+	}
+
+	.bold-font {
+		font-weight: bold;
+	}
+
+	.table-container {
+		display: table;
+		box-shadow:0px 0px 10px 2px rgba(0, 0, 0, 0.5);
+		margin: 20px 10px;
+		td {
+			background-color: $zone-color;
+		}
+
+		td:first-child {background-color: white;}
+		td:nth-child(2n+3) {background-color: $zone-color2;}
+
+		md-checkbox.md-eclipse-pro-theme-theme[disabled].md-checked .md-icon {
+		    background-color: rgba(236,177,0,0.87);
+		}
+
+		// md-checkbox.md-eclipse-pro-theme-theme .md-ink-ripple {
+		//     color: rgba(255,255,255,0.87);
+
+		//     .md-icon {
+		// 	    background-color: rgba(236,177,0,0.87);
+		// 	}
+		// }
+		.md-indeterminate {
+			.md-ink-ripple {
+				.md-icon {
+			    	background-color: rgba(236,177,0,0.87);
+			    	color: rgba(255,255,255,0.87);
+			    	border-color: rgba(236, 177, 0, 0.87);
+			    	&::after{
+			    		border-color: white;
+			    	}
+				}
+			}
+		}
+
+		.waring-icon {
+			position: absolute;
+			left: 27px;
+			top: 11px;
+			color: rgba(191, 23, 23, 0.7);
+		}
+
+		md-toolbar {
+				min-height: 30px;
+				.md-toolbar-tools {
+					height: 40px;
+				}
+		}
+
+		.user-type-select {
+			margin: 0;
+			.md-select-value {
+				font-size: 12px;
+				border-bottom-color: transparent !important;
+
+				.md-select-icon {
+					width: 10px;
+				}
+
+			}
+		}
+
+		.warehouse-table, .machine-table {
+			.first-td {
+				font-size: 18px;
+				font-weight: 400;
+				position: relative;
+				text-align: left;
+    		padding-left: 5px;
+			}
+
+			md-checkbox {
+				margin: 10px 0px;
+			}
+
+			tr {
+				border-bottom: 1px solid #aaa;
+			}
+
+
+		}
+
+		.user-table {
+			th {
+				font-size: 16px;
+				line-height: 16px;
+			}
+
+
+			md-checkbox {
+				min-height: 12px;
+				min-width: 12px;
+				.md-container {
+					width: 16px;
+					height: 16px;
+				}
+				.md-icon {
+					width: 16px;
+					height: 16px;
+
+					&:after {
+						width: 5.66667px;
+    					height: 11.33333px;
+					}
+				}
+			}
+		}
+	}
+}

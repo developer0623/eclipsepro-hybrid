@@ -1,0 +1,54 @@
+<div layout="row" class="table-item-row" ng-class="{'border-white': $ctrl.istool}">
+	<div class="flex-145 col-field" layout="column" ng-if="!$ctrl.istool">
+		<div layout="column">
+			<div flex>{{$ctrl.origin.description}}</div>
+			<div flex ng-click="$ctrl.onExpand()" class="tool-count">{{$ctrl.getCount()}}
+				<md-icon class="icon-chevron-down" md-font-icon class="icon" ng-if="!$ctrl.getChecked()"></md-icon>
+				<md-icon class="icon-chevron-up" md-font-icon class="icon" ng-if="$ctrl.getChecked()"></md-icon>
+			</div>
+		</div>
+	</div>
+	<div class="flex-145 sub-item-first col-field" ng-if="$ctrl.istool">
+		<span>{{ $ctrl.item.toolingCode }}</span>
+		<div class="sub-item-first-checkbox">
+			<md-checkbox aria-label="Select Tool" ng-model="$ctrl.item.overrideMachine" ng-click="$ctrl.saveOverride()">
+			</md-checkbox>
+		</div>
+	</div>
+	<!-- FPM -->
+	<div class="flex-6 col-field item-his-color">{{$ctrl.item.fpmHist}}</div>
+	<div class="flex-6 col-field item-plan-color">
+		<table-cell value="$ctrl.item.fpmPlan" origin="$ctrl.origin" prefix="'fpm'" suffix= "'Plan'" unit="'ft'" index="$ctrl.index" istool="$ctrl.istool" state="$ctrl.isEdit" on-focus="$ctrl.onFocus(state)"></table-cell>
+	</div>
+	<div class="flex-6 col-field item-target-color">
+		<table-default-cell ng-if="!$ctrl.istool" value="$ctrl.item.fpmTarget" origin="$ctrl.origin" prefix="'fpm'" suffix= "'Target'" unit="'ft'" index="$ctrl.index" istool="$ctrl.istool" state="$ctrl.isEdit" on-focus="$ctrl.onFocus(state)"></table-default-cell>
+		<table-cell ng-if="$ctrl.istool" value="$ctrl.item.fpmTarget" origin="$ctrl.origin" prefix="'fpm'" suffix= "'Target'" unit="'ft'" index="$ctrl.index" istool="$ctrl.istool" state="$ctrl.isEdit" on-focus="$ctrl.onFocus(state)"></table-cell>
+	</div>
+	<!-- Tool Change -->
+	<div class="flex-045"></div>
+	<div class="flex-6 col-field item-his-color">{{$ctrl.item.toolChangeHist}}</div>
+	<div class="flex-6 col-field item-plan-color">
+		<table-default-cell value="$ctrl.item.toolChangePlan" origin="$ctrl.origin" prefix="'toolChange'" suffix= "'Plan'" index="$ctrl.index" istool="$ctrl.istool" state="$ctrl.isEdit" on-focus="$ctrl.onFocus(state)"></table-default-cell>
+	</div>
+	<div class="flex-6 col-field item-target-color">
+		<table-default-cell value="$ctrl.item.toolChangeTarget" origin="$ctrl.origin" prefix="'toolChange'" suffix= "'Target'" index="$ctrl.index" istool="$ctrl.istool" state="$ctrl.isEdit" on-focus="$ctrl.onFocus(state)"></table-default-cell>
+	</div>
+	<!-- Coil Change -->
+	<div class="flex-045"></div>
+	<div class="flex-6 col-field item-his-color">{{$ctrl.item.coilChangeHist}}</div>
+	<div class="flex-6 col-field item-plan-color">
+		<table-default-cell value="$ctrl.item.coilChangePlan" origin="$ctrl.origin" prefix="'coilChange'" suffix= "'Plan'" index="$ctrl.index" istool="$ctrl.istool" state="$ctrl.isEdit" on-focus="$ctrl.onFocus(state)"></table-default-cell>
+	</div>
+	<div class="flex-6 col-field item-target-color">
+		<table-default-cell value="$ctrl.item.coilChangeTarget" origin="$ctrl.origin" prefix="'coilChange'" suffix= "'Target'" index="$ctrl.index" istool="$ctrl.istool" state="$ctrl.isEdit" on-focus="$ctrl.onFocus(state)"></table-default-cell>
+	</div>
+	<!-- Bundle Change -->
+	<div class="flex-045"></div>
+	<div class="flex-6 col-field item-his-color">{{$ctrl.item.bundleChangeHist}}</div>
+	<div class="flex-6 col-field item-plan-color">
+		<table-default-cell value="$ctrl.item.bundleChangePlan" origin="$ctrl.origin" prefix="'bundleChange'" suffix= "'Plan'" index="$ctrl.index" istool="$ctrl.istool" state="$ctrl.isEdit" on-focus="$ctrl.onFocus(state)"></table-default-cell>
+	</div>
+	<div class="flex-6 col-field item-target-color">
+		<table-default-cell value="$ctrl.item.bundleChangeTarget" origin="$ctrl.origin" prefix="'bundleChange'" suffix= "'Target'" index="$ctrl.index" istool="$ctrl.istool" state="$ctrl.isEdit" on-focus="$ctrl.onFocus(state)"></table-default-cell>
+	</div>
+</div>

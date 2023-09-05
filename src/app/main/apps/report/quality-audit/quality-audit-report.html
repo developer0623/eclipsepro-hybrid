@@ -1,0 +1,86 @@
+<div id="dashboard-report" class="page-layout simple fullwidth white-bg production-summary" ngsf-fullscreen>
+  <report-header subject="Quality Audit" on-filter="$ctrl.onFilter(searchTxt)"></report-header>
+
+  <div class="summary-title-header">
+    <checkbox-menu class="menu-column" subject="Shift" menu-subject="Shift" menu-list="$ctrl.shiftMenu"
+      on-change="$ctrl.onChangeShift(items)"></checkbox-menu>
+
+    <report-date-col class="date-column" start-date="$ctrl.startDate" end-date="$ctrl.endDate" duration="'day'"
+      on-change="$ctrl.onChangeDate(startDate, endDate)"></report-date-col>
+
+    <checkbox-menu class="menu-column float-right" subject="MACHINES" menu-subject="SHOW MACHINES"
+      menu-list="$ctrl.machines" on-change="$ctrl.onChangeMachines(items)"></checkbox-menu>
+
+    <div class="header-icon-column float-right">
+      <md-button href="/_api/reports/qualityaudit?{{$ctrl.fileDownloadQueryString}}&format=csv" target="_self">
+        <md-tooltip md-direction="bottom">
+          <span translate="downloadCsv"></span>
+        </md-tooltip>
+        <md-icon md-font-icon="icon-file-excel" class="icon"></md-icon>
+      </md-button>
+      <!--         <md-button aria-label="Select Shift 1" class="md-icon-button" ng-click="$ctrl.openPrintPreview($event)">
+                <md-icon md-font-icon class="icon icon-printer header-icon"></md-icon>
+            </md-button> -->
+    </div>
+  </div>
+  <div class="content md-background md-hue-1 scroll-content">
+    <div class="material-usage-content">
+      <md-virtual-repeat-container id="coil-summary-list" class="ms-scroll">
+        <div md-virtual-repeat="item in $ctrl.filteredList" class="order-summary-item" flex>
+          <div class="group-header">
+            <div class="group-key">Machine:</div>
+            <div class="group-key-val">{{item.machineNumber}}</div>
+            <div class="group-key">Shift:</div>
+            <div class="group-key-val">{{item.shift}}</div>
+          </div>
+
+          <div ng-repeat="gitem in item.groups" class="">
+            <div class="order-summary-item-header">
+              <div class="main-con">
+                Order:<span class="sub-content">{{gitem.key.orderCode}}</span>
+              </div>
+              <div class="main-con">
+                Material:
+                <span class="sub-content">
+                  <a class="td-link" ng-click="$event.stopPropagation()"
+                    ui-sref="app.inventory.coil-types.coil-type({id: gitem.key.materialCode})">
+                    {{gitem.key.materialCode}}
+                  </a>
+                </span>
+              </div>
+              <div class="main-con">
+                Tooling:<span class="sub-content">{{gitem.key.toolingCode}}</span>
+              </div>
+              <div class="main-con">
+                Customer:<span class="sub-content">{{gitem.key.customerName}}</span>
+              </div>
+            </div>
+            <div class="material-usage-item sub-header">
+              <div class="main-con">Date</div>
+              <div class="main-con">Lift</div>
+              <div class="main-con">Audit Value</div>
+              <div class="main-con">Employee ID & Name</div>
+              <div class="main-con">Coil Number</div>
+            </div>
+            <div ng-repeat="entry in gitem.entries" class="material-usage-item">
+              <div class="main-con">
+                {{entry.recordDate | date : 'MM/dd/yyyy hh:mm:ss'}}
+              </div>
+              <div class="main-con">{{entry.listText}} ({{entry.listId}})</div>
+              <div class="main-con">{{entry.codeDescription}}</div>
+              <div class="main-con">
+                {{entry.employeeNumber}} {{entry.employeeName}}
+              </div>
+              <div class="main-con">
+                <a class="td-link" ng-click="$event.stopPropagation()"
+                  ui-sref="app.inventory.coils.coil({id: entry.coilSerialNumber})">
+                  {{entry.coilSerialNumber}}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </md-virtual-repeat-container>
+    </div>
+  </div>
+</div>

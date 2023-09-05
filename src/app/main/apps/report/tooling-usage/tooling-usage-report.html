@@ -1,0 +1,177 @@
+<div
+   id="dashboard-report"
+   class="page-layout simple fullwidth white-bg production-summary"
+   ngsf-fullscreen
+>
+   <div class="header">
+      <div layout="row" layout-align="space-between">
+         <span class="h2 text-upper">Tooling Code Usage 🧪</span>
+      </div>
+   </div>
+
+   <div class="summary-title-header">
+      <custom-menu
+         class="menu-column duration"
+         subject="DURATION"
+         menu-list="$ctrl.durations"
+         selected-item="$ctrl.selectedDuration"
+         on-change="$ctrl.onClickDurationItem(item)"
+      ></custom-menu>
+
+      <report-date-col
+         class="date-column"
+         start-date="$ctrl.startDate"
+         end-date="$ctrl.endDate"
+         duration="$ctrl.selectedDuration"
+         on-change="$ctrl.onChangeDate(startDate, endDate)"
+      ></report-date-col>
+
+      <checkbox-menu
+         class="menu-column float-right"
+         subject="MACHINES"
+         menu-subject="SHOW MACHINES"
+         menu-list="$ctrl.machines"
+         on-change="$ctrl.onChangeMachines(items)"
+      ></checkbox-menu>
+
+      <div class="header-icon-column float-right">
+         <md-button
+            href="/_api/reports/toolingusage?{{$ctrl.fileDownloadQueryString}}&format=csv"
+            target="_self"
+         >
+            <md-tooltip md-direction="bottom">
+               <span translate="downloadCsv"></span>
+            </md-tooltip>
+            <md-icon md-font-icon="icon-file-excel" class="icon"></md-icon>
+         </md-button>
+         <!--         <md-button aria-label="Select Shift 1" class="md-icon-button" ng-click="$ctrl.openPrintPreview($event)">
+                <md-icon md-font-icon class="icon icon-printer header-icon"></md-icon>
+            </md-button> -->
+      </div>
+   </div>
+   <div class="content md-background md-hue-1 scroll-content">
+      <div class="material-usage-header">
+         <div class="date">{{$ctrl.selectedDuration}}</div>
+         <div class="material">Tooling Code</div>
+         <div class="main-con">Good ({{'ft' | userDisplayUnits}})</div>
+         <div class="main-con">SCRAP ({{'ft' | userDisplayUnits}})</div>
+         <div class="main-con">Total ({{'ft' | userDisplayUnits}})</div>
+         <div class="main-con">SCRAP (%)</div>
+      </div>
+      <div class="material-usage-content">
+         <accordion
+            is-open="false"
+            ng-repeat="item in $ctrl.summaryList.groups track by $index"
+         >
+            <accordion-header>
+               <div class="material-usage-item item-header">
+                  <div class="date" ng-if="item.key.day">
+                     {{item.key.month}}/{{item.key.day}}/{{item.key.year}}
+                  </div>
+                  <div class="date" ng-if="item.key.weekOfYear">
+                     {{item.key.year}}-{{item.key.weekOfYear}}
+                  </div>
+                  <div
+                     class="date"
+                     ng-if="!item.key.day && !item.key.weekOfYear"
+                  >
+                     {{item.key.month}}/{{item.key.year}}
+                  </div>
+                  <div class="material"></div>
+                  <div class="main-con">
+                     <span class="num-col">
+                        {{item.lengthUsedFt | unitsFormat :"ft":0:true}}</span
+                     >
+                  </div>
+                  <div class="main-con">
+                     <span class="num-col">
+                        {{item.lengthScrapFt | unitsFormat :"ft":0:true}}</span
+                     >
+                  </div>
+                  <div class="main-con">
+                     <span class="num-col">
+                        {{item.lengthScrapFt + item.lengthUsedFt | unitsFormat
+                        :"ft":0:true}}</span
+                     >
+                  </div>
+                  <div class="main-con">
+                     <span class="num-col">
+                        {{item.scrapPerc | unitsFormat :"%":1:true}}</span
+                     >
+                  </div>
+               </div>
+            </accordion-header>
+
+            <accordion-content>
+               <div
+                  class="material-usage-item"
+                  ng-repeat="item1 in item.records"
+               >
+                  <div class="date"></div>
+                  <div class="material">
+                     <a
+                        class="td-link"
+                        ng-click="$event.stopPropagation()"
+                        ui-sref="app.inventory.coil-types.coil-type({id: item1.toolingCode})"
+                        >{{item1.toolingCode}}</a
+                     >
+                  </div>
+                  <div class="main-con">
+                     <span class="num-col">
+                        {{item1.lengthUsedFt | unitsFormat :"ft":0:true}}</span
+                     >
+                  </div>
+                  <div class="main-con">
+                     <span class="num-col">
+                        {{item1.lengthScrapFt | unitsFormat :"ft":0:true}}</span
+                     >
+                  </div>
+                  <div class="main-con">
+                     <span class="num-col">
+                        {{item1.lengthScrapFt + item1.lengthUsedFt | unitsFormat
+                        :"ft":0:true}}</span
+                     >
+                  </div>
+                  <div class="main-con">
+                     <span class="num-col">
+                        {{item1.scrapPerc | unitsFormat :"%":1:true}}</span
+                     >
+                  </div>
+               </div>
+            </accordion-content>
+         </accordion>
+         <div
+            class="material-usage-item item-header"
+            ng-if="!!$ctrl.summaryList"
+         >
+            <div class="date"></div>
+            <div class="material"></div>
+            <div class="main-con">
+               <span class="num-col">
+                  {{$ctrl.summaryList.lengthUsedFt | unitsFormat
+                  :"ft":0:true}}</span
+               >
+            </div>
+            <div class="main-con">
+               <span class="num-col">
+                  {{$ctrl.summaryList.lengthScrapFt | unitsFormat
+                  :"ft":0:true}}</span
+               >
+            </div>
+            <div class="main-con">
+               <span class="num-col">
+                  {{$ctrl.summaryList.lengthScrapFt +
+                  $ctrl.summaryList.lengthUsedFt | unitsFormat
+                  :"ft":0:true}}</span
+               >
+            </div>
+            <div class="main-con">
+               <span class="num-col">
+                  {{$ctrl.summaryList.scrapPerc | unitsFormat
+                  :"%":1:true}}</span
+               >
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

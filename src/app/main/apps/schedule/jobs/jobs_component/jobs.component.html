@@ -1,0 +1,309 @@
+<div class="jobs-container" layout="row" layout-wrap
+  ng-class="{ 'multi-select-showall': $ctrl.selectedScheduledSummary.jobIds.length + $ctrl.selectedAvailableSummary.jobIds.length } ">
+  <div class="col-md-5 assigned-jobs" ng-if="!$ctrl.wideSchedule">
+    <div class="row margin-top-13" layout="row" layout-align="space-between start">
+      <div flex layout="column" layout-align="start stretch">
+        <div class="jobs-title">
+          <span translate="assignedJobs">ASSIGNED JOBS</span>
+          <md-button ng-click="$ctrl.toggleAssignedMode()" class="md-icon-button wide-toggle-btn"
+            aria-label="Expand Assigned Jobs">
+            <md-tooltip md-direction="bottom">
+              <span translate="">Expand Assigned Jobs</span>
+            </md-tooltip>
+            <md-icon md-font-icon="icon-chevron-double-right" class="icon"></md-icon>
+          </md-button>
+          <duration-display date="$ctrl.schedulingSpeed.asOf" resolution="1" ng-if="$ctrl.schedulingSpeed.isPending"
+            feature-flag="in-development" />
+        </div>
+        <div layout="row" layout-align="" class="pl-10">
+          <div class="machine-detail__item" flex>
+            <div class="machine-detail__content ml-10">
+              <md-checkbox aria-label="check" ng-model="$ctrl.machine.autoPushEnabled"
+                ng-change="$ctrl.onChangeEnable()">
+                <md-tooltip md-direction="bottom">Eclipse will maintain at least the specified length at the machine.
+                  Any Assigned (Scheduled) Jobs that are not on hold will be sent in the specified sequence.
+                </md-tooltip>
+                Auto-push<span ng-if="$ctrl.machine.autoPushEnabled">:</span>
+              </md-checkbox>
+              <!-- <input
+                class="auto-push-num ml-20"
+                ng-model="$ctrl.machine.autoPushMinFt"
+                ng-model-options="{debounce: 400}"
+                ng-change="$ctrl.onChangeMin()"
+                type="number"
+                ng-if="$ctrl.machine.autoPushEnabled"
+              /> -->
+              <div editable-number="$ctrl.machine.autoPushMinFt" class="auto-push-num" buttons="no"
+                e-ng-blur="$form.$submit();" onshow="$ctrl.focusSelect($form)" onaftersave="$ctrl.onChangeMin()"
+                ng-if="$ctrl.machine.autoPushEnabled">
+                {{$ctrl.machine.autoPushMinFt}}
+              </div>
+              <span ng-if="$ctrl.machine.autoPushEnabled" class="auto-push-unit">ft</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div flex="none" layout="row" layout-align="end start">
+        <jobs-summary ng-if="$ctrl.selectedScheduledSummary.jobIds.length" header="'selected'"
+          job-set-summary="$ctrl.selectedScheduledSummary"
+          show-hold="$ctrl.selectedScheduledSummary.notHeldJobIds.length"
+          click-hold="$ctrl.onSetHold($ctrl.selectedScheduledSummary.notHeldJobIds, true)"
+          show-unhold="$ctrl.selectedScheduledSummary.heldJobIds.length"
+          click-unhold="$ctrl.onSetHold($ctrl.selectedScheduledSummary.heldJobIds, false)" show-unschedule="true"
+          click-unschedule="$ctrl.dropToAvailableJobs($ctrl.selectedScheduledSummary.jobIds)" show-send="true"
+          click-send="$ctrl.dropToMachine($ctrl.selectedScheduledSummary.jobIds)" show-deselect="true"
+          click-deselect="$ctrl.onDeselectScheduled()"></jobs-summary>
+        <jobs-summary header="'assigned'" job-set-summary="$ctrl.scheduledSummary"
+          show-hold="$ctrl.scheduledSummary.notHeldJobIds.length"
+          click-hold="$ctrl.onSetHold($ctrl.scheduledSummary.notHeldJobIds, true)"
+          show-unhold="$ctrl.scheduledSummary.heldJobIds.length"
+          click-unhold="$ctrl.onSetHold($ctrl.scheduledSummary.heldJobIds, false)" show-unschedule="true"
+          click-unschedule="$ctrl.dropToAvailableJobs($ctrl.scheduledSummary.jobIds)" show-send="true"
+          click-send="$ctrl.dropToMachine($ctrl.scheduledSummary.jobIds)"></jobs-summary>
+      </div>
+    </div>
+    <assigned-jobs machine-id="$ctrl.machineId" scheduled-jobs-data="$ctrl.scheduledJobsData"
+      system-preferences="$ctrl.systemPreferences" drop-to-assigned-jobs="$ctrl.dropToAssignedJobs(jobIds, seq)"
+      drop-to-assigned-jobs-End="$ctrl.dropToAssignedJobsEnd(jobIds)" drop-to-machine="$ctrl.dropToMachine(jobIds)"
+      recall-from-machine="$ctrl.recallFromMachine(jobIds)" toggle-hold="$ctrl.onSetHold(job.ordId, !job.hold)"
+      set-hold="$ctrl.onSetHold(jobId, toHold)" unschedule-job="$ctrl.dropToAvailableJobs(jobIds)"
+      set-selected="$ctrl.onSetSelected(jobIds, checked)" toggle-summarized="$ctrl.onToggleSummarized(jobIds, checked)"
+      on-draging-from-assign="$ctrl.onDragingFromAssign(isDraging)">
+    </assigned-jobs>
+  </div>
+
+  <div class="col-md-12 assigned-jobs" ng-if="$ctrl.wideSchedule">
+
+    <div class="row margin-top-13" layout="row" layout-align="space-between start">
+      <div flex layout="column" layout-align="start start">
+        <div class="jobs-title">
+          <span translate="assignedJobs">ASSIGNED JOBS</span>
+          <md-button class="wide-toggle-btn" ng-click="$ctrl.toggleAssignedMode()" aria-label="Show Available Jobs">
+            <md-tooltip md-direction="bottom">
+              <span translate="">Show Available Jobs</span>
+            </md-tooltip>
+            <md-icon md-font-icon="icon-chevron-double-left" class="icon"></md-icon>
+          </md-button>
+          <duration-display date="$ctrl.schedulingSpeed.asOf" resolution="1" ng-if="$ctrl.schedulingSpeed.isPending"
+            feature-flag="in-development" />
+        </div>
+        <div layout="row" layout-align="" class="pl-10">
+          <div class="machine-detail__item" flex>
+            <div class="machine-detail__content ml-10">
+              <md-checkbox aria-label="check" ng-model="$ctrl.machine.autoPushEnabled"
+                ng-change="$ctrl.onChangeEnable()">
+                <md-tooltip md-direction="bottom">Eclipse will maintain at least the specified length at the machine.
+                  Any Assigned (Scheduled) Jobs that are not on hold will be sent in the specified sequence.
+                </md-tooltip>
+                Auto-push<span ng-if="$ctrl.machine.autoPushEnabled">:</span>
+              </md-checkbox>
+              <!-- <input
+                class="auto-push-num ml-20"
+                ng-model="$ctrl.machine.autoPushMinFt"
+                ng-model-options="{debounce: 400}"
+                ng-change="$ctrl.onChangeMin()"
+                type="number"
+                ng-if="$ctrl.machine.autoPushEnabled"
+              /> -->
+              <div editable-number="$ctrl.machine.autoPushMinFt" class="auto-push-num" buttons="no"
+                e-ng-blur="$form.$submit();" onshow="$ctrl.focusSelect($form)" onaftersave="$ctrl.onChangeMin()"
+                ng-if="$ctrl.machine.autoPushEnabled">
+                {{$ctrl.machine.autoPushMinFt}}
+              </div>
+              <span ng-if="$ctrl.machine.autoPushEnabled" class="auto-push-unit">ft</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div flex="none" layout="row" layout-align="end start">
+        <jobs-summary ng-if="$ctrl.selectedScheduledSummary.jobIds.length" header="'selected'"
+          job-set-summary="$ctrl.selectedScheduledSummary"
+          show-hold="$ctrl.selectedScheduledSummary.notHeldJobIds.length"
+          click-hold="$ctrl.onSetHold($ctrl.selectedScheduledSummary.notHeldJobIds, true)"
+          show-unhold="$ctrl.selectedScheduledSummary.heldJobIds.length"
+          click-unhold="$ctrl.onSetHold($ctrl.selectedScheduledSummary.heldJobIds, false)" show-unschedule="true"
+          click-unschedule="$ctrl.dropToAvailableJobs($ctrl.selectedScheduledSummary.jobIds)" show-send="true"
+          click-send="$ctrl.dropToMachine($ctrl.selectedScheduledSummary.jobIds)" show-deselect="true"
+          click-deselect="$ctrl.onDeselectScheduled()"></jobs-summary>
+        <jobs-summary header="'assigned'" job-set-summary="$ctrl.scheduledSummary"
+          show-hold="$ctrl.scheduledSummary.notHeldJobIds.length"
+          click-hold="$ctrl.onSetHold($ctrl.scheduledSummary.notHeldJobIds, true)"
+          show-unhold="$ctrl.scheduledSummary.heldJobIds.length"
+          click-unhold="$ctrl.onSetHold($ctrl.scheduledSummary.heldJobIds, false)" show-unschedule="true"
+          click-unschedule="$ctrl.dropToAvailableJobs($ctrl.scheduledSummary.jobIds)" show-send="true"
+          click-send="$ctrl.dropToMachine($ctrl.scheduledSummary.jobIds)"></jobs-summary>
+        <!-- This is attempting to give more available job options on the wide scheduler. However,
+              it is currently doing too much (send, schedule, hold, etc.). It does have a dropzone, 
+              which is good. Maybe we can eliminate the vertical unschedule target on the right??? -->
+        <!-- <jobs-summary header="'available'" show-hold="$ctrl.availableSummary.notHeldJobIds.length"
+          click-hold="$ctrl.onSetHold($ctrl.availableSummary.notHeldJobIds, true)"
+          show-unhold="$ctrl.availableSummary.heldJobIds.length"
+          click-unhold="$ctrl.onSetHold($ctrl.availableSummary.heldJobIds, false)"
+          job-set-summary="$ctrl.availableSummary" show-send="true"
+          click-send="$ctrl.dropToMachine($ctrl.availableSummary.jobIds)" show-schedule="true"
+          click-schedule="$ctrl.dropToAssignedJobs($ctrl.availableSummary.jobIds)" 
+          class="dropzone" cdnd-area cdnd-areatype="'ava'"
+          cdnd-allowed-types="['ass', 'machine']" cdnd-drop="$ctrl.onDropToAvailableJobs(event, hemi, dragSourceData)"></jobs-summary> -->
+        <div class="search-container">
+          <div layout="row" class="search-div" layout-wrap>
+            <md-input-container md-no-float class="search-input" flex>
+              <md-icon md-font-icon="icon-filter-outline" class="icon filter-icon"></md-icon>
+              <input ng-model="filterText" class="filter-text" aria-label="Search Text"
+                ng-keyup="$ctrl.filterText$.onNext(filterText)">
+            </md-input-container>
+          </div>
+        </div>
+        <md-menu md-position-mode="target-right target" class="jobs-menu">
+          <md-button
+            aria-label="Open Menu"
+            class="md-icon-button"
+            ng-click="$mdMenu.open($event)"
+          >
+            <md-icon md-font-icon class="icon icon-cog header-icon"></md-icon>
+          </md-button>
+          <md-menu-content width="2" class="availJobsFilterDiv">
+            <div layout="row" class="addColumn" layout-align="center center">Add/Remove Column</div>
+            <div class="vertical-scroll">
+              <md-menu-item ng-repeat="item in $ctrl.scheduledJobColumns" class="filter-items height-26">
+                <div layout="row" class="filter-items-div">
+                  <md-checkbox name="{{item.name}}" aria-label="{{item.name}}" ng-checked="item.isChecked"
+                    class="filter-check" ng-click="$ctrl.onScheduledJobColumnToggle(item)">{{item.displayName |
+                    translate}}</md-checkbox>
+                </div>
+              </md-menu-item>
+            </div>
+            <md-menu-divider></md-menu-divider>
+            <md-menu-item class="filter-items">
+              <div layout="row" class="filter-items-div">
+                <md-button class="md-raised md-primary" ng-click="$ctrl.resetScheduledDefaultColumns()">Reset Defaults
+                </md-button>
+              </div>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+        <md-button
+          aria-label="Click Print Icon"
+          class="md-icon-button"
+          ng-click="$ctrl.gotoOrderSequence($event)"
+        >
+            <md-icon md-font-icon class="icon icon-printer header-icon"></md-icon>
+        </md-button>
+      </div>
+    </div>
+    <div layout="row">
+      <assigned-jobs-wide class="assigned-jobs-wide-container" machine-id="$ctrl.machineId"
+        scheduled-jobs-data="$ctrl.scheduledJobsData" job-columns="$ctrl.scheduledJobColumns"
+        system-preferences="$ctrl.systemPreferences" drop-to-assigned-jobs="$ctrl.dropToAssignedJobs(jobIds, seq)"
+        drop-to-assigned-jobs-End="$ctrl.dropToAssignedJobsEnd(jobIds)" drop-to-machine="$ctrl.dropToMachine(jobIds)"
+        recall-from-machine="$ctrl.recallFromMachine(jobIds)" toggle-hold="ctrl.onSetHold(job.ordId, !job.hold)"
+        set-hold="$ctrl.onSetHold(jobId, toHold)" unschedule-job="$ctrl.dropToAvailableJobs(jobIds)"
+        set-selected="$ctrl.onSetSelected(jobIds, checked)"
+        toggle-summarized="$ctrl.onToggleSummarized(jobIds, checked)" system-preferences="$ctrl.systemPreferences"></assigned-jobs-wide>
+      <div class="available-jobs available-jobs-container  pr-0">
+        <div class="dropzone available-jobs-content rotate-text-cw" cdnd-area cdnd-areatype="'ava'"
+          cdnd-allowed-types="['ass', 'machine']" cdnd-drop="$ctrl.onDropToAvailableJobs(event, hemi, dragSourceData)"
+          ng-click="$ctrl.toggleAssignedMode()">
+          {{$ctrl.availableSummary.count}} &nbsp; <span translate="availableJobs">AVAILABLE JOBS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-7 available-jobs" ng-if="!$ctrl.wideSchedule">
+    <div class="row margin-top-13" layout="row" layout-align="space-between start">
+      <div flex>
+        <div class="jobs-title">
+          <span translate="availableJobs">AVAILABLE JOBS</span>
+        </div>
+      </div>
+      <div flex="none" layout="row" layout-align="end start">
+        <jobs-summary ng-if="$ctrl.selectedAvailableSummary.count" header="'selected'"
+          show-hold="$ctrl.selectedAvailableSummary.notHeldJobIds.length > 0"
+          click-hold="$ctrl.onSetHold($ctrl.selectedAvailableSummary.notHeldJobIds, true)"
+          show-unhold="$ctrl.selectedAvailableSummary.heldJobIds.length"
+          click-unhold="$ctrl.onSetHold($ctrl.selectedAvailableSummary.heldJobIds, false)"
+          job-set-summary="$ctrl.selectedAvailableSummary" show-send="true"
+          click-send="$ctrl.dropToMachine($ctrl.selectedAvailableSummary.jobIds)" show-schedule="true"
+          click-schedule="$ctrl.dropToAssignedJobs($ctrl.selectedAvailableSummary.jobIds)" show-deselect="true"
+          click-deselect="$ctrl.onDeselectAvailable()"></jobs-summary>
+        <jobs-summary header="'available'" show-hold="$ctrl.availableSummary.notHeldJobIds.length"
+          click-hold="$ctrl.onSetHold($ctrl.availableSummary.notHeldJobIds, true)"
+          show-unhold="$ctrl.availableSummary.heldJobIds.length"
+          click-unhold="$ctrl.onSetHold($ctrl.availableSummary.heldJobIds, false)"
+          job-set-summary="$ctrl.availableSummary" show-send="true"
+          click-send="$ctrl.dropToMachine($ctrl.availableSummary.jobIds)" show-schedule="true"
+          click-schedule="$ctrl.dropToAssignedJobs($ctrl.availableSummary.jobIds)"></jobs-summary>
+        <div class="search-container">
+          <div layout="row" class="search-div" layout-wrap>
+            <md-input-container md-no-float class="search-input" flex>
+              <md-icon md-font-icon="icon-filter-outline" class="icon filter-icon"></md-icon>
+              <input ng-model="filterText" class="filter-text" aria-label="Search Text"
+                ng-keyup="$ctrl.filterText$.onNext(filterText)">
+            </md-input-container>
+          </div>
+        </div>
+        <md-menu md-position-mode="target-right target" class="jobs-menu">
+          <md-button
+            aria-label="Open Menu"
+            class="md-icon-button"
+            ng-click="$mdMenu.open($event)"
+          >
+            <md-icon md-font-icon class="icon icon-cog header-icon"></md-icon>
+          </md-button>
+          <md-menu-content width="2" class="availJobsFilterDiv">
+            <div layout="row" class="addColumn" layout-align="center center">Add/Remove Column</div>
+            <div class="vertical-scroll">
+              <md-menu-item ng-repeat="item in $ctrl.availableJobColumns" class="filter-items height-26">
+                <div layout="row" class="filter-items-div">
+                  <md-checkbox name="{{item.name}}" aria-label="{{item.name}}" ng-checked="item.isChecked"
+                    class="filter-check" ng-click="$ctrl.onAvailableJobColumnToggle(item)">{{item.displayName |
+                    translate}}</md-checkbox>
+                </div>
+              </md-menu-item>
+            </div>
+            <md-menu-divider></md-menu-divider>
+            <md-menu-item class="filter-items">
+              <div layout="row" class="filter-items-div">
+                <md-button class="md-raised md-primary" ng-click="$ctrl.resetDefaultColumns()">Reset Defaults
+                </md-button>
+              </div>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+        <md-button
+          aria-label="Click Print Icon"
+          class="md-icon-button"
+          ng-click="$ctrl.gotoOrderSequence($event)"
+        >
+            <md-icon md-font-icon class="icon icon-printer header-icon"></md-icon>
+        </md-button>
+      </div>
+    </div>
+
+    <!-- Available job column headers -->
+    <div layout="row" class="ava-menu">
+      <div class="ava-menu-content ava-column-header" ng-init="$ctrl.onGetRowWidth()" layout="row"
+        ng-mousemove="$ctrl.onResizeColumn($event)" ng-mouseup="$ctrl.onClickedColumn($event, false)">
+        <div ng-repeat="item in $ctrl.checkedColumns | orderBy:'id'" class="menu-item" ng-style="$ctrl.onGetWidth(item)"
+          cdnd-draggable="item" drag-source-data="item.fieldName" cdnd-type="item"
+          ng-dblclick="$ctrl.onDbClickAvailableJobsHeader(item)" flex>
+          <div class="item-bg" cdnd-area cdnd-areatype="'header'" cdnd-allowed-types="['item']"
+            cdnd-dragover="$ctrl.dragOverAvailableHeader(event, hemi, otherhemi)"
+            cdnd-drop="$ctrl.dropOnAvailableHeader($index, otherhemi, dragSourceData)">
+          </div>
+          {{item.displayName | translate}}
+          <div class="item-move" ng-mousedown="$ctrl.onClickedColumn($event, true, item)">
+            <div class="col-separate-line"></div>
+          </div>
+        </div>
+        <div style="width:18px"></div> <!-- room for the scrollbar -->
+      </div>
+    </div>
+    <available-jobs machine-id="$ctrl.machineId" available-jobs-tree="$ctrl.availableJobs"
+      is-draging-on-assign="$ctrl.isDragingOnAssign" drop-to-available-jobs="$ctrl.dropToAvailableJobs(jobIds)"
+      assign-available-job="$ctrl.assignAvailableJob(jobIds)" send-available-job="$ctrl.sendAvailableJob(jobIds)"
+      toggle-hold="$ctrl.onSetHold(job.ordId, !job.hold)" set-hold="$ctrl.onSetHold(jobId, toHold)"
+      set-selected="$ctrl.onSetSelected(jobIds, checked)" toggle-summarized="$ctrl.onToggleSummarized(jobIds, checked)">
+    </available-jobs>
+  </div>
+</div>

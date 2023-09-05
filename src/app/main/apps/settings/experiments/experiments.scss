@@ -1,0 +1,72 @@
+#settings {
+
+    .simple-table-container {
+        //max-width: 1200px;
+
+        .table-title {
+            padding: 0;
+            margin: 24px;
+            display: inline-block;
+        }
+    }
+
+    .setting-experiments {
+        //max-width: 1200px;
+
+        td {
+            position: relative;
+            padding: 0px 10px;
+
+            &:not(:last-child) {
+                width: 100px;
+            }
+        }
+
+        th {
+            min-width: 0;
+        }
+
+        md-checkbox {
+            padding: 0;
+            margin: 0;
+            left: 24px;
+            position: relative;
+        }        
+
+        .md-button {
+            padding: 0;
+            margin: 0;
+            min-width: 0;
+        }
+
+        md-progress-circular {
+            display: inline-block;
+        }
+
+        .editable-click {
+            width: 50px;
+            text-align: right;
+        }
+
+        .editable-wrap {
+            position: absolute;
+            left: 18px;
+            top: -4px;
+
+            .editable-controls .editable-input {
+                width: 50px;
+                text-align: center;
+                font-size: 13px;
+                font-weight: normal;
+                border-top: none;
+                border-left: none;
+                border-right: none;
+                &::-webkit-inner-spin-button,
+                &::-webkit-outer-spin-button {
+                  -webkit-appearance: none;
+                  margin: 0;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,421 @@
+<div id="dashboard-report" class="page-layout simple fullwidth white-bg order-sequence main-print-body" ngsf-fullscreen>
+  <report-header class="print-hide" subject="Order Sequence" on-filter="$ctrl.onFilter(searchTxt)"></report-header>
+  <div class="summary-title-header print-hide">
+    <div class="menu-column display-types">
+      <div class="menu-title">
+        {{$ctrl.selectedDisplayType}}
+      </div>
+
+      <md-menu md-position-mode="target-right target">
+        <md-button aria-label="Select Type" class="md-icon-button" ng-click="$mdMenu.open($event)">
+          <md-icon md-font-icon class="icon icon-chevron-down menu-icon"></md-icon>
+        </md-button>
+        <md-menu-content width="2" class="duration-menu">
+          <md-menu-item ng-repeat="item in $ctrl.displayTypes" class="duration-menu-item"
+            ng-class="{'selected-menu-item': item === $ctrl.selectedDisplayType}">
+            <md-button ng-click="$ctrl.onClickTypes(item)">
+              {{item}}
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+    </div>
+
+    <checkbox-menu class="menu-column float-right" subject="MACHINES" menu-subject="SHOW MACHINES"
+      menu-list="$ctrl.machines" on-change="$ctrl.onChangeMachines(items)"></checkbox-menu>
+
+    <div class="print-icon-column margin-left-auto">
+      <md-menu>
+          <md-button aria-label="Select Column" class="md-icon-button" ng-click="$mdMenu.open($event)">
+              <md-icon md-font-icon="icon-cog color-white" class="icon"></md-icon>
+          </md-button>
+          <md-menu-content width="2" class="ordersFilterDiv">
+              <div layout="row" class="addColumn" layout-align="center center">
+                  Add/Remove Column
+              </div>
+              <div class="vertical-scroll">
+                  <md-menu-item ng-repeat="item in $ctrl.headerColumns" class="filter-item height-26">
+                    <div layout="row" class="filter-items-div">
+                      <md-checkbox name="{{item.field}}" aria-label="{{item.title}}"
+                        ng-checked="item.isChecked" class="filter-check"
+                        ng-click="$ctrl.onHeaderColumnToggle(item)">
+                          {{item.title | translate}}
+                      </md-checkbox>
+                    </div>
+                  </md-menu-item>
+                  <md-divider></md-divider>
+                  <md-menu-item ng-repeat="item in $ctrl.itemColumns" class="filter-item height-26">
+                    <div layout="row" class="filter-items-div">
+                        <md-checkbox name="{{item.field}}" aria-label="{{item.title}}"
+                          ng-checked="item.isChecked" class="filter-check"
+                          ng-click="$ctrl.onItemColumnToggle(item)">
+                            {{item.title | translate}}
+                        </md-checkbox>
+                    </div>
+                </md-menu-item>
+                  <md-divider></md-divider>
+                  <md-menu-item ng-repeat="item in $ctrl.bundleColumns" class="filter-item height-26">
+                    <div layout="row" class="filter-items-div">
+                        <md-checkbox name="{{item.field}}" aria-label="{{item.title}}"
+                          ng-checked="item.isChecked" class="filter-check"
+                          ng-click="$ctrl.onBundleColumnToggle(item)">
+                            {{item.title | translate}}
+                        </md-checkbox>
+                    </div>
+                </md-menu-item>
+              </div>
+          </md-menu-content>
+      </md-menu>
+      <md-button aria-label="Select Shift 1" class="md-icon-button"
+                        ng-click="$ctrl.openPrintPreview($event)">
+                        <md-icon md-font-icon class="icon icon-printer header-icon"></md-icon>
+                    </md-button>
+  </div>
+  </div>
+  <div class="print-content__main-titles">
+    <div class="print-content__title1">Eclipsepro</div>
+    <div class="print-content__title2">Order Sequence</div>
+  </div>
+  <div class="content md-background md-hue-1 scroll-content" ms-scroll>
+    <div class="material-usage-content" ng-if="$ctrl.selectedDisplayType==='Items'">
+      <!-- <md-virtual-repeat-container id="coil-summary-list" class="ms-scroll"> -->
+        <div ng-repeat="item in $ctrl.filteredList" class="order-sequence-item repeated-item" flex>
+          <div class="order-summary-item-header order-sequence-machine-header" ng-if="$first || (!first && item.job.machineNumber !== $ctrl.filteredList[$index - 1].job.machineNumber)">
+            <div class="main-con">
+              Machine:<span class="sub-content">MACHINE {{item.job.machineNumber}}</span>
+            </div>
+          </div>
+          <div class="order-summary-item-header">
+            <div class="main-con">
+              Order Number:
+              <div class="multi-col">
+                <span class="sub-content"><a ui-sref="app.orders.detail({id: item.job.ordId})">{{item.job.orderCode}}</a></span>
+                <span class="sub-content font-12">{{item.job.customerName}}</span>
+              </div>
+            </div>
+            <div class="main-con multi-col-container">
+              Material:
+              <div class="multi-col">
+                <span class="sub-content">
+                  <link-helper document-id="'Material/' + item.job.materialCode" label="item.job.materialCode" hide-type="true"></link-helper>
+                </span>
+                <span class="sub-content font-12">{{item.job.materialDescription}}</span>
+              </div>
+            </div>
+            <div class="main-con multi-col-container">
+              Tooling Code:
+              <div class="multi-col">
+                <span class="sub-content">{{item.job.toolingCode}}</span>
+                <span class="sub-content font-12">{{item.job.toolingDescription}}</span>
+              </div>
+            </div>
+            <div class="main-con">
+              Seq#:<span class="sub-content">{{item.job.sequence}}</span>
+            </div>
+          </div>
+          <div class="order-summary-item-header flex-wrap">
+            <div class="sequence-detail-main-col" ng-repeat="col in $ctrl.selectedHeaderColumns">
+              {{col.title | translate}}:
+              <span class="sub-content">{{item.job[col.field] | dynamicFilter : col.filter}}</span>
+            </div>
+          </div>
+          <div class="summary-group-item mt-15">
+            <div class="material-usage-item sub-header">
+              <div class="main-con">Bundle</div>
+              <div class="main-con">Qty</div>
+              <div class="main-con">Length</div>
+              <div class="main-con" ng-repeat="col in $ctrl.selectedItemColumns">{{col.title | translate}}</div>
+              <div class="main-con">Total Weight ({{'lbs' | userDisplayUnits}})</div>
+              <div class="main-con">Total Length ({{'ft' | userDisplayUnits}})</div>
+            </div>
+            <div class="material-usage-item" ng-repeat="item1 in item.items">
+              <div class="main-con">
+                <span> {{item1.bundle}}</span>
+              </div>
+              <div class="main-con">
+                <span> {{item1.quantity}}</span>
+              </div>
+              <div class="main-con">
+                <span> {{item1.lengthIn | unitsFormat :"in":3}}</span>
+              </div>
+              <div class="main-con" ng-repeat="col in $ctrl.selectedItemColumns">
+                <span> {{item1[col.field] | dynamicFilter : col.filter}}</span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{item1.weightLbs | unitsFormat :"lbs":1:true}}</span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{item1.lengthIn * item1.quantity/12 | unitsFormat :"ft":1:true}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="material-usage-item">
+            <div class="sequence-total-header"></div>
+            <div class="main-con">
+              <!-- Order Weight: -->
+              <span class="num-col">
+                {{item.job.totalLbs | unitsFormat :"lbs":1:true}}
+              </span>
+            </div>
+            <div class="main-con">
+              <!-- Order Footage:  -->
+              <span class="num-col">
+                {{item.job.totalFt | unitsFormat :"ft":1:true}}
+              </span>
+            </div>
+          </div>
+          <!-- ========== -->
+          
+          <!-- material total -->
+          <div class="material-usage-item last-item" ng-if="item.materialGroup.accLast">
+            <div class="sequence-total-header">Material <link-helper document-id="'Material/' + item.job.materialCode" label="item.job.materialCode" hide-type="true"></link-helper>:</div>
+            <div class="main-con">
+              <span class="num-col">
+                {{item.materialGroup.accLbs | unitsFormat :"lbs":1: true}}
+              </span>
+            </div>
+            <div class="main-con">
+              <span class="num-col">
+                {{item.materialGroup.accFt | unitsFormat :"ft":1:true}}
+              </span>
+            </div>
+          </div>          
+          <!-- machine total -->
+          <div class="material-usage-item last-item" ng-if="$last || (!last && item.job.machineNumber !== $ctrl.filteredList[$index + 1].job.machineNumber)">
+            <div class="sequence-total-header">Machine {{item.job.machineNumber}}:</div>
+            <div class="main-con">
+              <span class="num-col">
+                {{$ctrl.groupVals[item.job.machineNumber].weight | unitsFormat :"lbs":1: true}}
+              </span>
+            </div>
+            <div class="main-con">
+              <span class="num-col">
+                {{$ctrl.groupVals[item.job.machineNumber].length | unitsFormat :"ft":1:true}}
+              </span>
+            </div>
+          </div>
+        </div>
+      <!-- </md-virtual-repeat-container> -->
+    </div>
+    <div class="material-usage-content" ng-if="$ctrl.selectedDisplayType==='Bundles'">
+      <!-- <md-virtual-repeat-container id="coil-summary-list" class="ms-scroll"> -->
+        <div ng-repeat="item in $ctrl.filteredList" class="order-sequence-item repeated-item" flex>
+          <div class="order-summary-item-header order-sequence-machine-header" ng-if="$first || (!first && item.job.machineNumber !== $ctrl.filteredList[$index - 1].job.machineNumber)">
+            <div class="main-con">
+              Machine:<span class="sub-content">MACHINE {{item.job.machineNumber}}</span>
+            </div>
+          </div>
+          <div class="order-summary-item-header">
+            <div class="main-con">
+              Order Number:
+              <div class="multi-col">
+                <span class="sub-content"><a ui-sref="app.orders.detail({id: item.job.ordId})">{{item.job.orderCode}}</a></span>
+                <span class="sub-content font-12">{{item.job.customerName}}</span>
+              </div>
+            </div>
+            <div class="main-con multi-col-container">
+              Material:
+              <div class="multi-col">
+                <span class="sub-content">
+                  <link-helper document-id="'Material/' + item.job.materialCode" label="item.job.materialCode" hide-type="true"></link-helper>
+                </span>
+                <span class="sub-content font-12">{{item.job.materialDescription}}</span>
+              </div>
+            </div>
+            <div class="main-con multi-col-container">
+              Tooling Code:
+              <div class="multi-col">
+                <span class="sub-content">{{item.job.toolingCode}}</span>
+                <span class="sub-content font-12">{{item.job.toolingDescription}}</span>
+              </div>
+            </div>
+            <div class="main-con">
+              Seq#:<span class="sub-content">{{item.job.sequence}}</span>
+            </div>
+          </div>
+          <div class="order-summary-item-header flex-wrap">
+            <div class="sequence-detail-main-col" ng-repeat="col in $ctrl.selectedHeaderColumns">
+              {{col.title | translate}}:
+              <span class="sub-content">{{item.job[col.field] | dynamicFilter : col.filter}}</span>
+            </div>
+          </div>
+          <div class="summary-group-item mt-15">
+            <div class="material-usage-item sub-header">
+              <div class="main-con">Bundle</div>
+              <div class="main-con">Qty</div>
+              <div class="main-con">Min Length</div>
+              <div class="main-con">Max Length</div>
+              <div class="main-con" ng-repeat="col in $ctrl.selectedBundleColumns">{{col.title | translate}}</div>
+              <div class="main-con">Total Weight ({{'lbs' | userDisplayUnits}})</div>
+              <div class="main-con">Total Length ({{'ft' | userDisplayUnits}})</div>
+            </div>
+            <div class="material-usage-item" ng-repeat="bundle in item.bundles">
+              <div class="main-con">
+                <span> {{bundle.bundleNo}}</span>
+              </div>
+              <div class="main-con">
+                <span> {{bundle.pieces}}</span>
+              </div>
+              <div class="main-con">
+                <span> {{bundle.bundleMinLengthIn | unitsFormat :"in":3}}</span>
+              </div>
+              <div class="main-con">
+                <span> {{bundle.bundleMaxLengthIn | unitsFormat :"in":3}}</span>
+              </div>
+              <div class="main-con" ng-repeat="col in $ctrl.selectedBundleColumns">
+                <span> {{bundle[col.field] | dynamicFilter : col.filter}}</span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{bundle.totalLbs | unitsFormat :"lbs":1:true}}</span>
+              </div>
+              <div class="main-con">
+                <span class="num-col">
+                  {{bundle.totalFt | unitsFormat :"ft":1:true}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="material-usage-item">
+            <div class="sequence-total-header"></div>
+            <div class="main-con">
+              <!-- Order Weight: -->
+              <span class="num-col">
+                {{item.job.totalLbs | unitsFormat :"lbs":1:true}}
+              </span>
+            </div>
+            <div class="main-con">
+              <!-- Order Footage:  -->
+              <span class="num-col">
+                {{item.job.totalFt | unitsFormat :"ft":1:true}}
+              </span>
+            </div>
+          </div>
+          <!-- ========== -->
+          
+          <!-- material total -->
+          <div class="material-usage-item last-item" ng-if="item.materialGroup.accLast">
+            <div class="sequence-total-header">Material <link-helper document-id="'Material/' + item.job.materialCode" label="item.job.materialCode" hide-type="true"></link-helper>:</div>
+            <div class="main-con">
+              <span class="num-col">
+                {{item.materialGroup.accLbs | unitsFormat :"lbs":1: true}}
+              </span>
+            </div>
+            <div class="main-con">
+              <span class="num-col">
+                {{item.materialGroup.accFt | unitsFormat :"ft":1:true}}
+              </span>
+            </div>
+          </div>          
+          <!-- machine total -->
+          <div class="material-usage-item last-item" ng-if="$last || (!last && item.job.machineNumber !== $ctrl.filteredList[$index + 1].job.machineNumber)">
+            <div class="sequence-total-header">Machine {{item.job.machineNumber}}:</div>
+            <div class="main-con">
+              <span class="num-col">
+                {{$ctrl.groupVals[item.job.machineNumber].weight | unitsFormat :"lbs":1: true}}
+              </span>
+            </div>
+            <div class="main-con">
+              <span class="num-col">
+                {{$ctrl.groupVals[item.job.machineNumber].length | unitsFormat :"ft":1:true}}
+              </span>
+            </div>
+          </div>
+        </div>
+      <!-- </md-virtual-repeat-container> -->
+    </div>
+    <div class="material-usage-content" ng-if="$ctrl.selectedDisplayType==='Simple'">
+      <div class="material-usage-item sub-header">
+        <div class="main-con sequence-col">Seq</div>
+        <div class="main-con pl-20 text-align-left">Order</div>
+        <div class="main-con pl-20 text-align-left">Material</div>
+        <div class="main-con pl-20 text-align-left">Tooling Code</div>
+        <div ng-repeat="item in $ctrl.selectedHeaderColumns" class="main-con">{{item.title | translate}}</div>
+        <div class="wei-leng-col">Weight ({{'lbs' | userDisplayUnits}})</div>
+        <div class="wei-leng-col">Length ({{'ft' | userDisplayUnits}})</div>
+      </div>
+      <div ms-scroll class="ms-scroll order-sequence-simple-list">
+        <div ng-repeat="item in $ctrl.filteredList" class="order-sequence-item repeated-item order-sequence-item-simple" flex>
+          <div class="order-summary-item-header" ng-if="$first || (!first && item.job.machineNumber !== $ctrl.filteredList[$index - 1].job.machineNumber)">
+            <div class="main-con">
+              Machine:<span class="sub-content">MACHINE {{item.job.machineNumber}}</span>
+            </div>
+          </div>
+          <div class="material-usage-item">
+            <div class="main-con sequence-col">
+              {{item.job.sequence}}
+            </div>
+            <div class="main-con pl-20">
+              <div class="multi-col">
+                <span class="text-align-left"><a ui-sref="app.orders.detail({id: item.job.ordId})">{{item.job.orderCode}}</a></span>
+                <span class="text-align-left pl-15">
+                  {{item.job.customerName}}
+                </span>
+              </div>
+            </div>
+            <div class="main-con pl-20">
+              <div class="multi-col">
+                <span class="text-align-left">
+                  <link-helper document-id="'Material/' + item.job.materialCode" label="item.job.materialCode" hide-type="true"></link-helper>
+                </span>
+                <span class="text-align-left pl-15">
+                  {{item.job.materialDescription}}
+                </span>
+              </div>
+            </div>
+            <div class="main-con pl-20">
+              <div class="multi-col">
+                <span class="text-align-left">{{item.job.toolingCode}}</span>
+                <span class="text-align-left pl-15">
+                  {{item.job.toolingDescription}}
+                </span>
+              </div>
+            </div>
+            <div ng-repeat="col in $ctrl.selectedHeaderColumns" class="main-con">
+              <span class="sub-content">{{item.job[col.field] | dynamicFilter : col.filter}}</span>
+            </div>
+            <div class="wei-leng-col">
+              <span class="num-col" ng-if="item.job.material">
+                {{item.job.remainingLbs | unitsFormat :"lbs":1: true}}
+              </span>
+            </div>
+            <div class="wei-leng-col">
+              <span class="num-col">
+                {{item.job.remainingFt | unitsFormat :"ft":1:true}}
+              </span>
+            </div>
+          </div>
+          <!-- material total -->
+          <div class="material-usage-item last-item" ng-if="item.materialGroup.accLast">
+            <div class="total-col">Material <link-helper document-id="'Material/' + item.job.materialCode" label="item.job.materialCode" hide-type="true"></link-helper>:</div>
+            <div class="wei-leng-col">
+              <span class="num-col">
+                {{item.materialGroup.accLbs | unitsFormat :"lbs":1: true}}
+              </span>
+            </div>
+            <div class="wei-leng-col">
+              <span class="num-col">
+                {{item.materialGroup.accFt | unitsFormat :"ft":1:true}}
+              </span>
+            </div>
+          </div>          
+          <!-- machine total -->
+          <div class="material-usage-item last-item" ng-if="$last || (!last && item.job.machineNumber !== $ctrl.filteredList[$index + 1].job.machineNumber)">
+            <div class="total-col">Machine {{item.job.machineNumber}}:</div>
+            <div class="wei-leng-col">
+              <span class="num-col">
+                {{$ctrl.groupVals[item.job.machineNumber].weight | unitsFormat :"lbs":1: true}}
+              </span>
+            </div>
+            <div class="wei-leng-col">
+              <span class="num-col">
+                {{$ctrl.groupVals[item.job.machineNumber].length | unitsFormat :"ft":1:true}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

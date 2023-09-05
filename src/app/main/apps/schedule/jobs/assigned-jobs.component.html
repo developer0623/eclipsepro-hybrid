@@ -1,0 +1,180 @@
+<div id="dropzone-id"
+   class="row dropzone assigned-jobs vertical-scroll scrollable assigned-jobs-grid assign-grid-container">
+   <md-virtual-repeat-container md-top-index="$ctrl.assignedTopIndex" id="ass-vertical-container"
+      class="scrollable assign-container">
+      <div class="machine-row">
+         <div class="assigned-datetime"></div>
+         <div class="machine-area" ng-class="{ 'can-drop': $ctrl.canDropToMachine }" cdnd-area cdnd-areatype="'machine'"
+            cdnd-allowed-types="['ass', 'ava']" cdnd-allowed-drag-start="$ctrl.onAllowedTypeDragStarted(cdndType)"
+            cdnd-allowed-drag-end="$ctrl.onAllowedTypeDragEnd(cdndType)"
+            cdnd-drop="$ctrl.onDropToMachine(dragSourceData)">
+            <div id="addToMachine" class="addToMachine" style="height: {{ $ctrl.OnMachineContainerHeight() }}px"
+               translate>
+               sendToMachine
+            </div>
+            <div class="machine-jobs">
+               {{
+               $ctrl.numberOfJobsOnMachine
+               ? $ctrl.numberOfJobsOnMachine
+               : "No"
+               }}
+               Jobs on Machine
+               <span ng-if="$ctrl.machineJobsFt">({{ $ctrl.machineJobsFt | unitsFormat: "ft" }})</span>
+            </div>
+         </div>
+      </div>
+      <div md-virtual-repeat="row in $ctrl.assignedJobs" class="assigned-row">
+         <div class="assigned-datetime" style="order: 1" ng-mouseover="$ctrl.onInitMouseAction()">
+            <div class="assigned-date" ng-if="row[3].jobs[0].dateChange">
+               {{ row[3].jobs[0].dateChange | date: "EEE MM/dd" }}
+            </div>
+            <div class="assigned-time">
+               {{ row[3].jobs[0].completionDate | date: "h:mm a" }}
+            </div>
+         </div>
+         <div class="assigned-machine-start"
+            ng-class="{ 'assigned-on-machine': row[0].key }" style="order: 2"></div>
+         <!-- Machine -->
+         <div ng-if="
+               row[3].jobs[0].isOnMachine
+            " class="assigned-cell assigned-job" style="order: 4" ng-style="{ background: row[3].keyColumn.color }"
+            ng-mouseover="$ctrl.onInitMouseAction()"
+            ng-dblclick="$ctrl.onDoubleClickAssigned(row[3])" cdnd-draggable="row[3]" drag-source-data="row[3].ids"
+            cdnd-type="machine" cdnd-dragstart="$ctrl.onDragStart(row[3], true)"
+            cdnd-dragover="$ctrl.onDragOver(event, row[3], hemi)" cdnd-allowed-types="['ass', 'ava']" cdnd-area
+            cdnd-areatype="'machine'" cdnd-drop="$ctrl.onDropToSchedule(event, row[3], hemi, dragSourceData)"
+            ng-class="{ 'summary-row': row[3].isSummaryRow }">
+            <assigned-job job="row[3].jobs[0]" style="width: 100%; height: 100%"
+               system-preferences="$ctrl.systemPreferences"
+               recall-from-machine="$ctrl.onRecallFromMachine(jobIds)" unschedule="$ctrl.onUnschedule(jobIds)"
+               set-hold="$ctrl.onSetHold(jobId, toHold)">
+            </assigned-job>
+         </div>
+         <!-- Assigned -->
+         <div ng-if="!row[3].jobs[0].isOnMachine"
+            class="assigned-cell assigned-job" style="order: 4" ng-style="{ background: row[3].keyColumn.color }"
+            ng-mouseover="$ctrl.onInitMouseAction()"
+            ng-dblclick="$ctrl.onDoubleClickAssigned(row[3])" cdnd-draggable="row[3]" drag-source-data="row[3].ids"
+            cdnd-type="ass" cdnd-dragstart="$ctrl.onDragStart(row[3])" cdnd-dragover="$ctrl.onDragOver(event, row[3], hemi)"
+            cdnd-allowed-types="['ass', 'ava', 'machine']" cdnd-area cdnd-areatype="'ass'"
+            cdnd-drop="$ctrl.onDropToSchedule(event, row[3], hemi, dragSourceData)"
+            ng-class="{ 'summary-row': row[3].isSummaryRow }">
+            <assigned-job job="row[3].jobs[0]" ng-if="!row[3].isSummaryRow" style="width: 100%; height: 100%"
+               system-preferences="$ctrl.systemPreferences"
+               set-hold="$ctrl.onSetHold(jobId, toHold)" send-to-machine="$ctrl.onSendToMachine(jobIds)"
+               unschedule="$ctrl.onUnschedule(jobIds)" set-selected="$ctrl.onSetSelected(jobIds, checked)"
+               on-move="$ctrl.onMove(row[3], direction, 3)" is-firsthide="row[3].jobs[0].mainIndex > $ctrl.numberOfJobsOnMachine"
+               is-lasthide="!row[3].jobs[0].isOnMachine && (row[3].jobs[0].mainIndex + row[3].jobs.length) !== $ctrl.assignedJobs.length">
+            </assigned-job>
+            <summarized-jobs-cell ng-if="row[3].isSummaryRow" jobs="row[3].jobs" style="width: 100%; height: 100%"
+               set-hold="$ctrl.onSetHold(jobId, toHold)" send-to-machine="$ctrl.onSendToMachine(jobIds)"
+               unschedule="$ctrl.onUnschedule(jobIds)" set-selected="$ctrl.onSetSelected(jobIds, checked)">
+            </summarized-jobs-cell>
+         </div>
+
+
+         <!-- Group -->
+         <div ng-repeat="idx in [1, 2]"
+            class="assigned-cell assigned-cell-group multi-select-hover hover-item" style="order: 3"
+            ng-style="{
+               height: row[idx].rowspan * 76 - 1 + 'px',
+               'z-index': row[idx].rowspan,
+               background: row[idx].keyColumn.color
+            }"
+            ng-mouseover="$ctrl.onMouseOver($event, row[idx], idx, row[idx].jobs[0].mainIndex)"
+            ng-mouseleave="$ctrl.onMouseLeave(idx)"
+            ng-dblclick="$ctrl.onDoubleClickAssigned(row[idx])" cdnd-draggable="row[idx]" drag-source-data="row[idx].ids"
+            cdnd-type="ass" cdnd-dragstart="$ctrl.onDragStart(row[idx])" cdnd-dragover="$ctrl.onDragOver(event, row[idx], hemi)"
+            cdnd-allowed-types="['ass', 'ava', 'machine']" cdnd-area cdnd-areatype="'ass'"
+            cdnd-drop="$ctrl.onDropToSchedule(event, row[idx], hemi, dragSourceData)"
+            ng-class="{ 'summary-row': row[idx].isSummaryRow }">
+            <div class="multi-select">
+               <md-checkbox aria-label="Select Tool" ng-checked="row[idx].isSelected"
+                  ng-click="$ctrl.onToggleNodeChecked(row[idx])">
+               </md-checkbox>
+            </div>
+            <div class="collapse-to-summary" ng-if="
+                  row[idx].rowspan > 1 ||
+                  (idx === 1 && row[idx].isSummaryRow) ||
+                  (idx > 1 &&
+                     !row[idx - 1].isSummaryRow &&
+                     row[idx].isSummaryRow)
+               ">
+               <md-button class="collapse-btn" aria-label="Collapse to summary"
+                  ng-class="{ 'showed-btn': row[idx].isSummaryRow }" ng-click="$ctrl.onToggleSummarized(row[idx])">
+                  <span class="summarized-jobs" ng-if="
+                        (idx === 1 && row[idx].isSummaryRow) ||
+                        (idx > 1 &&
+                           !row[idx - 1].isSummaryRow &&
+                           row[idx].isSummaryRow)
+                     ">
+                     {{ row[idx].ids.length }} jobs
+                  </span>
+                  <md-icon md-menu-origin md-font-icon="icon-chevron-down" ng-if="!row[idx].isSummaryRow"></md-icon>
+                  <md-icon md-menu-origin md-font-icon="icon-chevron-right" ng-if="row[idx].isSummaryRow"></md-icon>
+               </md-button>
+            </div>
+            <div class="assigned-narrow-text">
+               <span class="rotatetext" ng-if="!row[idx].srefObj">{{ row[idx].key }}</span>
+               <span class="rotatetext" ng-if="row[idx].srefObj && row[idx].srefObj.sref !== 'app.inventory.coil-types.coil-type'">
+                  <!-- note: we are keeping the href here to show the browser link preview. preventDefault disables it -->
+                  !!<a href="{{ row[idx].href }}" ng-click="$event.preventDefault();$ctrl.onSrefClick(row[idx])">{{ row[idx].key }}</a>!!
+
+               </span>
+               <span class="rotatetext" ng-if="row[idx].srefObj && row[idx].srefObj.sref === 'app.inventory.coil-types.coil-type'">
+                  <coil-type-preview material-id="row[idx].key">
+                     <a href="{{ row[idx].href }}" ng-click="$event.preventDefault();$ctrl.onSrefClick(row[idx])">
+                        {{row[idx].key}}</a>
+                  </coil-type-preview>
+               </span>
+            </div>
+            <div class="action-container">
+               <md-icon md-font-icon="mdi-arrow-up" ng-if="row[idx].jobs[0].mainIndex > $ctrl.numberOfJobsOnMachine" class="mdi s20 assign-up-btn" ng-click="$ctrl.onMove(row[idx], 'up', idx)"></md-icon>
+               <md-icon md-font-icon="mdi-arrow-down"
+                  ng-if="!row[idx].jobs[0].isOnMachine && (row[idx].jobs[0].mainIndex + row[idx].jobs.length) !== $ctrl.assignedJobs.length"
+                  class="mdi s20 assign-down-btn" ng-click="$ctrl.onMove(row[idx], 'down', idx)"
+               ></md-icon>
+            </div>
+         </div>
+         <!-- /Group -->
+         <div class="assigned-machine-end"
+            ng-class="{ 'assigned-on-machine': row[0].key }" style="order: 5"></div>
+      </div>
+      <div class="assign-machine-disable"></div>
+
+   </md-virtual-repeat-container>
+   <div class="action-container-1" ng-style="$ctrl.onGetActionContainer1()" ng-mouseover="$ctrl.onActionButtonOver()" ng-mouseleave="$ctrl.onActionButtonLeave()">
+      <md-icon md-font-icon="mdi-arrow-up"
+         ng-if="$ctrl.currentNode.jobs[0].mainIndex > $ctrl.numberOfJobsOnMachine"
+         class="mdi s20 assign-up-btn" ng-click="$ctrl.onActionMove('up')"
+      ></md-icon>
+      <md-icon md-font-icon="mdi-arrow-down"
+         ng-if="!$ctrl.currentNode.jobs[0].isOnMachine && ($ctrl.currentNode.jobs[0].mainIndex + $ctrl.currentNode.jobs.length) !== $ctrl.assignedJobs.length"
+         class="mdi s20 assign-down-btn" ng-click="$ctrl.onActionMove('down')"
+      ></md-icon>
+   </div>
+   <div class="action-container-2" ng-style="$ctrl.onGetActionContainer2()" ng-mouseover="$ctrl.onActionButtonOver()" ng-mouseleave="$ctrl.onActionButtonLeave()">
+      <md-icon md-font-icon="mdi-arrow-up"
+         ng-if="$ctrl.currentNode.jobs[0].mainIndex > $ctrl.numberOfJobsOnMachine"
+         class="mdi s20 assign-up-btn" ng-click="$ctrl.onActionMove('up')"
+      ></md-icon>
+      <md-icon md-font-icon="mdi-arrow-down"
+         ng-if="!$ctrl.currentNode.jobs[0].isOnMachine && ($ctrl.currentNode.jobs[0].mainIndex + $ctrl.currentNode.jobs.length) !== $ctrl.assignedJobs.length"
+         class="mdi s20 assign-down-btn" ng-click="$ctrl.onActionMove('down')"
+      ></md-icon>
+   </div>
+   <div class="machine-row assign-to-machine-container" ng-style="$ctrl.onGetAssignContainer()">
+      <div class="assigned-datetime"></div>
+      <div class="assign-area assign-area-small" ng-class="{ 'can-drop': $ctrl.canDropToMachine }" cdnd-area
+         cdnd-areatype="'ass'" cdnd-allowed-types="['ass', 'ava', 'machine']"
+         cdnd-allowed-drag-start="$ctrl.onAllowedTypeDragStarted(cdndType)"
+         cdnd-allowed-drag-end="$ctrl.onAllowedTypeDragEnd(cdndType)"
+         cdnd-drop="$ctrl.onDropToScheduleEnd(dragSourceData)">
+         <div id="assignToMachine" class="assignToMachine" translate>
+            assignToMachine
+         </div>
+      </div>
+   </div>
+
+
+</div>

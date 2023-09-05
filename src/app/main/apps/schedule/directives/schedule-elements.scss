@@ -1,0 +1,220 @@
+body text {
+  font: arial;
+}
+
+.xAxis text {
+  font: 10px sans-serif;
+}
+.xAxis path,
+.xAxis line {
+    fill: none;
+    stroke: black;
+}
+
+rect.chartbody {
+  stroke: #8FAE17;
+  fill: none;
+  shape-rendering: crispEdges;
+  opacity: 0.7;
+}
+
+.cursor line {
+  stroke: red;
+  stroke-width: 1.0;
+}
+
+.signalToolTip line {
+  stroke: grey;
+  stroke-width: 0.50;
+}
+.signalToolTip text {
+  font: 10px sans-serif;
+}
+
+div.eventToolTip {
+  position: absolute;	
+  text-align: left;	
+  padding: 10px 13px;	
+  font: 12px sans-serif;	
+  background: #ffffff;	
+  border: 0px;					
+  border-radius: 8px;
+  pointer-events: none;
+  box-shadow: 2px 0px 20px 0px rgba(0, 0, 0, 0.5);
+}
+
+.signals {
+    table-layout: fixed;
+    width: 100%;
+    white-space: nowrap;
+    //height: 100%;
+    overflow-y: auto;    /* Trigger vertical scroll    */
+    overflow-x: hidden;  /* Hide the horizontal scroll */
+}
+.signals td {
+  text-align: left;
+    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.signals th {
+  text-align: left;  
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row-name {
+    width: 20%;
+}
+
+.muted {
+  opacity: 0.2;
+}
+
+.timeBlock text {
+  font-family: "Arial";
+}
+
+// Note: these are derived exactly from AMS.Eclipse.Core.Enums.ScheduleActivityType
+rect.production  {
+  fill: #8FAE17;
+}
+
+rect.coilchange {
+  fill: #F2D20C;
+}
+
+rect.coilchange.nocoil {
+  fill: url(#pattern-coilwarn);
+}
+
+rect.toolchange,
+rect.toolandmaterialchange  {
+  fill: #F68B1F;
+  stroke: #F68B1F;
+}
+
+rect.materialchange  {
+  fill: #F68B1F;
+  stroke: #F68B1F;
+}
+
+rect.machineconfig  {
+  stroke: #F68B1F;
+}
+
+rect.bundlechange  {
+  fill: #808080;
+  opacity: 0.0; //we are hiding this for now. It was 0.9
+}
+
+rect.break  {
+  fill: #0071B5;
+}
+
+rect.meeting  {
+  fill: #11897D;
+}
+rect.unscheduled  {
+  fill: #ffffff;
+  stroke: #ffffff;
+}
+
+timeline-block[name="Purlin Line"] svg{
+    padding-top: 16px;
+    height: 115px;
+}
+
+timeline-block svg{
+  padding-bottom: 18px;
+  height: 95px;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0)
+{ 
+  rect.unscheduled  {
+    fill: #ffffff;
+    stroke: #ffffff;
+  }
+}
+rect.maintenance  {
+  fill: #74592E;
+}
+rect.breakdown  {
+  fill: #942015;
+}
+
+rect.notstarted {
+}
+rect.inprogress {
+}
+rect.complete {
+  opacity: 0.2;
+}
+signals .machineName{
+  padding-left:10px;
+}
+.brdr-top{
+  border-top:1px solid #e2e3e5;
+  padding: 5px 5px 0;
+  margin-top: 3px;
+}
+.mrgnRght{
+  margin-right: 10px;
+  margin-bottom: 2px;
+  font-size: 13px;
+}
+.grnBrdr{
+  border:3px solid #8FAE17;
+  padding:3px 7px;
+}
+.greenClr{
+  background-color:#8FAE17;
+  color: #E8EED0;
+  margin-left: 20px;
+  margin-right: 26px;
+  padding: 11px 0px 5px 18px;
+  position: relative;
+  top: 1px;
+}
+.greenClr:after {
+	left: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	position: absolute;
+	border-left-color: #8FAE17;
+  border-width: 15px 13px;
+  margin-top: -15px;
+}
+.greenClr:before {
+	left: 0;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	position: absolute;
+	border-left-color: #ffffff;
+	border-width: 14px 5px;
+  margin-top: -14px;
+}
+.duration{
+  font-size: 20px;
+}
+.durationTime{
+  font-size: 13px;
+  margin-right: 5px;
+  margin-left: 2px;
+}
+.innerTable{
+  width: 100%;
+}
+.innerTable tr th{
+   font-size:8px !important;
+   font-weight:100;
+   color:#aaaaaa;
+   width: 0;
+}
+.innerTable tr td{
+   font-size:13px !important;
+   color:#000000 !important;
+}

@@ -1,0 +1,72 @@
+@import './tabs/alerts/alerts-tab.scss';
+
+$quickPanelWidth: 330px;
+
+#quick-panel {
+    width: $quickPanelWidth;
+    min-width: $quickPanelWidth;
+    max-width: $quickPanelWidth;
+    z-index: 99;
+
+    md-content {
+        height: 100%;
+
+        md-tabs {
+            height: 100%;
+
+            md-tabs-wrapper {
+                background-color: rgba(0, 0, 0, 0.03);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+                .md-tab {
+                    max-width: none !important;
+                }
+            }
+
+            md-tabs-content-wrapper {
+
+                md-tab-content {
+                    height: 100%;
+                    overflow: hidden;
+
+                    > div {
+                        overflow: hidden;
+                        height: 100%;
+                    }
+
+                    md-list {
+
+                        .md-subheader {
+
+                        }
+
+                        md-list-item {
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.alert-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    > span {
+        color: black !important;
+    }
+  
+    .pulse-button {
+      min-width: 24px;
+      min-height: 24px;
+      margin: 0;
+      padding: 0;
+      line-height: 24px;
+
+      md-icon {
+          color: black !important;
+      }
+    }
+  }

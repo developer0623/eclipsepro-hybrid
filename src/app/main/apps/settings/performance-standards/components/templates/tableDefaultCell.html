@@ -1,0 +1,10 @@
+<!-- <div class="item-circle" ng-style="$ctrl.compareHistorical($ctrl.item.fpmPlan, $ctrl.item.fpmHist)"></div> -->
+<!-- <div class="editable-div">
+	<input ng-model="$ctrl.item.fpmPlan" ng-focus="$ctrl.focusSelect($event)" ng-blur="$ctrl.destroyFocus($event)" ng-class="{'focused':$ctrl.focused, 'diffval':$ctrl.compareParent('fpmPlan')}">
+</div> -->
+
+<div class="performance-standard-cell">
+	<div class="cell-edit" ng-class="{'is_focus': $ctrl.state}">
+		<input type="text" ng-model="$ctrl.value" ng-focus="$ctrl.focus(true)" ng-blur="$ctrl.focus(false)"/>
+	</div>
+</div>

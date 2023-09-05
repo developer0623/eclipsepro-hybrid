@@ -1,0 +1,132 @@
+<div class="bundle-item" ng-if="!$ctrl.isdetail">
+  <div class="bundle-item__value">
+    <div class="real-value">{{$ctrl.item.weightLbs | unitsFormat :"lbs":0:true}}<span>{{'lbs' | userDisplayUnits}}</span></div>
+    <div class="remain-value1 x--weight" ng-if="$ctrl.maxWeightExceeded">
+      <img ng-src="{{$ctrl.loadImage('alert')}}" class="remain-icon" />
+      <div class="remain-flex"></div>
+      <md-icon md-font-icon class="icon icon-plus remain-plus"></md-icon>
+      <div class="remain-number">{{$ctrl.maxWeightOverage | unitsFormat :"lbs":0:true}}<span>{{'lbs' | userDisplayUnits}}</span></div>
+
+      <md-tooltip md-direction="top">Max Weight Exceeded</md-tooltip>
+    </div>
+	
+    <div class="remain-value2" ng-if="!$ctrl.maxWeightOverage">
+      <div class="remain-number">{{$ctrl.weightRemaining | unitsFormat :"lbs":0:true}}<span>{{'lbs' | userDisplayUnits}}</span></div>
+    </div>
+  </div>
+
+  <div class="bundle-item__weightbar" ng-class="{'max-exceed': $ctrl.maxWeightExceeded}">
+    <div class="real-bar" ng-style="{'width':$ctrl.weightRemainingPerc}"> 
+        <md-tooltip md-direction="bottom">{{$ctrl.item.weightLbs | unitsFormat :"lbs":0:true}} of {{$ctrl.item.maxWeightLbs | unitsFormat :"lbs":0:true}} {{'lbs' | userDisplayUnits}}</md-tooltip>
+    </div>
+    <md-icon md-font-icon class="icon icon-plus exceed-icon"></md-icon>
+  </div>
+  <div class="bundle-item__piecebar" ng-class="{'max-exceed': $ctrl.maxPiecesExceeded}">
+    <div class="real-bar" ng-style="{'width':$ctrl.piecesRemainingPerc}"> 
+        <md-tooltip md-direction="bottom">{{$ctrl.item.pieces}} of {{$ctrl.item.maxPieces}} pieces</md-tooltip>
+    </div>
+    <md-icon md-font-icon class="icon icon-plus exceed-icon"></md-icon>
+  </div>
+
+  <div class="bundle-item__value">
+    <div class="real-value">{{$ctrl.item.pieces}}<span>pcs</span></div>
+    <div class="remain-value1 x--piece" ng-if="$ctrl.maxPiecesExceeded">
+      <img ng-src="{{$ctrl.loadImage('alert')}}" class="remain-icon" />
+      <div class="remain-flex"></div>
+      <md-icon md-font-icon class="icon icon-plus remain-plus"></md-icon>
+      <div class="remain-number">{{$ctrl.maxPiecesOverage}}<span>pcs</span></div>
+      <md-tooltip md-direction="bottom">Max Pieces Exceeded</md-tooltip>
+    </div>
+    
+    <!-- I don't think we need to show the remaining pieces before it maxes out -->
+    <!-- <div class="remain-value2" ng-if="$ctrl.maxPiecesExceeded">
+      <div class="remain-number">{{$ctrl.piecesRemaining}}<span>pcs</span></div>
+    </div> -->
+
+  </div>
+  <div class="bundle-item__length">
+    <!-- <md-tooltip md-direction="bottom">Order Maximum Length ({{$ctrl.item.orderMaxLengthIn}})</md-tooltip> -->
+    <div class="bundle-max" ng-style="{'width':$ctrl.relativeMaxLengthPerc}"> 
+        <md-tooltip md-direction="bottom">Bundle Maximum Length ({{$ctrl.item.bundleMaxLengthIn | unitsFormat :"in":2}})</md-tooltip>
+    </div>
+    <div class="bundle-min" ng-style="{'width':$ctrl.relativeMinLengthPerc}"> 
+        <md-tooltip md-direction="bottom">Bundle Minimum Length ({{$ctrl.item.bundleMinLengthIn | unitsFormat :"in":2}})</md-tooltip>
+    </div>
+  </div>
+  <img ng-src="{{$ctrl.loadImage('location')}}" class="bundle-location" ng-if="$ctrl.minLengthExceeded"/> 
+  <md-tooltip md-direction="bottom" ng-if="$ctrl.minLengthExceeded">Max Length Exceeded</md-tooltip>
+  
+</div>
+
+<div class="bundle-item-inline" ng-if="$ctrl.isdetail">
+  <div class="bundle-item-inline__left">
+    <div class="bundle-item-inline__content">
+      <div class="bundle-item-inline__checked">
+        <md-checkbox aria-label="Select Tool" ng-model="$ctrl.item.checked" ng-change="$ctrl.onChecked()">
+        </md-checkbox>
+
+      </div>
+      <div class="bundle-item-inline__weight">
+        <div class="bundle-item-inline__value">
+          <div class="real-value">{{$ctrl.item.weightLbs | unitsFormat :"lbs":0:true}}<span>{{'lbs' | userDisplayUnits}}</span></div>
+          <div class="remain-value1 x--weight" ng-if="$ctrl.maxWeightExceeded">
+            <img ng-src="{{$ctrl.loadImage('alert')}}" class="remain-icon" />
+            <div class="remain-flex"></div>
+            <md-icon md-font-icon class="icon icon-plus remain-plus"></md-icon>
+            <div class="remain-number">{{$ctrl.maxWeightOverage | unitsFormat :"lbs":0:true}}<span>{{'lbs' | userDisplayUnits}}</span></div>        
+          </div>
+		  
+          <div class="remain-value2" ng-if="!$ctrl.maxWeightOverage">
+            <div class="remain-number">{{$ctrl.weightRemaining | unitsFormat :"lbs":0:true}}<span>{{'lbs' | userDisplayUnits}}</span></div>
+          </div>
+      
+        </div>
+        <div class="bundle-item-inline__weightbar" ng-class="{'max-exceed': $ctrl.maxWeightExceeded}">
+          <div class="real-bar" ng-style="{'width':$ctrl.weightRemainingPerc}"> 
+            <md-tooltip md-direction="bottom">{{$ctrl.item.weightLbs | unitsFormat :"lbs":0:true}} of {{$ctrl.item.maxWeightLbs | unitsFormat :"lbs":0:true}} {{'lbs' | userDisplayUnits}}</md-tooltip>
+          </div>
+          <md-icon md-font-icon class="icon icon-plus exceed-icon"></md-icon>
+        </div>
+
+      </div>
+      <div class="bundle-item-inline__piece">
+        <div class="bundle-item-inline__value">
+          <div class="real-value">{{$ctrl.item.pieces}}<span>pcs</span></div>
+          <div class="remain-value1 x--piece" ng-if="$ctrl.maxPiecesExceeded">
+            <img ng-src="{{$ctrl.loadImage('alert')}}" class="remain-icon" />
+            <div class="remain-flex"></div>
+            <md-icon md-font-icon class="icon icon-plus remain-plus"></md-icon>
+            <div class="remain-number">{{$ctrl.maxPiecesOverage}}<span>pcs</span></div>
+            <md-tooltip md-direction="bottom">Max Pieces Exceeded</md-tooltip>
+          </div>
+          <div class="remain-value2" ng-if="!$ctrl.maxPiecesExceeded">
+            <div class="remain-number">{{$ctrl.piecesRemaining}}<span>pcs</span></div>
+          </div>
+      
+        </div>
+
+        <div class="bundle-item__piecebar" ng-class="{'max-exceed': $ctrl.maxPiecesExceeded}">
+          <div class="real-bar" ng-style="{'width': $ctrl.piecesRemainingPerc}"> 
+            <md-tooltip md-direction="bottom">{{$ctrl.item.pieces}} of {{$ctrl.item.maxPieces}} pieces</md-tooltip>
+          </div>
+          <md-icon md-font-icon class="icon icon-plus exceed-icon"></md-icon>
+        </div>
+
+      </div>
+
+    </div>
+    <div class="bundle-item-inline__length">
+        <!-- <md-tooltip md-direction="bottom">Order Maximum Length ({{$ctrl.item.orderMaxLengthIn}})</md-tooltip> -->
+      <div class="bundle-max" ng-style="{'width': $ctrl.relativeMaxLengthPerc}">
+        <md-tooltip md-direction="bottom">Bundle Maximum Length ({{$ctrl.item.bundleMaxLengthIn | unitsFormat :"in":2}})</md-tooltip>
+      </div>
+      <div class="bundle-min" ng-style="{'width':$ctrl.relativeMinLengthPerc}">
+        <md-tooltip md-direction="bottom">Bundle Minimum Length ({{$ctrl.item.bundleMinLengthIn | unitsFormat :"in":2}})</md-tooltip>
+      </div>
+    </div>
+      <img ng-src="{{$ctrl.loadImage('location')}}" class="bundle-location" ng-if="$ctrl.minLengthExceeded"/>
+  </div>
+
+  <div class="bundle-item-inline__right"></div>  
+    
+</div>

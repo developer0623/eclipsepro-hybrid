@@ -1,0 +1,5 @@
+<task-header></task-header>
+<task-active-content ng-if="$ctrl.state === 1"></task-active-content>
+<task-completed-content ng-if="$ctrl.state === 2"></task-completed-content>
+<task-active-footer ng-if="$ctrl.state"></task-active-footer>
+<task-current-footer ng-if="!$ctrl.state"></task-current-footer>

@@ -1,0 +1,26 @@
+<div class="task-content-item1">
+	<div class="sub-item1">
+		<span
+			ng-if="$ctrl.parentCtrl.task.overrideCode && $ctrl.parentCtrl.task.overrideCode.codeSet== 'NonpreferredReasons'">
+			<img src="../../../../../../../assets/images/taskicons/alert.png" />
+			<md-tooltip>{{$ctrl.parentCtrl.task.overrideCode.name}}</md-tooltip>
+		</span>
+		<span
+			ng-if="$ctrl.parentCtrl.task.overrideCode && $ctrl.parentCtrl.task.overrideCode.codeSet== 'OverrideReasons'">
+			<img src="../../../../../../../assets/images/taskicons/error.png" />
+			<md-tooltip>{{$ctrl.parentCtrl.task.overrideCode.name}}</md-tooltip>
+		</span>
+	</div>
+
+	<div class="sub-item2 gray-color">
+		<md-icon
+			ng-class="{'icon-magnify': $ctrl.parentCtrl.task.taskState=='InProcess', 'icon-arrow-right': $ctrl.parentCtrl.task.taskState=='InTransit'}"
+			md-font-icon class="icon"></md-icon>
+		{{$ctrl.parentCtrl.task.taskState}}
+	</div>
+
+	<div class="sub-item3"
+		ng-bind-html="$ctrl.parentCtrl.task.taskState === 'InProcess'? '':$ctrl.parentCtrl.task.startedDate | taskActiveAgo">
+	</div>
+
+</div>

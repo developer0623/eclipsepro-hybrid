@@ -1,0 +1,65 @@
+<div id="dashboard-report" class="page-layout simple fullwidth white-bg production-summary" ngsf-fullscreen>
+  <div class="header" layout="row" layout-align="space-between start">
+    <span class="font-size-20 mt-8 text-capitalize mb-0 line-height-26">Tooling</span>
+    <div class="filters-div tooling-filter-container">
+      <md-icon md-font-icon="icon-filter-outline size-20">
+      </md-icon>
+      <input class="report-search" ng-model="$ctrl.searchTxt" ng-change="$ctrl.onFilter($ctrl.searchTxt)"
+        ng-model-options="{debounce: 400}" />
+    </div>
+    <md-menu>
+      <div class="helpIconDiv" ng-click="$mdMenu.open($event)">
+        <md-icon md-font-icon="icon-cog" class="icon gear-icon"></md-icon>
+      </div>
+      <md-menu-content width="2" class="ordersFilterDiv">
+        <div layout="row" class="addColumn" layout-align="center center">
+          Add/Remove Column
+        </div>
+        <div class="vertical-scroll">
+          <md-menu-item ng-repeat="item in $ctrl.menuColumns" class="filter-item height-26">
+            <div layout="row" class="filter-items-div">
+              <md-checkbox name="{{item.displayName}}" aria-label="{{item.displayName}}" ng-checked="item.isChecked"
+                class="filter-check" ng-click="$ctrl.onGridOptionsToggle(item)"><span
+                  translate="{{item.displayName}}"></span></md-checkbox>
+            </div>
+          </md-menu-item>
+        </div>
+      </md-menu-content>
+    </md-menu>
+  </div>
+
+  <div class="content md-background md-hue-1 scroll-content">
+    <div class="xl-list-container">
+      <div class="material-usage-item sub-header">
+        <div class="main-con" ng-repeat="item in $ctrl.columns" ng-click="$ctrl.onChangeOrder(item.orderField)">
+          {{item.displayName | translate}}
+          <md-icon md-font-icon="icon-arrow-down size-20"
+            ng-if="$ctrl.selectedOrderItem === item.orderField && $ctrl.selectedOrderDirection === ''">
+          </md-icon>
+          <md-icon md-font-icon="icon-arrow-up size-20"
+            ng-if="$ctrl.selectedOrderItem === item.orderField && $ctrl.selectedOrderDirection === '-'">
+          </md-icon>
+        </div>
+        <div class="warning-col"></div>
+      </div>
+      <div class="material-usage-content">
+        <div class="material-usage-item link-item"
+          ng-repeat="tooling in $ctrl.filteredToolings | orderBy: $ctrl.selectedOrder"
+          ui-sref="app.tooling_detail({id: tooling.id})">
+          <div class="main-con" ng-repeat="item in $ctrl.columns">
+            {{tooling[item.field]}}
+          </div>
+          <div class="warning-col">
+            <md-icon md-font-icon="icon-alert size-20" ng-if="tooling.hasUnassignedMachineTool">
+              <md-tooltip>This tooling is missing a required machine
+                assignment.</md-tooltip>
+            </md-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <md-button class="md-fab add-button" ng-click="$ctrl.addTooling()" style="position: fixed; right: 0; bottom: 0">
+    +
+  </md-button>
+</div>

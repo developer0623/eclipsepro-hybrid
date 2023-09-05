@@ -1,0 +1,31 @@
+<md-toolbar class="navigation-header md-whiteframe-1dp" layout="row" layout-align="space-between center">
+
+    <a class="logo" ms-nav-button ui-sref="app.dashboards_machines_machines" layout="row" layout-align="start center">
+        <span class="logo-image"><i id="eclipse-icon" class="icon icon-brightness-3"></i></span>
+        <span class="logo-text">ECLIPSE PRO</span>
+    </a>
+    <md-button id="navigation-sidenav-mode-toggle" class="md-icon-button" ng-click="vm.toggleMsNavigationFolded($event)"
+        hide show-gt-sm aria-label="Toggle navigation mode" translate
+        translate-attr-aria-label="TOOLBAR.TOGGLE_NAVIGATION_MODE" accesskey="m">
+        <md-icon md-font-icon="icon-backburger" class="icon burgerIcon icon-backburger"></md-icon>
+    </md-button>
+
+</md-toolbar>
+
+
+<div class="plant-name">
+    <span>{{vm.systemPreferences.plantName}}</span>
+</div>
+
+
+<ms-navigation class="scrollable" ms-scroll="vm.msScrollOptions"></ms-navigation>
+
+<ms-nav-footer>
+    <span>
+        <span translate="serverVersion">Server Version</span>: {{vm.systemInfo.version}}
+        <span ng-if="vm.systemInfo.version === vm.systemInfo.latestReleaseVersion.version" ng-cloak></span>
+    </span>
+    <md-button class="ms-nav-button md-primary-bg md-hue-2"
+        ng-if="vm.systemInfo.version !== vm.systemInfo.latestReleaseVersion.version" ng-cloak
+        translate="updateAvailable" ui-sref="app.update">Update Available</md-button>
+</ms-nav-footer>

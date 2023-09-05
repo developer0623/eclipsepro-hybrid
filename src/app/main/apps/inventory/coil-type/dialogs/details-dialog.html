@@ -1,0 +1,79 @@
+<md-dialog aria-label="Details" class="edit-details-dialog" md-theme="eclipse-pro-theme" ng-cloak>
+  <form>
+    <md-toolbar class="white-bg black-fg">
+      <div class="md-toolbar-tools">
+        <h2>Coil Type: {{coilType.materialCode}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-font-icon="mdi-close" class="mdi s24" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content">
+            <div layout-gt-xs="row">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Description</label>
+                    <input ng-model="coilType.description">
+                </md-input-container>
+            </div>
+            <div layout-gt-sm="row">
+                <div layout="column" flex>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Gauge</label>
+                        <input ng-model="coilType.gauge">
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Thickness</label>
+                        <input ng-model="coilType.thicknessIn">
+                    </md-input-container>
+                </div>
+                <div layout="column" flex>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Width</label>
+                        <input ng-model="coilType.widthIn">
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Lbs Per Feet</label>
+                        <input ng-model="coilType.lbsPerFt">
+                    </md-input-container>
+                </div>
+                <div layout="column" flex>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Color</label>
+                        <md-select ng-model="coilType.color" placeholder="{{coilType.color}}" class="text-caps">
+                            <md-option value="{{coilType.color}}" translate="" class="text-caps">{{coilType.color}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Type</label>
+                        <md-select ng-model="coilType.type" placeholder="{{coilType.type}}">
+                            <md-option value="{{coilType.type}}" translate="">{{coilType.type}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <!-- <md-input-container class="md-block" flex-gt-sm>
+                    <label>Yield</label>
+                    <input ng-model="coilType.yield">
+                </md-input-container> -->
+            </div>
+            <div layout-gt-sm="row">
+
+                <!-- <md-input-container class="md-block" flex-gt-sm>
+                    <label>Cost/Length</label>
+                    <input ng-model="coilType.cost">
+                </md-input-container> -->
+            </div>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row" layout-align="end-center">
+      <span flex></span>
+      <md-button ng-click="cancel()">
+        Cancel
+      </md-button>
+      <md-button ng-click="save()">
+        Save
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

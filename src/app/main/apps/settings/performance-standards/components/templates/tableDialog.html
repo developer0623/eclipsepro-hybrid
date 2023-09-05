@@ -1,0 +1,134 @@
+<md-dialog class="performance-dialog" aria-label="Performance Dialog">
+	<div class="performance-standard__wrapper">
+		<div class="performance-dialog__header">
+			<div class="performance-dialog__title1">
+				Feet Per Minute
+			</div>
+			<div class="performance-dialog__title2">
+				<div class="category-title">
+					{{ctrl.origin.description}}:
+					<span>{{ctrl.selectedCategory.title}}</span>
+				</div>
+
+				<md-menu md-position-mode="target-right target">
+					<md-button aria-label="Select Category" class="md-icon-button" ng-click="$mdMenu.open($event)">
+						<md-icon md-font-icon class="icon icon-chevron-down menu-icon"></md-icon>
+					</md-button>
+					<md-menu-content width="2" class="category-menu">
+						<md-menu-item ng-repeat="item in ctrl.category" class="category-menu-item">
+							<md-button ng-click="ctrl.onClickCategoryItem($event, item)">
+								{{item.title}}
+							</md-button>
+						</md-menu-item>
+
+					</md-menu-content>
+				</md-menu>
+			</div>
+		</div>
+		<md-tabs class="performance-dialog__tabs" md-dynamic-height md-border-bottom md-selected="ctrl.istool">
+			<md-tab label="MACHINE DEFAULT" md-on-select="ctrl.onTabSelected(false)">
+				<md-content class="performance-dialog__tab">
+					<div class="performance-dialog__config">
+						<div></div>
+						<div class="performance-dialog__select">
+							<md-radio-group class="performance-dialog__radioGr" ng-model="ctrl.selectedStyle"
+								ng-change="ctrl.changeStyle()">
+								<md-radio-button class="performance-dialog__radioBtn" ng-value="style.id"
+									ng-repeat="style in ctrl.styles" ng-disabled="!$index && !ctrl.isShowSingle">{{
+									style.value }}</md-radio-button>
+							</md-radio-group>
+						</div>
+					</div>
+					<performance-chart ng-if="!ctrl.istool && !ctrl.isChart" value="ctrl.value"
+						class="click-performance"></performance-chart>
+					<div class="chart-instead" ng-if="ctrl.isChart"></div>
+					<div class="performance-dialog__content">
+						<div class="performance-dialog__content-header">
+							<div class="header-item" ng-if="ctrl.selectedStyle">
+								<div class="header-itemfont-bold">PART LENGTH</div>
+								<div class="header-item--normal">INCHES</div>
+							</div>
+							<div class="header-item">
+								<div class="header-itemfont-bold">SPEED</div>
+								<div class="header-item--normal">FEET PER MINUTE</div>
+							</div>
+						</div>
+						<performance-item islength="ctrl.selectedStyle" item="item" ng-repeat="item in ctrl.value"
+							on-remove="ctrl.onRemoveItem($index)" on-changed="ctrl.onValueChanged()"></performance-item>
+
+
+						<div class="performance-dialog__content-add" ng-if="ctrl.selectedStyle">
+							<md-icon md-font-icon class="icon icon-plus-circle add-icon" ng-click="ctrl.addValue()">
+							</md-icon>
+							<div>Add Part Length/Speed</div>
+						</div>
+
+
+					</div>
+				</md-content>
+			</md-tab>
+			<md-tab label="TOOL SPECIFIC" md-on-select="ctrl.onTabSelected(true)">
+				<md-content class="performance-dialog__tab">
+					<div class="performance-dialog__config">
+						<div class="performance-dialog__toolmenu">
+							<div class="tool-title">
+								<span>{{ctrl.origin.toolings[ctrl.index].toolingCode}}</span>
+							</div>
+
+							<md-menu md-position-mode="target-right target">
+								<md-button aria-label="Select Tool" class="md-icon-button"
+									ng-click="$mdMenu.open($event)">
+									<md-icon md-font-icon class="icon icon-chevron-down menu-icon"></md-icon>
+								</md-button>
+								<md-menu-content width="2" class="category-menu">
+									<md-menu-item ng-repeat="item in ctrl.origin.toolings" class="category-menu-item"
+										ng-class="{'is_selected': ctrl.index === $index}">
+										<md-button ng-click="ctrl.onClickToolItem($event, item, $index)">
+											TOOL {{item.toolingCode}}
+										</md-button>
+									</md-menu-item>
+
+								</md-menu-content>
+							</md-menu>
+						</div>
+						<div class="performance-dialog__select">
+							<md-radio-group class="performance-dialog__radioGr" ng-model="ctrl.selectedStyle"
+								ng-change="ctrl.changeStyle()">
+								<md-radio-button class="performance-dialog__radioBtn" ng-value="style.id"
+									ng-repeat="style in ctrl.styles" ng-disabled="!$index && !ctrl.isShowSingle">{{
+									style.value }}</md-radio-button>
+							</md-radio-group>
+						</div>
+					</div>
+					<performance-chart ng-if="ctrl.istool && !ctrl.isChart" value="ctrl.value"
+						class="click-performance"></performance-chart>
+					<div class="chart-instead" ng-if="ctrl.isChart"></div>
+					<div class="performance-dialog__content">
+						<div class="performance-dialog__content-header">
+							<div class="header-item" ng-if="ctrl.selectedStyle">
+								<div class="header-itemfont-bold">PART LENGTH</div>
+								<div class="header-item--normal">INCHES</div>
+							</div>
+							<div class="header-item">
+								<div class="header-itemfont-bold">SPEED</div>
+								<div class="header-item--normal">FEET PER MINUTE</div>
+							</div>
+						</div>
+						<performance-item islength="ctrl.selectedStyle" item="item" ng-repeat="item in ctrl.value"
+							on-remove="ctrl.onRemoveItem($index)" on-changed="ctrl.onValueChanged()"></performance-item>
+
+
+						<div class="performance-dialog__content-add" ng-if="ctrl.selectedStyle">
+							<md-icon md-font-icon class="icon icon-plus-circle add-icon" ng-click="ctrl.addValue()">
+							</md-icon>
+							<div>Add Part Length/Speed</div>
+						</div>
+
+
+					</div>
+				</md-content>
+			</md-tab>
+		</md-tabs>
+	</div>
+
+</md-dialog>

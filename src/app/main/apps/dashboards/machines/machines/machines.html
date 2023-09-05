@@ -1,0 +1,112 @@
+<div
+  id="dashboard-machines"
+  class="page-layout simple fullwidth dashboard"
+  ng-class="{'no-scroll': panelIsOpen }"
+  ngsf-fullscreen
+>
+  <!-- HEADER -->
+  <div class="header">
+    <div layout="row" layout-align="space-between">
+      <span class="h2 text-upper" translate="dashboard">DASHBOARD</span>
+      <div class="toolbar">        
+        <md-menu md-position-mode="target-right target" >
+          <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
+            <md-icon md-menu-origin md-font-icon="mdi-cog" class="mdi"></md-icon>
+          </md-button>
+          <md-menu-content width="4" >
+            <md-menu-item>
+              <md-button ng-click="$ctrl.swapSort()">
+                  <div layout="row" flex>
+                    <p flex>Sort</p>
+                    <md-icon md-menu-align-target md-font-icon="mdi-numeric" class="mdi" style="margin: auto 3px auto 0;"></md-icon>
+                    <span>|</span>
+                    <md-icon md-menu-align-target md-font-icon="mdi-alphabetical" class="mdi" style="margin: auto 3px auto 0;"></md-icon>
+                  </div>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button
+                ui-sref="app.metric-config"
+                aria-label="Metric Config"
+              >
+                  <div layout="row" flex>
+                    <p flex>Metric Config</p>
+                    <md-icon md-menu-align-target md-font-icon="mdi-gauge" class="mdi" style="margin: auto 3px auto 0;"></md-icon>
+                  </div>
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- MAIN CONTENT -->
+  <div class="content md-background md-hue-1">
+    <!-- MD-CONTENT -->
+    <md-content class="content md-background md-hue-1" flex>
+      <!-- WIDGET GROUP  -->
+      <div class="widget-group" layout="row" flex="100" layout-wrap>
+        <!-- todo: orderBy with async is not working:  | orderBy:'description'-->
+        <div
+          ng-repeat="machine in $ctrl.machineData.dashboardMachines$ | async | orderBy: $ctrl.machineSort"
+          ui-sref="app.dashboards_machines_machine({id: machine.machineNumber})"
+          layout="column"
+          flex="100"
+          eat-click-if="!machine.machine.claims.includes('pro.machine.dashboard')"
+          flex-sm="50"
+          flex-md="33"
+          flex-lg="25"
+          flex-gt-lg="20"
+        >
+          <machine-dashboard-mini
+            machine="machine"
+            metric-definitions="$ctrl.metricDefinitions"
+          ></machine-dashboard-mini>
+          <!-- trying to figure out why licenses are disappearing -->
+          <div feature-flag="in-development">{{machine.machine.claims | json}}</div>
+        </div>
+
+        <div
+          ng-repeat="machine in $ctrl.machineData.unlicensedMachines"
+          layout="column"
+          flex="100"
+          flex-sm="50"
+          flex-md="33"
+          flex-lg="25"
+          flex-gt-lg="20"
+        >
+          <machine-dashboard-mini
+            machine="machine"
+            metric-definitions="$ctrl.metricDefinitions"
+            render-unlicensed="true"
+          ></machine-dashboard-mini>
+        </div>
+      </div>
+
+      <div class="widget-group" layout="row" flex="100" layout-wrap>
+        <div
+          ng-repeat="device in $ctrl.devices"
+          layout="column"
+          flex="100"
+          flex-sm="50"
+          flex-md="33"
+          flex-lg="25"
+          flex-gt-lg="20"
+        >
+          <!-- Todo: Add metrics for runtime %, operations/hr total, operations/hr during runtime only since midnight -->
+          <device-dashboard-mini
+            device="device"
+            device-state="device.state"
+            shift-stats="device.shiftStats"
+            metrics="device.metricModels"
+          >
+          </device-dashboard-mini>
+        </div>
+      </div>
+    </md-content>
+    <!-- / MD-CONTENT -->
+  </div>
+  <!-- / MAIN CONTENT -->
+</div>

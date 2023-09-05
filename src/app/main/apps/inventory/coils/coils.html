@@ -1,0 +1,67 @@
+<div id="inventory" class="page-layout simple fullwidth white-bg" layout="column">
+
+    <!-- CONTENT -->
+    <div class="content white-bg" layout="column" flex>
+
+        <!-- CONTENT -->
+        <div class="content fullpage-datatable" layout="column" flex>
+
+            <div class="toolbar" layout="row" layout-align="space-between start">
+                <span class="font-size-20 mt-8 text-capitalize mb-0 line-height-26">Coils</span>
+
+                <!-- todo: cleanup styles and put in css -->
+                <div class="grid-filter print-hide" style="display: flex; align-items: center; justify-content: space-around; width: 400px;">
+                  <div style="display:flex;">
+                    <md-icon md-font-icon="mdi-filter-outline" class="mdi"></md-icon>
+                    <!-- <div class="search-input"></div> -->
+                        <input style="height: 1.4em;" placeholder="Filter..."
+                        ng-model="$ctrl.searchTxt"
+                        ng-change="$ctrl.onFilter({searchTxt: $ctrl.searchTxt})"
+                        ng-model-options="{debounce: 200}" />
+                  </div>
+                  <md-checkbox ng-model="$ctrl.showCompleted" ng-click="$ctrl.onDiscreteFilterChanged()">Show Completed</md-checkbox>
+                </div>
+
+                <div class="print-icon-column float-right print-hide">
+                    <md-menu>
+                        <md-button aria-label="Select Shift 1" class="md-icon-button" ng-click="$mdMenu.open($event)">
+                            <md-icon md-font-icon="mdi-cog" class="mdi"></md-icon>
+                        </md-button>
+                        <md-menu-content width="2" class="coilsFilterDiv">
+                            <div layout="row" class="addColumn" layout-align="center center">Add/Remove Column</div>
+                            <div class="vertical-scroll">
+                                <md-menu-item ng-repeat="item in $ctrl.columns" class="filter-items height-26">
+                                    <div layout="row" class="filter-items-div">
+                                        <md-checkbox name="{{item.headerName}}" aria-label="{{item.headerName}}"
+                                            ng-checked="!item.hide" ng-click="$ctrl.onCoilsGridOptionsToggle(item)"
+                                            class="filter-check"><span
+                                                translate="{{item.headerName}}">{{item.headerName}}</span>
+                                        </md-checkbox>
+                                    </div>
+                                </md-menu-item>
+                                <md-menu-divider></md-menu-divider>
+                                 <md-menu-item class="filter-items">
+                                 <div layout="row" class="filter-items-div">
+                                    <md-button class="md-raised md-primary" ng-click="$ctrl.onReset()">Reset Defaults
+                                    </md-button>
+                                 </div>
+                                 </md-menu-item>
+                            </div>
+                        </md-menu-content>
+                    </md-menu>
+                    <md-button aria-label="Select Shift 1" class="md-icon-button"
+                        ng-click="$ctrl.openPrintPreview($event)">
+                        <md-icon md-font-icon="icon-printer" class="mdi"></md-icon>
+                    </md-button>
+                </div>
+            </div>
+
+            <div ag-grid="$ctrl.agGridOptions" class="ag-theme-balham" style="height:100%"></div>
+
+        </div>
+        <!-- / CONTENT -->
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

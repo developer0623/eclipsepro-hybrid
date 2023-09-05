@@ -1,0 +1,37 @@
+[
+    {
+        "title": "Serial Number",
+        "data": "coilId"
+    },
+    {
+        "title": "Coil Part Number",
+        "data": null
+    },
+    {
+        "title": "Description",
+        "data": "description"
+    },
+    {
+        "title": "Remaining",
+        "data": "lengthRemainingFt",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Used",
+        "data": "lengthUsedFt",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Scrap",
+        "data": "lengthNonExemptScrapFt",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Age",
+        "data": null
+    },
+    {
+        "title": "Vendor",
+        "data": "vendorName"
+    }
+]

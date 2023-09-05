@@ -1,0 +1,119 @@
+<div layout="row" layout-align="start center" flex>
+  <div layout="row" layout-align="start center" flex hide-gt-sm style="min-width: 64px">
+    <md-button id="navigation-toggle" ng-show="!$ctrl.showSearch" class="md-icon-button"
+      ng-click="$ctrl.toggleSidenav('navigation')" aria-label="Toggle navigation" translate
+      translate-attr-aria-label="TOOLBAR.TOGGLE_NAVIGATION">
+      <md-icon md-font-icon="icon-menu" class="icon"></md-icon>
+    </md-button>
+  </div>
+
+  <div layout="row" flex="grow" layout-align="start center" ng-class="{'expand-search': $ctrl.showSearch}">
+    <div flex="grow" ng-if="!$ctrl.showSearch" style="padding-left: 16px" translate>
+      {{ $root.$state.current.title}}
+    </div>
+    <div flex="nogrow" layout="row" layout-align="start center" ng-if="!$ctrl.showSearch" class="menu-group">
+      <div class="profile-img" layout="column">
+        <img ng-src="{{$ctrl.loadImage()}}" />
+      </div>
+      <md-menu layout="column" md-position-mode="target-right target" md-offset="0 60">
+        <md-button aria-label="Open demo menu" class="profile-menu-button" ng-click="$mdMenu.open($event)">
+          {{$ctrl.user.userName}}
+          <i md-menu-origin class="fa fa-2x icon-chevron-down"></i>
+        </md-button>
+        <md-menu-content width="4" class="profile-menu">
+          <md-menu-item>
+            <md-button ng-click="$ctrl.gotoProfile($event)">
+              <div layout="row" flex class="menu-item-content">
+                <i class="icon icon-account" flex-auto></i>
+                <p flex layout="column">
+                  <a ui-sref="app.user({userName: $ctrl.user.userName})">
+                    User Profile
+                  </a>
+                </p>
+              </div>
+            </md-button>
+          </md-menu-item>
+          <md-menu-item>
+            <md-button ng-click="$ctrl.logout($event)">
+              <div layout="row" flex class="menu-item-content">
+                <i class="icon icon-logout" flex-auto></i>
+                <p flex layout="column">Log Out</p>
+              </div>
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+    </div>
+    <div id="search" flex="nogrow" layout="row" layout-align="start center">
+      <md-button id="search-toggle" class="md-icon-button" ng-click="$ctrl.toggleSearch()"
+        aria-label="Toggle search input" accesskey="s"
+        ng-class="{'remove-border': $ctrl.showSearch, 'visibility': $root.showloader}">
+        <md-tooltip md-direction="left">Search Shortcut: Alt+S</md-tooltip>
+        <md-icon md-font-icon="icon-magnify" class="icon s24"></md-icon>
+      </md-button>
+      <!-- todo:try to get keyboard arrow selection working -->
+      <md-autocomplete id="md-autocomplete-input" class="search-autocomplete"
+        ng-class="{'expand-search': $ctrl.showSearch}" md-input-id="searchBox" ng-show="$ctrl.showSearch"
+        md-autoselect="true" focus-if="$ctrl.showSearch" md-autofocus md-search-text="$ctrl.searchService.searchText"
+        md-items="item in $ctrl.searchService.search()" md-selected-item-change="$ctrl.selectSearchItem(item)"
+        placeholder="Search" md-delay="300" md-min-length="1">
+        <md-item-template>
+          <span class="square md-accent-bg"></span>
+          <span>{{item.title}}</span><span class="search-subtitle"
+            ng-if="item.subTitle && item.title !== item.subTitle">
+            - {{item.subTitle}}</span>
+        </md-item-template>
+        <md-not-found>
+          No results matching "{{$ctrl.searchService.searchText}}" were found.
+        </md-not-found>
+      </md-autocomplete>
+      <md-button class="ms-search-bar-collapser md-icon-button close-button" ng-show="$ctrl.showSearch"
+        aria-label="Collapse Search Bar" ng-click="$ctrl.toggleSearch()">
+        <md-icon md-font-icon="icon-close" class="icon s24"></md-icon>
+      </md-button>
+    </div>
+    <md-button id="quick-panel-toggle" ng-show="!$ctrl.showSearch" class="md-icon-button"
+      ng-click="$ctrl.toggleSidenav('quick-panel')" aria-label="Toggle quick panel" translate
+      translate-attr-aria-label="TOOLBAR.TOGGLE_QUICK_PANEL" accesskey="a">
+      <!-- alert count tooltip -->
+      <md-tooltip md-direction="left">
+        <!-- total + critical + non-critical count -->
+        <span
+          ng-if="$ctrl.alertService.criticalAlertsLength && ($ctrl.alertService.alerts.length - $ctrl.alertService.criticalAlertsLength) > 0">
+          {{$ctrl.alertService.alerts.length}} Alerts
+          ({{$ctrl.alertService.criticalAlertsLength}} critical,
+          {{$ctrl.alertService.alerts.length -
+          $ctrl.alertService.criticalAlertsLength}} non-critical)
+        </span>
+        <!-- critical count -->
+        <span ng-pluralize
+          ng-if="$ctrl.alertService.alerts.length === $ctrl.alertService.criticalAlertsLength && $ctrl.alertService.criticalAlertsLength > 0"
+          count="$ctrl.alertService.alerts.length"
+          when="{'one': '1 Alert (critical)', 'other': '{} Alerts (critical)'}">
+        </span>
+        <!-- non-critical count -->
+        <span ng-pluralize ng-if="!$ctrl.alertService.criticalAlertsLength" count="$ctrl.alertService.alerts.length"
+          when="{'0': '0 Alerts', 'one': '1 Alert (non-critical)', 'other': '{} Alerts (non-critical)'}">
+        </span>
+      </md-tooltip>
+
+      <md-icon md-font-icon="icon-bell" class="icon" ng-class="{'hint-text': $ctrl.alertService.alerts.length === 0}">
+      </md-icon>
+
+      <!-- alert badges -->
+      <div class="alerts-count"
+        ng-class="{'alerts-multiple': $ctrl.alertService.criticalAlertsLength && ($ctrl.alertService.alerts.length - $ctrl.alertService.criticalAlertsLength) > 0}">
+        <!-- non-critical badge -->
+        <md-icon ng-if="($ctrl.alertService.alerts.length - $ctrl.alertService.criticalAlertsLength) > 0"
+          md-font-icon="icon-checkbox-blank-circle" class="amber-600-fg non-critical"></md-icon>
+        <!-- critical badge -->
+        <md-icon ng-if="$ctrl.alertService.criticalAlertsLength" md-font-icon="icon-checkbox-blank-circle"
+          class="red-700-fg critical"></md-icon>
+      </div>
+    </md-button>
+  </div>
+  <md-progress-circular id="toolbar-progress"
+    ng-if="$root.loadingProgress || $root.showloader || $ctrl.appService.isLoading" class="md-accent"
+    md-mode="indeterminate" md-diameter="64">
+  </md-progress-circular>
+</div>

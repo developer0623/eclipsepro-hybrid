@@ -1,0 +1,70 @@
+@use 'sass:math';
+/*----------------------------------------------------------------*/
+/*  Mixins
+/*----------------------------------------------------------------*/
+
+// Maintain aspect ratio
+@mixin maintain-aspect-ratio($widthRatio, $heightRatio, $padding, $contentClass) {
+    position: relative;
+
+    &:before {
+        display: block;
+        content: "";
+        width: 100%;
+        padding-top: math.div($heightRatio, $widthRatio) * 100%;
+    }
+
+    > .#{$contentClass} {
+        position: absolute;
+        top: $padding;
+        left: $padding;
+        right: $padding;
+        bottom: $padding;
+    }
+}
+
+// Andon panel font-size calculation for preview and large
+@mixin andon-font-size($font-size) {
+    .andon-display-header {
+        .machine-status-tag .tag-label {
+            font-size: (4 * $font-size) + vw;
+        }
+        i {
+            font-size: (5 * $font-size) + vw;
+        }
+    }
+
+    .andon-display-footer {
+        h4 {
+            font-size: (4 * $font-size) + vw !important;
+        }
+    }
+
+    h1 {
+        font-size: (7 * $font-size) + vw !important;
+    }
+
+    h2 {
+        font-size: (6 * $font-size) + vw !important;
+    }
+
+    h3 {
+        font-size: (5 * $font-size) + vw !important;
+    }
+
+    h4 {
+        font-size: (4 * $font-size) + vw !important;
+    }
+
+    h5 {
+        font-size: (3 * $font-size) + vw !important;
+    }
+
+    h6 {
+        font-size: (2 * $font-size) + vw !important;
+    }
+
+    p, ul, ol {
+        font-size: (3 * $font-size) + vw !important;
+    }
+}

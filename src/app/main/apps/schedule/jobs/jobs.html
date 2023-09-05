@@ -1,0 +1,35 @@
+<div
+   id="schedule"
+   flex
+   layout="row"
+   class="page-layout datatable-layout simple fullwidth white-bg"
+   layout="column"
+>
+   <div class="content white-bg" layout="row" flex>
+      <md-content flex layout="column" class="schedule-content">
+         <div class="jobsMainDiv">
+            <store-statistics ng-if="false"></store-statistics>
+            <ams-md-tabs
+               class="jobsTabs"
+               md-border-bottom
+               md-selected="$ctrl.selectedTabIndex"
+
+            >
+               <ams-md-tab
+                  ng-repeat="machine in $ctrl.machines"
+                  label="{{machine.name}}"
+                  ng-click="$ctrl.selectTab(machine.id, $index)"
+               >
+                  <md-tab-body>
+                     <jobs
+                        ng-if="$ctrl.selectedMachine==machine.id"
+                        machine-id-input="machine.id"
+                        machine="machine"
+                     ></jobs>
+                  </md-tab-body>
+               </ams-md-tab>
+            </ams-md-tabs>
+         </div>
+      </md-content>
+   </div>
+</div>

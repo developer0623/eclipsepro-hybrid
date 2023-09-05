@@ -1,0 +1,115 @@
+<div id="dashboard-report" class="page-layout simple fullwidth white-bg production-summary" ngsf-fullscreen>
+  <report-header subject="Coil Scrap Breakdown" on-filter="$ctrl.onFilter(searchTxt)"></report-header>
+
+  <div class="summary-title-header">
+    <custom-menu class="menu-column duration" subject="DURATION" menu-list="$ctrl.durations"
+      selected-item="$ctrl.selectedDuration" on-change="$ctrl.onClickDurationItem(item)"></custom-menu>
+
+    <report-date-col class="date-column" start-date="$ctrl.startDate" end-date="$ctrl.endDate"
+      duration="$ctrl.selectedDuration" on-change="$ctrl.onChangeDate(startDate, endDate)"></report-date-col>
+
+    <checkbox-menu class="menu-column float-right" subject="MACHINES" menu-subject="SHOW MACHINES"
+      menu-list="$ctrl.machines" on-change="$ctrl.onChangeMachines(items)"></checkbox-menu>
+
+    <div class="header-icon-column float-right">
+      <md-button href="/_api/reports/coilscrap?{{$ctrl.fileDownloadQueryString}}&format=csv" target="_self">
+        <md-tooltip md-direction="bottom">
+          <span translate="downloadCsv"></span>
+        </md-tooltip>
+        <md-icon md-font-icon="icon-file-excel" class="icon"></md-icon>
+      </md-button>
+      <!--         <md-button aria-label="Select Shift 1" class="md-icon-button" ng-click="$ctrl.openPrintPreview($event)">
+                <md-icon md-font-icon class="icon icon-printer header-icon"></md-icon>
+            </md-button> -->
+    </div>
+  </div>
+  <div class="content md-background md-hue-1 scroll-content">
+    <div class="material-usage-header">
+      <div class="main-con">Coil Number</div>
+      <div class="main-con">Coil Material</div>
+      <div class="main-con">Heat Number</div>
+      <div class="desc">Desc</div>
+      <div class="main-con">
+        <span class="num-col">
+          Net Scrap ({{'ft' | userDisplayUnits}})</span>
+      </div>
+    </div>
+    <div class="material-usage-content">
+      <md-virtual-repeat-container id="coil-summary-list" class="ms-scroll">
+        <div md-virtual-repeat="item in $ctrl.filteredList" class="repeated-item" flex>
+          <accordion class="test" is-open="item.isOpen">
+            <accordion-header on-close="$ctrl.onClose(item)">
+              <div class="material-usage-item item-header">
+                <div class="main-con">
+                  <a class="td-link" ng-click="$event.stopPropagation()"
+                    ui-sref="app.inventory.coils.coil({id: item.coil.coilId})">
+                    {{item.coil.coilId}}</a>
+                </div>
+                <div class="main-con">
+                  <a class="td-link" ng-click="$event.stopPropagation()"
+                    ui-sref="app.inventory.coil-types.coil-type({id: item.coil.materialCode})">{{item.coil.materialCode}}</a>
+                </div>
+                <div class="main-con">{{item.coil.heatNumber}}</div>
+                <div class="desc">{{item.coil.description}}</div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{item.scrapFt | unitsFormat :"ft":1:true}}</span>
+                </div>
+              </div>
+            </accordion-header>
+
+            <accordion-content>
+              <div class="material-usage-item sub-header">
+                <div class="main-con">Group</div>
+                <div class="main-con">Code</div>
+                <div class="main-con">Reason</div>
+                <div class="main-con">
+                  <span class="num-col">
+                    Net Scrap ({{'ft' | userDisplayUnits}})</span>
+                </div>
+                <div class="main-con">
+                  <span class="num-col">
+                    Weight ({{'lbs' | userDisplayUnits}})</span>
+                </div>
+                <div class="main-con">Scrap %</div>
+              </div>
+              <div class="material-usage-item" ng-repeat="item1 in item.groups[0].reasons">
+                <div class="main-con">{{item.groups[0].groupTitle}}</div>
+                <div class="main-con">{{item1.scrapCode}}</div>
+                <div class="main-con">{{item1.scrapReason}}</div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{item1.scrapFt | unitsFormat :"ft":1:true}}</span>
+                </div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{item1.scrapFt*item.material.lbsPerFt | unitsFormat
+                    :"lbs":1:true}}</span>
+                </div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{item1.scrapPct | unitsFormat :"%":1:true}}</span>
+                </div>                
+              </div>
+              <div class="material-usage-item">
+                <div class="main-con">{{item.groups[0].groupTitle}}</div>
+                <div class="main-con"></div>
+                <div class="main-con"></div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{item.groups[0].scrapFt | unitsFormat :"ft":1:true}}</span>
+                </div>
+                <div class="main-con">
+                  <span class="num-col">
+                    {{item.groups[0].scrapFt*item.material.lbsPerFt |
+                    unitsFormat :"lbs":1:true}}</span>
+                </div>
+                <div class="main-con"></div>
+              </div>
+            </accordion-content>
+          </accordion>
+        </div>
+      </md-virtual-repeat-container>
+    </div>
+  </div>
+</div>

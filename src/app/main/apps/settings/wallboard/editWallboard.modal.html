@@ -1,0 +1,168 @@
+<md-dialog aria-label="WallBoard" class="wallboard-dialog" ng-cloak>
+   <md-toolbar class="wallboard-toolbar">
+      <div class="md-toolbar-tools">
+         <h2>Edit Wallboard Device</h2>
+      </div>
+   </md-toolbar>
+   <md-dialog-content flex>
+      <div class="md-dialog-content wallboard-dialog-content">
+         <md-input-container class="md-block">
+            <label class="typeLabel">Wallboard Name</label>
+            <input ng-model="vm.selectedDevice.wallboardDeviceName" required />
+         </md-input-container>
+         <md-input-container class="md-block wallboard-select-container">
+            <label class="typeLabel">Display Type</label>
+            <md-select ng-model="vm.selectedType" required placeholder="Type Select" class="wallboard-select"
+               aria-label="displayType">
+               <md-option ng-repeat="type in vm.displayTypes" value="{{type}}" translate="wallboardLabel_{{type}}">
+                  {{type}}</md-option>
+            </md-select>
+         </md-input-container>
+         <div ng-if="vm.selectedType === 'Andon'">
+            <md-input-container class="md-block wallboard-select-container">
+               <label class="typeLabel">Machine</label>
+               <md-select ng-model="vm.selectedMachine" required placeholder="Machine Select" class="wallboard-select"
+                  aria-label="machineType">
+                  <md-option ng-repeat="machine in vm.machines" value="{{machine.machineNumber}}">
+                     {{machine.description}}</md-option>
+               </md-select>
+            </md-input-container>
+            <md-input-container class="md-block sequence-select-container">
+               <label class="typeLabel">Andon Sequence</label>
+               <md-select ng-model="vm.selectedSequence" required placeholder="Sequence Select" class="wallboard-select"
+                  aria-label="andonType">
+                  <md-option ng-repeat="sequence in vm.sequences" value="{{sequence.id}}">{{sequence.name}}</md-option>
+               </md-select>
+            </md-input-container>
+            <md-checkbox class="schedule-checkbox" ng-model="vm.showSchedule">Show Schedule</md-checkbox>
+         </div>
+         <div ng-if="vm.selectedType === 'ExternalUrl'">
+            <md-input-container class="md-block wallboard-input-container">
+               <label>ExternalUrl</label>
+               <input ng-model="vm.selectedExternalUrl" required pattern="https?://.+" />
+            </md-input-container>
+         </div>
+
+         <div ng-if="vm.selectedType === 'Message'">
+            <md-input-container class="md-block wallboard-input-container">
+               <label>Message</label>
+               <textarea name="message" ng-model="vm.message" rows="3" required=""></textarea>
+            </md-input-container>
+         </div>
+
+
+         <div class="wallboard-select-container" ng-if="vm.selectedType === 'ProductionSummary'">
+            <md-input-container class="md-block wallboard-select-container imp-mb-14">
+               <label class="typeLabel">Machine</label>
+               <md-select ng-model="vm.selectedMachines" required placeholder="Machine Select" class="wallboard-select"
+                  aria-label="machineType" multiple>
+                  <md-option ng-repeat="machine in vm.machines" value="{{machine.machineNumber}}">
+                     {{machine.description}}</md-option>
+               </md-select>
+            </md-input-container>
+            <div>
+               <div class="pop-label">
+                 Metrics:
+                 <md-menu md-position-mode="target-right target">
+                  <md-button aria-label="Select Metrics" class="md-icon-button metrics-add-icon" ng-click="$mdMenu.open($event)">
+                    <md-icon md-font-icon class="icon icon-plus-box menu-icon"></md-icon>
+                  </md-button>
+                  <md-menu-content width="2" class="shift-menu menu-machines" ng-mouseleave="$mdMenu.close()">
+                    <div layout="row" class="shift-menu-title">SHOW METRICS:</div>
+                    <md-menu-item class="metric-menu-item shift-menu-item">
+                      <div layout="row">
+                        <md-checkbox name="All" aria-label="All" ng-checked="vm.allMetricsItem.isChecked"
+                          md-indeterminate="vm.isAllMetricsIndeterminate()" class="filter-check"
+                          ng-click="vm.onClickMetricMenuItem(vm.allMetricsItem)">All</md-checkbox>
+                      </div>
+                    </md-menu-item>
+
+                    <md-menu-item ng-repeat="item in vm.metrics" class="metric-menu-item shift-menu-item">
+                      <div layout="row">
+                        <md-checkbox name="{{item.field}}" aria-label="{{item.field}}" ng-checked="item.isChecked"
+                          class="filter-check" ng-click="vm.onClickMetricMenuItem(item)" md-prevent-menu-close="md-prevent-menu-close">{{item.title}}</md-checkbox>
+                      </div>
+                    </md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+
+               </div>
+               <div class="metrics-container">
+                  <div ng-repeat="item in vm.metrics | checkFilter:true" class="metric-list-item">
+                     <md-icon md-font-icon class="icon icon-dots-vertical menu-icon metric-first-icon"></md-icon>
+                     <div class="metric-list-item-content">
+                        {{item.title}}
+                        <md-button aria-label="Remove Metric" class="md-icon-button metric-delete-btn" ng-click="vm.onRemoveItem(item)">
+                           <md-icon md-font-icon class="icon icon-delete menu-icon"></md-icon>
+                        </md-button>
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+            <div class="wallboard-select-container">
+               <div class="pop-label">
+                 Ranges:
+                 <md-menu md-position-mode="target-right target">
+                  <md-button aria-label="Select Ranges" class="md-icon-button metrics-add-icon" ng-click="$mdMenu.open($event)">
+                    <md-icon md-font-icon class="icon icon-plus-box menu-icon"></md-icon>
+                  </md-button>
+                  <md-menu-content width="2" class="shift-menu menu-machines" ng-mouseleave="$mdMenu.close()">
+                    <div layout="row" class="shift-menu-title">SHOW RANGES:</div>
+                    <md-menu-item class="metric-menu-item shift-menu-item">
+                      <div layout="row">
+                        <md-checkbox name="All" aria-label="All" ng-checked="vm.allRangesItem.isChecked"
+                          md-indeterminate="vm.isAllRangesIndeterminate()" class="filter-check"
+                          ng-click="vm.onClickRangeMenuItem(vm.allRangesItem)">All</md-checkbox>
+                      </div>
+                    </md-menu-item>
+
+                    <md-menu-item ng-repeat="item in vm.ranges" class="metric-menu-item shift-menu-item">
+                      <div layout="row">
+                        <md-checkbox name="{{item.field}}" aria-label="{{item.field}}" ng-checked="item.isChecked"
+                          class="filter-check" ng-click="vm.onClickRangeMenuItem(item)" md-prevent-menu-close="md-prevent-menu-close">{{item.title}}</md-checkbox>
+                      </div>
+                    </md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+
+               </div>
+               <div class="metrics-container">
+                  <div ng-repeat="item in vm.ranges | checkFilter:true" class="metric-list-item">
+                     <md-icon md-font-icon class="icon icon-dots-vertical menu-icon metric-first-icon"></md-icon>
+                     <div class="metric-list-item-content">
+                        {{item.title}}
+                        <md-button aria-label="Remove Metric" class="md-icon-button metric-delete-btn" ng-click="vm.onRemoveItem(item)">
+                           <md-icon md-font-icon class="icon icon-delete menu-icon"></md-icon>
+                        </md-button>
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+
+            <md-input-container class="md-block">
+               <label class="typeLabel">Cycle Seconds:</label>
+               <input ng-model="vm.cycleSeconds" type="number" min="1" />
+            </md-input-container>
+
+         </div>
+         <div ng-if="vm.selectedType === 'Andon' || vm.selectedType === 'Message' || vm.selectedType === 'ProductionSummary'">
+            <md-input-container class="md-block wallboard-select-container">
+               <label>Theme</label>
+               <md-select ng-model="vm.selectedTheme" required placeholder="Theme Select" class="wallboard-select"
+                  aria-label="Theme select">
+                  <md-option ng-repeat="theme in vm.themes" value="{{theme.value}}">{{theme.displayName}}</md-option>
+               </md-select>
+            </md-input-container>
+         </div>
+      </div>
+   </md-dialog-content>
+   <md-dialog-actions layout="row" class="downtime-btn-group">
+      <md-button ng-click="vm.cancel()"> CANCEL </md-button>
+      <md-button class="md-raised save-btn" ng-click="vm.saveWallboard()" style="margin-right: 20px"
+         ng-disabled="vm.getDisableState()">
+         SAVE
+      </md-button>
+   </md-dialog-actions>
+</md-dialog>

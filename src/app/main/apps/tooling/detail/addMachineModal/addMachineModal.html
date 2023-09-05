@@ -1,0 +1,45 @@
+<div
+  class="item-settings-dialog edit-property-modal-container"
+  aria-label="Edit Property"
+>
+  <div class="item-settings-dialog__wrapper">
+    <div class="item-settings-dialog__header">Select Machine</div>
+    <md-content class="main-container">
+      <div class="list-container">
+        <div class="property-item-row property-item-header">
+          <div class="main-col">Machine Name</div>
+          <div class="main-col">Software Model</div>
+          <div class="main-col">Software Version</div>
+        </div>
+        <md-radio-group ng-model="$ctrl.selectedMachine">
+          <div ng-repeat="machine in $ctrl.machines" class="demo-row">
+            <div flex layout="row" layout-padding layout-align="start center">
+              <md-radio-button
+                flex
+                ng-value="machine.id"
+                class="md-primary main-col"
+              >
+                {{machine.description}}
+              </md-radio-button>
+              <div class="main-col">{{machine.softwareModel}}</div>
+              <div class="main-col">{{machine.softwareVersion}}</div>
+            </div>
+          </div>
+        </md-radio-group>
+      </div>
+    </md-content>
+
+    <md-dialog-actions layout="row" class="item-settings-dialog__footer">
+      <span flex></span>
+      <div class="item-settings-dialog__button" ng-click="$ctrl.cancel()">
+        CANCEL
+      </div>
+      <div
+        class="item-settings-dialog__button x--active"
+        ng-click="$ctrl.save()"
+      >
+        Save
+      </div>
+    </md-dialog-actions>
+  </div>
+</div>

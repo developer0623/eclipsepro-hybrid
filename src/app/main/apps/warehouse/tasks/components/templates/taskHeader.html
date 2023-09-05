@@ -1,0 +1,25 @@
+<div class="task-header-item1">
+	<div class="sub-item1">
+		<img src="../../../../../../../assets/images/taskicons/zone.png" class="item-img" />
+		{{$ctrl.parentCtrl.task.sourceLocation}}
+	</div>
+	<div class="arrow-sub-item"></div>
+	<div class="sub-item2">
+		<img src="../../../../../../../assets/images/taskicons/machine.png" class="item-img" />
+		{{$ctrl.parentCtrl.task.desinationLocation}}
+	</div>
+
+</div>
+
+<div class="task-header-item2">
+	<!-- <img ng-src="{{require('../../../../../../../assets/images/taskicons/fill.png')}}" class="item-img" /> -->
+	<img src="../../../../../../../assets/images/taskicons/fill.png" class="item-img" />
+	<div class="sub-item item-name">{{$ctrl.parentCtrl.task.coilType.gauge}} <span class="sign-class">G</span></div>
+	<div class="sub-item item-material">
+		<link-helper document-id="'Material/' + $ctrl.parentCtrl.task.coilType.coilTypeCode" label="$ctrl.parentCtrl.task.coilType.coilTypeCode" hide-type="true"></link-helper>
+	</div>
+	<div class="sub-item item-size">
+		{{$ctrl.parentCtrl.task.requiredFt | unitsFormat: 'ft'}} <span class="sign-class">Ft</span>
+	</div>
+
+</div>

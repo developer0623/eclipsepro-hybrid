@@ -1,0 +1,25 @@
+<div id="settings" class="page-layout simple fullwidth" ngsf-fullscreen>
+    <div class="header">
+        <div layout="row" layout-align="space-between">
+            <span class="h2 text-upper">Downtime/Scrap Settings</span>
+        </div>
+    </div>
+
+    <md-content>
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="Downtime codes">
+                <md-content class="md-padding">
+                    <downtime-settings-modal></downtime-settings-modal>
+                </md-content>
+            </md-tab>
+
+            <md-tab label="Scrap codes" ng-if="false">
+                <md-content class="md-padding"> </md-content>
+            </md-tab>
+
+            <md-tab label="Other" ng-if="false">
+                <md-content class="md-padding"> </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

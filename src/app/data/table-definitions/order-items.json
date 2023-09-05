@@ -1,0 +1,46 @@
+[
+    {
+        "title": "Bundle",
+        "data": "bundle",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Qty",
+        "data": "quantity",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Qty Done",
+        "data": "quantityDone",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Length",
+        "data": "length",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Message",
+        "data": "messageText"
+    },
+    {
+        "title": "Pattern",
+        "data": "patternName",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Sequence",
+        "data": "sequence",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Item ID",
+        "data": "itemId",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Weight",
+        "data": "weightLbs",
+        "class": "column-numeric"
+    }
+]

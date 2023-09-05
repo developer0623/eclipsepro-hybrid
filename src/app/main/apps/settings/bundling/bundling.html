@@ -1,0 +1,462 @@
+<div id="settings" class="page-layout simple fullwidth">
+  <!-- HEADER -->
+  <div class="header">
+    <div layout="row" layout-align="space-between">
+      <span class="h2">Bundling</span>
+    </div>
+  </div>
+  <!-- / HEADER -->
+  <!-- CONTENT -->
+  <div
+    class="content md-background md-hue-1 settings-bundling"
+    md-background-bg
+  >
+    <md-tabs md-dynamic-height md-border-bottom>
+      <!-- <md-tab label="asdf"> <md-content">asdf</md-content></md-tab>
+      <md-tab label="asdf2"> <md-content">asdf2</md-content></md-tab> -->
+      <!-- md-selected="$ctrl.selectedTabIndex" > -->
+      <!-- This is dumb but I added an extra empty <td> on all these to make them align to the left. We should make this better. --><!-- md-on-select="$ctrl.selectTab()"  -->
+      <md-tab label="Bundler Rules">
+        <div class="task-content">
+          <div id="bundlerRules" class="task-list active-task-list">
+            <div layout="column">
+              <div class="md-whiteframe-2dp">
+                <div
+                  layout="row"
+                  class="table-title black-text"
+                  layout-align="start center"
+                >
+                  System Default
+                </div>
+                <div class="ms-responsive-table-wrapper">
+                  <table class="simple hover dataTable event-table">
+                    <thead>
+                      <tr>
+                        <th>Max Lbs</th>
+                        <th>Max Pieces</th>
+                        <th>Min % of Max</th>
+                        <th>Sorting</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div
+                            editable-number="$ctrl.bundlerRules.systemLevel.maxWeightLbs"
+                            buttons="no"
+                            e-ng-blur="$form.$submit();"
+                            onshow="$ctrl.focusSelect($form)"
+                            onaftersave="$ctrl.updateBundlerRule('system','','','',$ctrl.bundlerRules.systemLevel);"
+                          >
+                            {{$ctrl.bundlerRules.systemLevel.maxWeightLbs}}
+                          </div>
+                        </td>
+                        <td>
+                          <div
+                            editable-number="$ctrl.bundlerRules.systemLevel.maxPieceCount"
+                            buttons="no"
+                            e-ng-blur="$form.$submit();"
+                            onshow="$ctrl.focusSelect($form)"
+                            onaftersave="$ctrl.updateBundlerRule('system','','','',$ctrl.bundlerRules.systemLevel);"
+                          >
+                            {{$ctrl.bundlerRules.systemLevel.maxPieceCount}}
+                          </div>
+                        </td>
+                        <td>
+                          <div
+                            editable-number="$ctrl.bundlerRules.systemLevel.minPctOfMaxLength"
+                            buttons="no"
+                            e-step="any"
+                            e-ng-blur="$form.$submit();"
+                            onshow="$ctrl.focusSelect($form)"
+                            onaftersave="$ctrl.updateBundlerRule('system','','','',$ctrl.bundlerRules.systemLevel);"
+                          >
+                            {{$ctrl.bundlerRules.systemLevel.minPctOfMaxLength |
+                            unitsFormat :"%"}}
+                          </div>
+                        </td>
+                        <td>
+                          <a
+                            href="#"
+                            editable-select="$ctrl.bundlerRules.systemLevel.itemSort"
+                            buttons="no"
+                            e-ng-options="s.value as s.text for s in $ctrl.systemSortOptions"
+                            e-ng-blur="$form.$submit();"
+                            onshow="$ctrl.focusSelect($form)"
+                            onaftersave="$ctrl.updateBundlerRule('system','','','',$ctrl.bundlerRules.systemLevel);"
+                          >
+                            {{$ctrl.bundlerRules.systemLevel.itemSort}}
+                          </a>
+                        </td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div layout="column">
+              <div class="md-whiteframe-2dp">
+                <div
+                  layout="row"
+                  class="table-title black-text"
+                  layout-align="start center"
+                >
+                  Customer
+                  <md-button
+                    class="md-icon-button"
+                    ng-click="$ctrl.addBundlerRuleDialog('customer')"
+                    ng-hide="!$ctrl.userHasAdminRole"
+                    ><md-icon
+                      md-font-icon="icon-plus-box"
+                      class="icon"
+                    ></md-icon
+                  ></md-button>
+                </div>
+                <div if-claim="custom.metalsales">Metal Sales: The customer internal Id from NetSuite should be used here. This is the id from the URL.</div>
+                <div class="ms-responsive-table-wrapper">
+                  <table class="simple hover dataTable event-table">
+                    <thead>
+                      <tr>
+                        <th>Customer</th>
+                        <th>Max Lbs</th>
+                        <th>Max Pieces</th>
+                        <th>Sorting</th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        ng-repeat="(cust, rule) in $ctrl.bundlerRules.customerRules"
+                      >
+                        <td>{{cust}}</td>
+                        <td>
+                          <div
+                            editable-number="rule.maxWeightLbs"
+                            buttons="no"
+                            e-ng-blur="$form.$submit();"
+                            onshow="$ctrl.focusSelect($form)"
+                            onaftersave="$ctrl.updateBundlerRule('customer',cust,'',rule);"
+                          >
+                            {{rule.maxWeightLbs||'n/a'}}
+                          </div>
+                        </td>
+                        <td>
+                          <div
+                            editable-number="rule.maxPieceCount"
+                            buttons="no"
+                            e-ng-blur="$form.$submit();"
+                            onshow="$ctrl.focusSelect($form)"
+                            onaftersave="$ctrl.updateBundlerRule('customer',cust,'',rule);"
+                          >
+                            {{rule.maxPieceCount||'n/a'}}
+                          </div>
+                        </td>
+                        <td>
+                          <a
+                            href="#"
+                            editable-select="rule.itemSort"
+                            buttons="no"
+                            e-ng-options="s.value as s.text for s in $ctrl.sortOptions"
+                            e-ng-blur="$form.$submit();"
+                            onshow="$ctrl.focusSelect($form)"
+                            onaftersave="$ctrl.updateBundlerRule('customer',cust,'',rule);"
+                          >
+                            {{rule.itemSort||'n/a' | translate}}
+                          </a>
+                        </td>
+                        <td>
+                          <md-button
+                            class="md-icon-button"
+                            ng-click="$ctrl.deleteBundlerRule('customer',cust,'')"
+                            ng-hide="!$ctrl.userHasAdminRole"
+                            ><md-icon
+                              md-font-icon="icon-delete"
+                              class="icon"
+                            ></md-icon
+                          ></md-button>
+                        </td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div layout="column">
+              <div class="md-whiteframe-2dp">
+                <div
+                  layout="row"
+                  class="table-title black-text"
+                  layout-align="start center"
+                >
+                  Tooling
+                  <md-button
+                    class="md-icon-button"
+                    ng-click="$ctrl.addBundlerRuleDialog('toolingDef')"
+                    ng-hide="!$ctrl.userHasAdminRole"
+                    ><md-icon
+                      md-font-icon="icon-plus-box"
+                      class="icon"
+                    ></md-icon
+                  ></md-button>
+                </div>
+                <div if-claim="custom.metalsales">Metal Sales: The Shop Floor Category from the Assembly Item in NetSuite should be used here.</div>
+                <div class="ms-responsive-table-wrapper">
+                  <table class="simple hover dataTable event-table">
+                    <thead>
+                      <tr>
+                        <th>Tooling</th>
+                        <th>Max Lbs</th>
+                        <th>Max Pieces</th>
+                        <th>Sorting</th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        ng-repeat="(tool, rule) in $ctrl.bundlerRules.toolingDefRules"
+                      >
+                        <td>{{tool}}</td>
+                        <td>
+                          <div
+                            editable-number="rule.maxWeightLbs"
+                            buttons="no"
+                            e-ng-blur="$form.$submit();"
+                            onshow="$ctrl.focusSelect($form)"
+                            onaftersave="$ctrl.updateBundlerRule('toolingDef','',tool,'',rule);"
+                          >
+                            {{rule.maxWeightLbs||'n/a'}}
+                          </div>
+                        </td>
+                        <td>
+                          <div
+                            editable-number="rule.maxPieceCount"
+                            buttons="no"
+                            e-ng-blur="$form.$submit();"
+                            onshow="$ctrl.focusSelect($form)"
+                            onaftersave="$ctrl.updateBundlerRule('toolingDef','',tool,'',rule);"
+                          >
+                            {{rule.maxPieceCount||'n/a'}}
+                          </div>
+                        </td>
+                        <td>
+                          <a
+                            href="#"
+                            editable-select="rule.itemSort"
+                            buttons="no"
+                            e-ng-options="s.value as s.text for s in $ctrl.sortOptions"
+                            e-ng-blur="$form.$submit();"
+                            onshow="$ctrl.focusSelect($form)"
+                            onaftersave="$ctrl.updateBundlerRule('toolingDef','',tool,'',rule);"
+                          >
+                            {{rule.itemSort||'n/a' | translate}}
+                          </a>
+                        </td>
+                        <td>
+                          <md-button
+                            class="md-icon-button"
+                            ng-click="$ctrl.deleteBundlerRule('toolingDef','',tool,'')"
+                            ng-hide="!$ctrl.userHasAdminRole"
+                            ><md-icon
+                              md-font-icon="icon-delete"
+                              class="icon"
+                            ></md-icon
+                          ></md-button>
+                        </td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div layout="column">
+              <div class="md-whiteframe-2dp">
+                <div
+                  layout="row"
+                  class="table-title black-text"
+                  layout-align="start center"
+                >
+                  Material/Tooling
+                  <md-button
+                    class="md-icon-button"
+                    ng-click="$ctrl.addBundlerRuleDialog('materialTooling')"
+                    ng-hide="!$ctrl.userHasAdminRole"
+                    ><md-icon
+                      md-font-icon="icon-plus-box"
+                      class="icon"
+                    ></md-icon
+                  ></md-button>
+                </div>
+                <div class="ms-responsive-table-wrapper">
+                  <table class="simple hover dataTable event-table">
+                    <thead>
+                      <tr>
+                        <th>Material</th>
+                        <th>Tooling</th>
+                        <th>Max Lbs</th>
+                        <th>Max Pieces</th>
+                        <th>Sorting</th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        ng-repeat="materialToolRule in $ctrl.bundlerRules.materialToolingRules"
+                      >
+                        <td>{{materialToolRule.material}}</td>
+                        <td>{{materialToolRule.tooling}}</td>
+                        <td>
+                          <div
+                            editable-number="materialToolRule.maxWeightLbs"
+                            buttons="no"
+                            e-ng-blur="$form.$submit();"
+                            onshow="$ctrl.focusSelect($form)"
+                            onaftersave="$ctrl.updateBundlerRule('materialTooling','',materialToolRule.tooling,materialToolRule.material,materialToolRule);"
+                          >
+                            {{materialToolRule.maxWeightLbs||'n/a'}}
+                          </div>
+                        </td>
+                        <td>
+                          <div
+                            editable-number="materialToolRule.maxPieceCount"
+                            buttons="no"
+                            e-ng-blur="$form.$submit();"
+                            onshow="$ctrl.focusSelect($form)"
+                            onaftersave="$ctrl.updateBundlerRule('materialTooling','',materialToolRule.tooling,materialToolRule.material,materialToolRule);"
+                          >
+                            {{materialToolRule.maxPieceCount||'n/a'}}
+                          </div>
+                        </td>
+                        <td>
+                          <a
+                            href="#"
+                            editable-select="materialToolRule.itemSort"
+                            buttons="no"
+                            e-ng-options="s.value as s.text for s in $ctrl.sortOptions"
+                            e-ng-blur="$form.$submit();"
+                            onshow="$ctrl.focusSelect($form)"
+                            onaftersave="$ctrl.updateBundlerRule('materialTooling','',materialToolRule.tooling,materialToolRule.material,materialToolRule);"
+                          >
+                            {{materialToolRule.itemSort||'n/a' | translate}}
+                          </a>
+                        </td>
+                        <td></td>
+                        <td>
+                          <md-button
+                            class="md-icon-button"
+                            ng-click="$ctrl.deleteBundlerRule('materialTooling','',materialToolRule.tooling,materialToolRule.material)"
+                            ng-hide="!$ctrl.userHasAdminRole"
+                            ><md-icon
+                              md-font-icon="icon-delete"
+                              class="icon"
+                            ></md-icon
+                          ></md-button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div layout="column">
+              <div class="md-whiteframe-2dp">
+                <div
+                  layout="row"
+                  class="table-title black-text"
+                  layout-align="start center"
+                >
+                  Customer/Tooling
+                  <md-button
+                    class="md-icon-button"
+                    ng-click="$ctrl.addBundlerRuleDialog('customerTooling')"
+                    ng-hide="!$ctrl.userHasAdminRole"
+                    ><md-icon
+                      md-font-icon="icon-plus-box"
+                      class="icon"
+                    ></md-icon
+                  ></md-button>
+                </div>
+                <div class="ms-responsive-table-wrapper">
+                  <table class="simple hover dataTable event-table">
+                    <thead>
+                      <tr>
+                        <th>Customer</th>
+                        <th>Tooling</th>
+                        <th>Max Lbs</th>
+                        <th>Max Pieces</th>
+                        <th>Sorting</th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        ng-repeat="custToolRule in $ctrl.bundlerRules.customerToolingRules"
+                      >
+                        <td>{{custToolRule.customer}}</td>
+                        <td>{{custToolRule.tooling}}</td>
+                        <td>
+                          <div
+                            editable-number="custToolRule.maxWeightLbs"
+                            buttons="no"
+                            e-ng-blur="$form.$submit();"
+                            onshow="$ctrl.focusSelect($form)"
+                            onaftersave="$ctrl.updateBundlerRule('customerTooling',custToolRule.customer,custToolRule.tooling,'',custToolRule);"
+                          >
+                            {{custToolRule.maxWeightLbs||'n/a'}}
+                          </div>
+                        </td>
+                        <td>
+                          <div
+                            editable-number="custToolRule.maxPieceCount"
+                            buttons="no"
+                            e-ng-blur="$form.$submit();"
+                            onshow="$ctrl.focusSelect($form)"
+                            onaftersave="$ctrl.updateBundlerRule('customerTooling',custToolRule.customer,custToolRule.tooling,'',custToolRule);"
+                          >
+                            {{custToolRule.maxPieceCount||'n/a'}}
+                          </div>
+                        </td>
+                        <td>
+                          <a
+                            href="#"
+                            editable-select="custToolRule.itemSort"
+                            buttons="no"
+                            e-ng-options="s.value as s.text for s in $ctrl.sortOptions"
+                            e-ng-blur="$form.$submit();"
+                            onshow="$ctrl.focusSelect($form)"
+                            onaftersave="$ctrl.updateBundlerRule('customerTooling',custToolRule.customer,custToolRule.tooling,'',custToolRule);"
+                          >
+                            {{custToolRule.itemSort||'n/a' | translate}}
+                          </a>
+                        </td>
+                        <td></td>
+                        <td>
+                          <md-button
+                            class="md-icon-button"
+                            ng-click="$ctrl.deleteBundlerRule('customerTooling',custToolRule.customer,custToolRule.tooling,'')"
+                            ng-hide="!$ctrl.userHasAdminRole"
+                            ><md-icon
+                              md-font-icon="icon-delete"
+                              class="icon"
+                            ></md-icon
+                          ></md-button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </md-tab>
+    </md-tabs>
+  </div>
+</div>

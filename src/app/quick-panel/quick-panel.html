@@ -1,0 +1,35 @@
+<md-content>
+    <md-tabs md-no-pagination md-swipe-content md-stretch-tabs="always">
+        <md-tab>
+            <md-tab-label translate="quickPanel.alerts">
+                <div class="alert-header">
+                    <div></div>
+                    <span>ALERTS</span>
+                    <md-button
+                      class="pulse-button"
+                      aria-label="pulse"
+                      ui-sref="app.status"
+                      ng-click="vm.toggleSidenav('quick-panel')"
+                    >
+                      <md-icon md-font-icon="icon-pulse" class="icon s24"></md-icon>
+                    </md-button>
+                  </div>
+            </md-tab-label>
+            <md-tab-body>
+
+                <md-content class="alerts-tab scrollable" ms-scroll>
+                    <md-list class="alerts">
+                        <md-list-item class="md-2-line" ng-repeat="alert in vm.alerts | orderBy:'-isCritical'" ng-switch
+                            on="alert.alertType">
+                            <alert-schedule-slip alert=alert ng-switch-when="ScheduleSlip"></alert-schedule-slip>
+                            <alert-warehouse-late alert=alert ng-switch-when="WarehouseTaskLate"></alert-warehouse-late>
+                            <alert-integration-error alert=alert ng-switch-when="IntegrationError">
+                            </alert-integration-error>
+                            <alert-general alert=alert ng-switch-default></alert-general>
+                        </md-list-item>
+                    </md-list>
+                </md-content>
+            </md-tab-body>
+        </md-tab>
+    </md-tabs>
+</md-content>

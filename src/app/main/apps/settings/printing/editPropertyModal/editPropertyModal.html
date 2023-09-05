@@ -1,0 +1,76 @@
+<div class="item-settings-dialog edit-property-modal-container" aria-label="Edit Property">
+    <div class="item-settings-dialog__wrapper">
+      <div class="item-settings-dialog__header">Edit Property</div>
+      <md-content class="main-container">
+        <md-button
+          class="md-icon-button"
+          ng-click="$ctrl.addProperty()"
+        >
+          <md-icon
+            md-font-icon="icon-plus"
+            class="icon"
+          ></md-icon
+        ></md-button>
+        <div class="list-container">
+          <div class="property-item-row property-item-header">
+            <div class="key-col">
+              Key
+            </div>
+            <div class="value-col">
+              Value
+            </div>
+            <div class="btn-col"></div>
+          </div>
+          <div class="property-item-row" ng-repeat="item in $ctrl.properties">
+            <md-input-container class="input-container key-col">
+              <input ng-model="item.key" />
+            </md-input-container>
+            <md-input-container class="input-container value-col">
+              <input ng-model="item.value" />
+            </md-input-container>
+            <!-- <div
+              class="key-col"
+              editable-text="item.key"
+              onaftersave="$ctrl.onChangeDetail($data, 'key', $index)"
+            >
+              {{item.key}}
+            </div> -->
+            <!-- <div
+              class="value-col"
+              editable-text="item.value"
+              onaftersave="$ctrl.onChangeDetail($data, 'value', $index)"
+            >
+              {{item.value}}
+            </div> -->
+            <div class="btn-col">
+              <md-button
+                class="md-icon-button property-deletebtn"
+                ng-click="$ctrl.deletePorpery($index)"
+              >
+                <md-icon
+                  md-font-icon="icon-delete"
+                  class="icon"
+                ></md-icon
+              ></md-button>
+            </div>
+          </div>
+
+        </div>
+        
+        
+      </md-content>
+
+      <md-dialog-actions layout="row" class="item-settings-dialog__footer">
+        <span flex></span>
+        <div class="item-settings-dialog__button" ng-click="$ctrl.cancel()">
+          CANCEL
+        </div>
+        <div
+          class="item-settings-dialog__button x--active"
+          ng-click="$ctrl.save()"
+        >
+          Save
+        </div>
+      </md-dialog-actions>
+    </div>
+  </div>

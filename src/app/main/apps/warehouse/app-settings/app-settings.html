@@ -1,0 +1,67 @@
+<div id="warehouse" class="page-layout simple fullwidth white-bg warehouse-app-settings"
+  ng-class="{'no-scroll': panelIsOpen }" ngsf-fullscreen>
+
+  <div class="header">
+    <div layout="row" layout-align="space-between">
+      <span class="h2 text-upper">WAREHOUSE: APP SETTINGS</span>
+    </div>
+  </div>
+  <div ng-cloak>
+    <md-content>
+      <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab label="General" class="general-tab">
+          <md-content class="md-padding general-tab-content">
+            <h3 class="time-title">Warning Time</h3>
+            <md-select ng-model="selectedTime" class="warning-time-select">
+              <md-option ng-value="time.value" ng-repeat="time in warningTimes">{{time.name}}</md-option>
+            </md-select>
+          </md-content>
+        </md-tab>
+
+
+        <md-tab label="Error Reasons" class="reason-tab">
+          <md-content class="md-padding">
+            <md-list ng-cloak class="nonprefered-reason-list" ng-repeat="(name, reasonSet) in vm.reasons">
+              <md-subheader class="md-no-sticky" translate="{{name}}"></md-subheader>
+              <md-list-item ng-repeat="reason in reasonSet" class="reason-item">
+                <md-icon class="icon-menu" md-font-icon class="icon"></md-icon>
+                <p class="error-title"> {{ reason.reason }} </p>
+                <md-icon class="icon-close" md-font-icon class="icon" ng-click="vm.removeReson(reason)"></md-icon>
+              </md-list-item>
+
+              <md-list-item class="add-item" ng-click="vm.gotoAddReason(ev, reasonSet[0].codeSet)">
+                <md-icon class="icon-plus" md-font-icon class="icon"></md-icon>
+                <p class="error-title">Add New Reason</p>
+              </md-list-item>
+            </md-list>
+
+
+          </md-content>
+        </md-tab>
+        <md-tab label="Locations" class="location-tab">
+          <md-content class="md-padding">
+            <md-list ng-cloak class="wrongcoil-reason-list" ng-repeat="locationArray in vm.locations">
+              <md-subheader class="md-no-sticky">{{locationArray.title}}</md-subheader>
+              <md-list-item ng-repeat="location in locationArray.items" class="reason-item">
+                <md-icon class="icon-menu" md-font-icon class="icon"></md-icon>
+                <p class="error-title"> {{ location.name }} </p>
+                <!-- <md-icon class="icon-close" md-font-icon class="icon" ng-if="locationArray.title === 'WAREHOUSE'" ng-click="vm.removeLocation(location)"></md-icon> -->
+              </md-list-item>
+
+              <md-list-item class="add-item" ng-if="!locationArray.doNotEdit"
+                ng-click="vm.gotoAddLocation(ev, locationArray)">
+                <md-icon class="icon-plus" md-font-icon class="icon"></md-icon>
+                <p class="error-title">Add New Area</p>
+              </md-list-item>
+            </md-list>
+
+
+          </md-content>
+        </md-tab>
+      </md-tabs>
+    </md-content>
+  </div>
+
+
+
+</div>

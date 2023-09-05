@@ -1,0 +1,73 @@
+<table class="line-height-2 table-aligned text-nowrap" ng-class="{'font-size-13': $mdMedia('md'), 'font-size-14': $mdMedia('lg'), 'font-size-15': $mdMedia('gt-lg')}">
+   <!--
+      For ng-if="$mdMedia('xs') || $mdMedia('sm')" => font-size-15
+    -->
+   <colgroup>
+      <col style="width: 55%;" />
+      <col style="width: 45%;" />
+   </colgroup>
+   <tbody>
+      <tr>
+         <td class="secondary-text" translate="leadOperator" title="{{'leadOperatorHelp' | translate}}">Lead Operator</td>
+         <td class="text-caps">{{$ctrl.machineState.employeeName || "n/a"}}</td>
+      </tr>
+      <tr>
+         <td class="secondary-text" translate="averageSpeed" title="{{'avgFPMHelp' | translate}}">Avg Speed</td>
+         <td>{{($ctrl.shiftStats.avgFPM | unitsFormat :"fpm":0) || "n/a"}}</td>
+      </tr>
+      <tr>
+         <td class="secondary-text" translate="goodProduction" title="{{'goodFeetHelp' | translate}}">Good Production</td>
+         <td>{{($ctrl.shiftStats.goodFeet | unitsFormat :"ft":0) || "0"}}</td>
+      </tr>
+      <tr>
+         <td class="secondary-text" translate="scrap" title="{{'scrapFeetHelp' | translate}}">Scrap</td>
+         <td>{{($ctrl.shiftStats.scrapFeet | unitsFormat :"ft":0) || "0"}}</td>
+      </tr>
+      <tr>
+         <td class="secondary-text" translate="reclaimedScrap" title="{{'reclaimedScrapFeetHelp' | translate}}">Reclaimed Scrap</td>
+         <td>{{($ctrl.shiftStats.reclaimedScrapFeet | unitsFormat :"ft":0) || "0"}}</td>
+      </tr>
+      <tr>
+         <td class="secondary-text" translate="totalPieces" title="{{'totalPieceCountHelp' | translate}}">Total Pieces</td>
+         <td>{{$ctrl.shiftStats.goodPieceCount || "0"}}</td>
+      </tr>
+      <tr>
+         <td class="secondary-text" translate="toolingChanges" title="{{'toolingChangeCountHelp' | translate}}">Tooling Changes</td>
+         <td>{{$ctrl.shiftStats.toolingChangeCount || "0"}}</td>
+      </tr>
+      <tr>
+         <td class="secondary-text" translate="coilChanges" title="{{'coilChangeCountHelp' | translate}}">Coil Changes</td>
+         <td>{{$ctrl.shiftStats.coilChangeCount || "0"}}</td>
+      </tr>
+<!-- Split here. Stats above, state below. Move lead operator to below? -->
+      <tr>
+         <td class="secondary-text" translate="coilId" title="{{'coilIdHelp' | translate}}">Coil ID</td>
+         <td><a class="td-link" ng-click="$event.stopPropagation()" ui-sref="app.inventory.coils.coil({id: $ctrl.machineState.currentCoilId})">{{$ctrl.machineState.currentCoilId || "n/a"}}</a></td>
+      </tr>
+      <tr>
+         <td class="secondary-text" translate="coilsMaterial" title="{{'coilsMaterialHelp' | translate}}">Coil Material</td>
+         <td><a class="td-link" ng-click="$event.stopPropagation()" ui-sref="app.inventory.coil-types.coil-type({id: $ctrl.machineState.currentCoilMaterialCode})">{{$ctrl.machineState.currentCoilMaterialCode || "n/a"}}</a></td>
+      </tr>
+      <tr>
+         <td class="secondary-text" translate="bundle" title="{{'bundleHelp' | translate}}">Bundle</td>
+         <td>{{$ctrl.machineState.bundleNumber || "n/a"}}</td>
+      </tr>
+      <tr>
+         <td class="secondary-text" translate="itemId" title="{{'itemIdHelp' | translate}}">Item ID</td>
+         <td>{{$ctrl.machineState.currentItemExternalId || "n/a"}}</td>
+      </tr>
+      <tr>
+         <td class="secondary-text" translate="partLength" title="{{'partLengthHelp' | translate}}">Part Length</td>
+         <td>{{($ctrl.machineState.currentItemLengthIn | unitsFormat :"in":3) || "0"}}</td>
+      </tr>
+      <tr>
+         <td class="secondary-text" translate="timeRange" title="{{'timeRangeHelp' | translate}}">Time Range</td>
+         <td>{{$ctrl.shiftStats.start | amsTime }} - {{$ctrl.shiftStats.end | amsTime }}</td>
+      </tr>
+      <!--Completed is not yet available from the data-->
+      <!--<tr>
+         <td>Completed</td>
+         <td><strong>{{$ctrl.current.machineState.currentItemQtyDone}} / {{$ctrl.current.machineState.currentItemQty}}</strong></td>
+      </tr>-->
+   </tbody>
+</table>

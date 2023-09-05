@@ -1,0 +1,12 @@
+{
+    "INVOICE": {
+        "CLIENT": "CLIENT",
+        "PHONE": "Phone",
+        "EMAIL": "Email",
+        "WEB": "Web",
+        "REPORT": "REPORT",
+        "REPORT_DATE": "REPORT DATE",
+        "NOTE": "In condimentum malesuada efficitur. Mauris volutpat placerat auctor.",
+        "SMALL_NOTE": "In condimentum malesuada efficitur. Mauris volutpat placerat auctor. Ut ac congue dolor. Quisque scelerisque lacus sed feugiat fermentum. Cras aliquet facilisis pellentesque. Nunc hendrerit quam at leo commodo, a suscipit tellus dapibus. Etiam at felis volutpat est mollis lacinia. Mauris placerat sem sit amet velit mollis, in porttitor ex finibus. Proin eu nibh id libero tincidunt lacinia et eget eros. Nulla laoreet ipsum quam, quis auctor velit sodales sit amet. Phasellus at felis iaculis, sodales lectus vitae, egestas mauris. Duis cursus, metus non dignissim consectetur, augue erat convallis massa, sit amet mollis lacus lorem eu purus. Praesent posuere ante quam. Curabitur ultricies magna diam, non consequat purus suscipit quis. Proin egestas nibh id massa dapibus, sed auctor velit ullamcorper. Integer id dolor nunc."
+    }
+}

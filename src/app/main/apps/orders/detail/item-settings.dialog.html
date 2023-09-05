@@ -1,0 +1,42 @@
+<md-dialog class="item-settings-dialog" aria-label="Item Dialog">
+	<div class="item-settings-dialog__wrapper">
+		<div class="item-settings-dialog__header">
+			Bundles Selected Items
+		</div>
+		<div class="item-settings-dialog__title">BUNDLE BY:</div>
+		<md-tabs class="item-settings-dialog__tabs" md-dynamic-height md-border-bottom>
+			<md-tab label="Number of Pieces per Bundle">
+				<md-content class="item-settings-dialog__tab">
+					<md-input-container class="piece-select" class="md-block">
+							<label>Pieces per Bundle</label>
+							<md-select ng-model="ctrl.selectedPieces"  placeholder="Select">
+									<md-option value="{{piece}}" ng-repeat="piece in ctrl.pieces">{{piece}}</md-option>
+							</md-select>
+					</md-input-container>
+					
+				</md-content>
+				
+			</md-tab>
+			<md-tab label="Total Number of Bundles">
+				<md-content class="item-settings-dialog__tab">
+					
+				</md-content>
+      </md-tab>
+      <md-tab label="Bundles of Equal Weight">
+				<md-content class="item-settings-dialog__tab">
+					
+				</md-content>
+			</md-tab>
+		</md-tabs>
+		<md-dialog-actions layout="row" class="item-settings-dialog__footer">
+			<span flex></span>
+			<div class="item-settings-dialog__button" ng-click="ctrl.cancel()">
+					CANCEL
+			</div>
+			<div class="item-settings-dialog__button x--active" ng-click="ctrl.save()">
+				SAVE
+			</div>
+		</md-dialog-actions>
+	</div>
+
+</md-dialog>

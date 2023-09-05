@@ -1,0 +1,52 @@
+<div id="dashboard-report" class="page-layout simple fullwidth white-bg production-summary" ngsf-fullscreen>
+  <div class="header" layout="row" layout-align="space-between start">
+    <span class="font-size-20 mt-8 text-capitalize mb-0 line-height-26">XL200</span>
+
+    <md-menu>
+      <div class="helpIconDiv" ng-click="$mdMenu.open($event)">
+        <md-icon md-font-icon="mdi-cog" class="mdi"></md-icon>
+      </div>
+      <md-menu-content width="2" class="ordersFilterDiv">
+        <div layout="row" class="addColumn" layout-align="center center">
+          Add/Remove Column
+        </div>
+        <div class="vertical-scroll">
+          <md-menu-item ng-repeat="item in $ctrl.menuColumns" class="filter-item height-26">
+            <div layout="row" class="filter-items-div">
+              <md-checkbox name="{{item.field}}" aria-label="{{item.field}}" ng-checked="item.isChecked"
+                class="filter-check" ng-click="$ctrl.onGridOptionsToggle(item)"><span translate="{{item.field}}"></span>
+              </md-checkbox>
+            </div>
+          </md-menu-item>
+        </div>
+      </md-menu-content>
+    </md-menu>
+  </div>
+
+  <div class="content md-background md-hue-1 scroll-content">
+    <div class="xl-list-container">
+      <div class="material-usage-item sub-header">
+        <div class="main-con" ng-repeat="item in $ctrl.columns">
+          {{item.field | translate}}
+        </div>
+      </div>
+      <div class="material-usage-content">
+        <div class="material-usage-item link-item" ng-repeat="machine in $ctrl.machines"
+          ui-sref="app.machines_xl200_detail({id: machine.id})">
+          <div class="main-con" ng-repeat="item in $ctrl.columns">
+            {{machine[item.field]}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- todo: I don't think the add function is working properly. 
+        For now, just do it in Classic until I can review. -->
+  <!-- <md-button class="md-fab add-button" 
+    ng-click="$ctrl.doNewMachine()" 
+    ng-show="$ctrl.userHasAdminRole"
+    style="position: fixed; right: 0; bottom: 0"
+    feature-flag="experimental">
+    +
+  </md-button> -->
+</div>

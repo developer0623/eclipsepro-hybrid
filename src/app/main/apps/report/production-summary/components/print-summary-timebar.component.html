@@ -1,0 +1,61 @@
+<div class="print-summary-timebar">
+  <div class="print-summary-timebar__machine" ng-if="!$ctrl.state">
+    <div class="machine-content" ng-if="$ctrl.machine"> {{$ctrl.machine}}</div>
+    <div class="machine-timebar" ng-if="!$ctrl.machine">TIME BAR</div>
+  </div>
+  <div class="print-summary-timebar__body">
+    <div class="timebar-header" ng-class="{'is_1117': $ctrl.state}">
+      <div class="timebar-header__item">
+        <div class="timebar-header__title">
+          <div class="timebar-header__circle column-running"></div>
+          RUNNING
+        </div>
+        <div class="timebar-header__body">{{$ctrl.data.running | summarPercent}}<span>%</span></div>
+      </div>
+      <div class="timebar-header__item">
+        <div class="timebar-header__title">
+          <div class="timebar-header__circle column-changeover"></div>
+          CHANGEOVER
+        </div>
+        <div class="timebar-header__body">{{$ctrl.data.changeover | summarPercent}}<span>%</span></div>
+      </div>
+      <div class="timebar-header__item">
+        <div class="timebar-header__title">
+          <div class="timebar-header__circle column-breakdown"></div>
+          BREAKDOWN
+        </div>
+        <div class="timebar-header__body">{{$ctrl.data.breakdown | summarPercent}}<span>%</span></div>
+      </div>
+      <div class="timebar-header__item">
+        <div class="timebar-header__title">
+          <div class="timebar-header__circle column-other"></div>
+          OTHER DOWNTIME
+        </div>
+        <div class="timebar-header__body">{{$ctrl.data.otherDowntime | summarPercent}}<span>%</span></div>
+      </div>
+      <div class="timebar-header__item">
+        <div class="timebar-header__title">
+          <div class="timebar-header__circle column-expert"></div>
+          EXEMPT
+        </div>
+        <div class="timebar-header__body">{{$ctrl.data.exempt | summarPercent}}<span>%</span></div>
+      </div>
+      <div class="timebar-header__item">
+        <div class="timebar-header__title">
+          <div class="timebar-header__circle timebar-unschedule"></div>
+          UNSCHEDULED
+        </div>
+        <div class="timebar-header__body">{{$ctrl.data.unscheduled | summarPercent}}<span>%</span></div>
+      </div>
+    </div>
+    <div class="chart-content">
+        <div class="main-area" ng-style="$ctrl.getMainArea(order)" ng-repeat="order in [0, 1, 2, 3, 4, 5]"></div>
+    </div>
+    <div class="print-summary-timebar__bottom" ng-style="$ctrl.getBottomWidth()">
+      <div class="print-summary-timebar__line"></div>
+      <div class="print-summary-timebar__date">{{$ctrl.data.durationTime | date: "HH'H' mm'M' ss'S'"}}</div>
+      <div class="print-summary-timebar__line"></div>
+    </div>
+  </div>
+  
+</div>

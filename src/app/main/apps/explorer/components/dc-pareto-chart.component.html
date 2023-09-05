@@ -1,0 +1,14 @@
+<div class="white-bg ms-card-content-wrapper dc-chart-container">
+
+    <div layout="column" layout-align="start center" class="p-16">
+        <div dc-chart="rowChart" dc-options="$ctrl.options" dc-post-setup-chart="$ctrl.postSetup">
+            <div layout="row" layout-align="start center" class="pb-16">
+                <div class="h3 line-height-24 mr-8 text-caps" translate="{{$ctrl.chartTitle | camelCase}}">
+                    {{$ctrl.chartTitle}}
+                </div>
+                <a class="reset text-upper" translate="reset">RESET</a>
+            </div>
+        </div>
+    </div>
+
+</div>

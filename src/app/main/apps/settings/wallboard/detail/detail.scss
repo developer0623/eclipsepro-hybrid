@@ -1,0 +1,24 @@
+#andon-wallboard {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    .andon-frame {
+        height: 100%;
+        font-size: 100%;
+    }
+    .andon-display {
+        @include andon-font-size(1);
+        .svg-container {
+            margin: 3vw 0;
+        }
+    }
+    .nvd3.nv-sparkline {
+        path {
+            stroke-width: .25vw;
+        }
+    }
+    .nvd3.nv-sparklineplus .nv-currentValue {
+        r: .5vw;
+        stroke-width: .15vw;
+    }
+}

@@ -1,0 +1,18 @@
+<div class="header">
+  <div layout="row" layout-align="space-between center">
+    <span class="h2 text-upper">{{ $ctrl.subject }}</span>
+    <md-button class="md-icon-button report-filter-btn" ng-click="$ctrl.onOpenFilter()" aria-label="Filter Icon">
+      <md-icon md-font-icon="icon-filter-outline" class="icon s24"></md-icon>
+      <md-tooltip>Filter these results</md-tooltip>
+    </md-button>
+
+    <div class="report-filter-container" layout="row" layout-align="space-between center"
+      ng-class="$ctrl.isOpenFilter && 'expand-container'">
+      <input focus-me="$ctrl.focusInput" class="report-search" ng-model="$ctrl.searchTxt"
+        ng-change="$ctrl.onFilter({searchTxt: $ctrl.searchTxt})" ng-model-options="{debounce: 400}" />
+      <md-button class="md-icon-button filter-close-btn" ng-click="$ctrl.onCloseFilter()" aria-label="Filter Icon">
+        <md-icon md-font-icon="icon-close" class="icon s24"></md-icon>
+      </md-button>
+    </div>
+  </div>
+</div>

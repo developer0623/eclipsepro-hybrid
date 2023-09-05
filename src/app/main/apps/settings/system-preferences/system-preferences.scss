@@ -1,0 +1,23 @@
+#settings.system-preferences {
+
+    .form-wrapper {
+      max-width: 500px;
+    }
+
+    .language-menu {
+
+        .language-button {
+            min-width: $toolbarHeight;
+            margin: 0;
+            padding: 0 16px;
+
+            .iso {
+                text-transform: uppercase;
+            }
+
+            .flag {
+                margin-right: 8px;
+            }
+        }
+    }
+}

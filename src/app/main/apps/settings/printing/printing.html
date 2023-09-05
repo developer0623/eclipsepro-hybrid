@@ -1,0 +1,755 @@
+<div id="settings" class="page-layout simple fullwidth">
+   <!-- HEADER -->
+   <div class="header">
+      <div layout="row" layout-align="space-between">
+         <span class="h2" translate="Printing">Printing</span>
+         <div class="toolbar"></div>
+      </div>
+   </div>
+   <!-- / HEADER -->
+   <!-- CONTENT -->
+   <div class="content" md-background-bg>
+      <md-tabs
+         md-dynamic-height
+         md-border-bottom
+         md-selected="$ctrl.selectedTabIndex"
+      >
+         <md-tab label="Bundle Tags" md-on-select="$ctrl.selectTab()">
+            <div class="task-content">
+               <div class="task-list active-task-list">
+                  <div layout="column">
+                     <div
+                        class="simple-table-container md-whiteframe-2dp mb-24"
+                     >
+                        <div
+                           layout="row"
+                           class="table-title black-text"
+                           layout-align="center start"
+                        >
+                           Bundle Printing Status:
+                           <i
+                              class="icon s24 icon-no"
+                              ng-if="!$ctrl.bundlePrintConfig.isConfigured"
+                           ></i>
+                           <i
+                              class="icon s24 icon-check-circle"
+                              ng-if="$ctrl.bundlePrintConfig.isConfigured"
+                           ></i>
+                        </div>
+                        <div class="ms-responsive-table-wrapper">
+                           <div class="md-whiteframe-1dp" flex="100">
+                              <div layout="column">
+                                 <div
+                                    class="printing-item-row printing-item-header"
+                                    translate="settings"
+                                 >
+                                    settings
+                                 </div>
+                                 <div class="printing-item-row">
+                                    <div class="title-col">
+                                       Enable bundle printing
+                                    </div>
+                                    <div class="main-col">
+                                       <md-checkbox
+                                          class="md-primary"
+                                          ng-model="$ctrl.bundlePrintConfig.bundleTagEnabled"
+                                          aria-label="Enable bundle tag printing"
+                                          ng-change="$ctrl.saveBundleTagEnabled()"
+                                       >
+                                       </md-checkbox>
+                                    </div>
+                                    <div class="main-col">
+                                       <div
+                                          style="color: red"
+                                          ng-repeat="msg in $ctrl.bundlePrintConfig.messages"
+                                       >
+                                          {{msg}}
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="printing-item-row">
+                                    <div class="title-col">Bundle Source</div>
+                                    <div class="main-col">
+                                       <span
+                                          class="iso"
+                                          ng-if="$ctrl.bundlePrintConfig.source !== 'None'"
+                                       >
+                                          {{$ctrl.bundlePrintConfig.source}}
+                                       </span>
+                                       <md-menu
+                                          class="language-menu"
+                                          ng-if="$ctrl.bundlePrintConfig.source === 'None'"
+                                       >
+                                          <md-button
+                                             class="language-button black-fg bundle-source-btn"
+                                             ng-click="$mdMenu.open()"
+                                             aria-label="Language"
+                                             md-menu-origin
+                                             md-menu-align-target
+                                          >
+                                             <div
+                                                layout="row"
+                                                layout-align="start center"
+                                             >
+                                                <span class="iso"
+                                                   >{{$ctrl.bundlePrintConfig.source}}
+                                                   <md-icon
+                                                      md-font-icon="icon-menu-down"
+                                                      class="icon"
+                                                   ></md-icon>
+                                                </span>
+                                             </div>
+                                          </md-button>
+
+                                          <md-menu-content
+                                             width="3"
+                                             id="language-menu-content"
+                                             class="md-background-bg"
+                                          >
+                                             <md-menu-item
+                                                ng-repeat="algorithm in $ctrl.bundleCompletionAlgorithms"
+                                             >
+                                                <md-button
+                                                   ng-click="$ctrl.setBundleCompletionAlgorithm(algorithm)"
+                                                   aria-label="{{algorithm.title}}"
+                                                   translate
+                                                   translate-attr-aria-label="{{algorithm.title}}"
+                                                >
+                                                   <span
+                                                      layout="row"
+                                                      layout-align="start center"
+                                                   >
+                                                      <span
+                                                         >{{algorithm.title}}</span
+                                                      >
+                                                   </span>
+                                                </md-button>
+                                             </md-menu-item>
+                                          </md-menu-content>
+                                       </md-menu>
+                                    </div>
+                                    <div class="main-col"></div>
+                                 </div>
+                                 <div class="printing-item-row">
+                                    <div class="title-col">Start date</div>
+                                    <div class="main-col">
+                                       {{$ctrl.bundlePrintConfig.bundleTagStartingDate
+                                       | date : "MM/dd/yyyy"}}
+                                       <md-datepicker
+                                          ng-model="$ctrl.bundlePrintConfig.bundleTagStartingDate"
+                                          ng-change="$ctrl.saveBundlePrintStartDate()"
+                                          md-hide-icons="triangle"
+                                       >
+                                       </md-datepicker>
+                                    </div>
+                                    <div class="main-col">
+                                       Bundle tags older than this date will not
+                                       be printed automatically.
+                                    </div>
+                                 </div>
+                                 <div class="printing-item-row">
+                                    <div class="title-col">Properties</div>
+                                    <div
+                                       class="main-col property-table"
+                                       ng-click="$ctrl.editProperty('bundle')"
+                                    >
+                                       <div
+                                          class="print-property-item-row property-table-header"
+                                       >
+                                          <div class="key-col">Key</div>
+                                          <div class="value-col">Value</div>
+                                       </div>
+                                       <div
+                                          class="print-property-item-row"
+                                          ng-repeat="(key, value) in $ctrl.bundlePrintConfig.bundleTagProperties"
+                                       >
+                                          <div class="key-col">{{key}}</div>
+                                          <div class="value-col">{{value}}</div>
+                                       </div>
+                                       <div
+                                          class="print-property-item-row empty-row"
+                                          ng-if="$ctrl.isObjectEmpty($ctrl.bundlePrintConfig.bundleTagProperties)"
+                                       >
+                                          none
+                                       </div>
+                                    </div>
+                                    <div class="main-col"></div>
+                                 </div>
+                                 <div class="ms-responsive-table-wrapper">
+                                    <table
+                                       class="simple hover dataTable main-table"
+                                    >
+                                       <thead>
+                                          <tr>
+                                             <th>Machine</th>
+                                             <th>Bundle Template</th>
+                                             <th>Bundle Printer</th>
+                                             <th>Bundle Copies</th>
+                                             <th class="message-col">
+                                                Messages
+                                             </th>
+                                          </tr>
+                                       </thead>
+                                       <tbody>
+                                          <tr
+                                             ng-repeat="config in $ctrl.machinePrintConfigs | orderBy:'id'"
+                                          >
+                                             <td>
+                                                {{config.machineName}}
+                                                [{{config.id}}]
+                                             </td>
+                                             <td>
+                                                <md-input-container>
+                                                   <md-select
+                                                      ng-model="config.defaultBundleTemplate"
+                                                      ng-change="$ctrl.updateMachineConfig(config);"
+                                                      aria-label="Default bundle template"
+                                                   >
+                                                      <md-option
+                                                         ng-repeat="template in $ctrl.printTemplates | filter: {type: 'Bundle'}"
+                                                         value="{{template.name}}"
+                                                         >{{template.name}}</md-option
+                                                      >
+                                                   </md-select>
+                                                </md-input-container>
+                                             </td>
+                                             <td>
+                                                <md-input-container>
+                                                   <md-select
+                                                      ng-model="config.bundlePrinterName"
+                                                      ng-change="$ctrl.updateMachineConfig(config);"
+                                                      aria-label="Bundle printer name"
+                                                   >
+                                                      <md-option
+                                                         ng-repeat="printer in $ctrl.allPrinters"
+                                                         value="{{printer.fullName}}"
+                                                      >
+                                                         {{printer.name}}</md-option
+                                                      >
+                                                   </md-select>
+                                                </md-input-container>
+                                             </td>
+                                             <td>
+                                                <md-input-container
+                                                   ><input
+                                                      ng-model="config.bundlePrintCount"
+                                                      ng-change="$ctrl.updateMachineConfig(config)"
+                                                      ng-model-options="{debounce: 750}"
+                                                      type="number"
+                                                      aria-label="Bundle print count"
+                                                /></md-input-container>
+                                             </td>
+                                             <td class="message-col">
+                                                <div
+                                                   ng-if="!config.bundlePrinterName"
+                                                >
+                                                   No Printer Defined
+                                                </div>
+                                                <div
+                                                   ng-if="!config.defaultBundleTemplate"
+                                                >
+                                                   No Template Defined
+                                                </div>
+                                                <div
+                                                   ng-if="!config.bundlePrintCount>0"
+                                                >
+                                                   Print count must be &gt; 0
+                                                </div>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </md-tab>
+         <md-tab label="Coil Tags" md-on-select="$ctrl.selectTab()">
+            <div class="task-content">
+               <div class="task-list active-task-list">
+                  <div layout="column" flex="100">
+                     <div
+                        class="simple-table-container md-whiteframe-2dp mb-24"
+                     >
+                        <div layout="row" flex="100">
+                           <div layout="column" flex="100">
+                              <div
+                                 layout="row"
+                                 class="table-title black-text"
+                                 layout-align="center start"
+                              >
+                                 Coil Printing Status:
+                                 <i
+                                    class="icon s24 icon-no"
+                                    ng-if="!$ctrl.coilPrintConfig.isConfigured"
+                                 ></i>
+                                 <i
+                                    class="icon s24 icon-check-circle"
+                                    ng-if="$ctrl.coilPrintConfig.isConfigured"
+                                 ></i>
+                              </div>
+                              <div class="ms-responsive-table-wrapper">
+                                 <div class="md-whiteframe-1dp" flex="100">
+                                    <div layout="column">
+                                       <div
+                                          class="printing-item-row printing-item-header"
+                                          translate="settings"
+                                       >
+                                          settings
+                                       </div>
+                                       <div class="printing-item-row">
+                                          <div class="title-col">
+                                             Enable coil tag printing
+                                          </div>
+                                          <div class="main-col">
+                                             <md-checkbox
+                                                class="md-primary"
+                                                ng-model="$ctrl.coilPrintConfig.coilTagEnabled"
+                                                aria-label="Enable coil tag printing"
+                                                ng-change="$ctrl.saveCoilTagEnabled()"
+                                             >
+                                             </md-checkbox>
+                                          </div>
+                                          <div class="main-col">
+                                             <div
+                                                style="color: red"
+                                                ng-repeat="msg in $ctrl.coilPrintConfig.messages"
+                                             >
+                                                {{msg}}
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="printing-item-row">
+                                          <div class="title-col">
+                                             Start date
+                                          </div>
+                                          <div class="main-col">
+                                             {{$ctrl.coilPrintConfig.coilTagStartingDate
+                                             | date : "MM/dd/yyyy"}}
+                                             <md-datepicker
+                                                ng-model="$ctrl.coilPrintConfig.coilTagStartingDate"
+                                                md-hide-icons="triangle"
+                                                ng-change="$ctrl.saveCoilPrintStartDate()"
+                                             >
+                                             </md-datepicker>
+                                          </div>
+                                          <div class="main-col">
+                                             Coil tags older than this date will
+                                             not be printed automatically.
+                                          </div>
+                                       </div>
+                                       <div class="printing-item-row">
+                                          <div class="title-col">
+                                             Properties
+                                          </div>
+                                          <div
+                                             class="main-col property-table"
+                                             ng-click="$ctrl.editProperty('coil')"
+                                          >
+                                             <div
+                                                class="print-property-item-row"
+                                             >
+                                                <div class="key-col">Key</div>
+                                                <div class="value-col">
+                                                   Value
+                                                </div>
+                                             </div>
+                                             <div
+                                                class="print-property-item-row"
+                                                ng-repeat="(key, value) in $ctrl.coilPrintConfig.coilTagProperties"
+                                             >
+                                                <div class="key-col">
+                                                   {{key}}
+                                                </div>
+                                                <div class="value-col">
+                                                   {{value}}
+                                                </div>
+                                             </div>
+                                             <div
+                                                class="print-property-item-row empty-row"
+                                                ng-if="$ctrl.isObjectEmpty($ctrl.coilPrintConfig.coilTagProperties)"
+                                             >
+                                                none
+                                             </div>
+                                          </div>
+                                          <div
+                                             class="main-col"
+                                             ng-if="!$ctrl.coilPrintConfig.coilTagProperties || Object.keys($ctrl.coilPrintConfig.coilTagProperties).length === 0"
+                                          >
+                                             {{$ctrl.coilPrintConfig.coilTagProperties}}
+                                          </div>
+                                          <div class="main-col"></div>
+                                       </div>
+                                       <div class="ms-responsive-table-wrapper">
+                                          <table
+                                             class="simple hover dataTable main-table"
+                                          >
+                                             <thead>
+                                                <tr>
+                                                   <th>Machine</th>
+                                                   <th>Coil Template</th>
+                                                   <th>Coil Printer</th>
+                                                   <th>Coil Copies</th>
+                                                   <th class="message-col">
+                                                      Messages
+                                                   </th>
+                                                </tr>
+                                             </thead>
+                                             <tbody>
+                                                <tr
+                                                   ng-repeat="config in $ctrl.machinePrintConfigs | orderBy:'id'"
+                                                >
+                                                   <td>
+                                                      {{config.machineName}}
+                                                      [{{config.id}}]
+                                                   </td>
+
+                                                   <td>
+                                                      <md-input-container>
+                                                         <md-select
+                                                            ng-model="config.coilTagTemplate"
+                                                            ng-change="$ctrl.updateMachineConfig(config);"
+                                                            aria-label="template.name"
+                                                         >
+                                                            <md-option
+                                                               ng-repeat="template in $ctrl.printTemplates | filter: {type: 'Coil'}"
+                                                               value="{{template.name}}"
+                                                               >{{template.name}}</md-option
+                                                            >
+                                                         </md-select>
+                                                      </md-input-container>
+                                                   </td>
+                                                   <td>
+                                                      <md-input-container>
+                                                         <md-select
+                                                            ng-model="config.coilTagPrinterName"
+                                                            ng-change="$ctrl.updateMachineConfig(config);"
+                                                            aria-label="Coil Tag Printer Name"
+                                                         >
+                                                            <md-option
+                                                               ng-repeat="printer in $ctrl.allPrinters"
+                                                               value="{{printer.fullName}}"
+                                                               >{{printer.name}}</md-option
+                                                            >
+                                                         </md-select>
+                                                      </md-input-container>
+                                                   </td>
+                                                   <td>
+                                                      <md-input-container
+                                                         ><input
+                                                            ng-model="config.coilTagPrintCount"
+                                                            ng-change="$ctrl.updateMachineConfig(config)"
+                                                            ng-model-options="{debounce: 750}"
+                                                            type="number"
+                                                            aria-label="Coil tag print count"
+                                                      /></md-input-container>
+                                                   </td>
+                                                   <td class="message-col">
+                                                      <div
+                                                         ng-if="!config.bundlePrinterName"
+                                                      >
+                                                         No Printer Defined
+                                                      </div>
+                                                      <div
+                                                         ng-if="!config.defaultBundleTemplate"
+                                                      >
+                                                         No Template Defined
+                                                      </div>
+                                                      <div
+                                                         ng-if="!config.bundlePrintCount>0"
+                                                      >
+                                                         Print count must be
+                                                         &gt; 0
+                                                      </div>
+                                                   </td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </md-tab>
+         <md-tab label="Templates" md-on-select="$ctrl.selectTab()">
+            <div class="task-content">
+               <div class="task-list active-task-list">
+                  <div layout="column">
+                     <div
+                        class="simple-table-container md-whiteframe-2dp mb-24"
+                     >
+                        <div
+                           layout="row"
+                           class="table-title black-text"
+                           layout-align="center start"
+                        >
+                           Print Templates
+                           <label
+                              for="template-upload"
+                              class="custom-template-upload"
+                           >
+                              <i class="icon-plus"></i>
+                           </label>
+                           <input
+                              custom-file
+                              id="template-upload"
+                              type="file"
+                              ng-model="$ctrl.files"
+                              ng-change="$ctrl.onTemplateUpload('template-upload')"
+                           />
+                        </div>
+                        <div class="ms-responsive-table-wrapper">
+                           <table class="simple hover dataTable">
+                              <thead>
+                                 <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Size</th>
+                                    <th>Download</th>
+                                    <th>Preview</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <tr
+                                    ng-repeat="template in $ctrl.printTemplates"
+                                 >
+                                    <td>{{template.name}}</td>
+                                    <td>{{template.type}}</td>
+                                    <td>
+                                       {{template.pageHeightIn}}h x
+                                       {{template.pageWidthIn}}w
+                                    </td>
+                                    <td>
+                                       <md-button
+                                          class="md-icon-button download-btn"
+                                          href="/_api/printing/printTemplates/{{template.name}}/download"
+                                          target="_blank"
+                                       >
+                                          <md-icon
+                                             md-font-icon="icon-download"
+                                             class="icon"
+                                          ></md-icon>
+                                       </md-button>
+                                       <md-button
+                                          class="md-icon-button download-btn"
+                                          ui-sref="app.printing-preview({template: template.name})"
+                                       >
+                                          <md-icon
+                                             md-font-icon="icon-eye"
+                                             class="icon"
+                                          ></md-icon>
+                                       </md-button>
+                                    </td>
+                                    <td>
+                                       <img
+                                          class="template-preview"
+                                          ng-src="{{template.previewUrl}}"
+                                       />
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </md-tab>
+         <md-tab label="Printers" md-on-select="$ctrl.selectTab()">
+            <div class="task-content">
+               <div class="task-list active-task-list">
+                  <div layout="column">
+                     <div
+                        class="simple-table-container md-whiteframe-2dp mb-24"
+                     >
+                        <div
+                           layout="row"
+                           class="table-title black-text"
+                           layout-align="center start"
+                        >
+                           Installed Printers
+                        </div>
+                        <div class="ms-responsive-table-wrapper">
+                           <table class="simple hover dataTable">
+                              <thead>
+                                 <tr>
+                                    <th>Name</th>
+                                    <th>Full Name</th>
+                                    <th>Status</th>
+                                    <th>Job Count</th>
+                                    <th>Server</th>
+                                    <th>Port</th>
+                                    <th>Driver</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <tr
+                                    ng-repeat="printer in $ctrl.installedPrinters.printers"
+                                 >
+                                    <td>{{printer.name}}</td>
+                                    <td>{{printer.fullName}}</td>
+                                    <td>{{printer.queueStatus}}</td>
+                                    <td>{{printer.numberOfJobs}}</td>
+                                    <td>{{printer.hostingPrintServer}}</td>
+                                    <td>{{printer.queuePortName}}</td>
+                                    <td>{{printer.queueDriverName}}</td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- <div layout="column">
+              <div class="simple-table-container md-whiteframe-2dp mb-24">
+                <div layout="row" class="table-title black-text" layout-align="center start">
+                  Print Events
+                </div>
+                <div class="ms-responsive-table-wrapper">
+                  <table class="simple hover dataTable">
+                    <thead>
+                      <tr>
+                        <th>Channel</th>
+                        <th>Item</th>
+                        <th>Complete</th>
+                        <th>Stage</th>
+                        <th>Received</th>
+                        <th>Messages</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="exportEvent in $ctrl.coilValidationEvents | orderBy:'-receivedTime'">
+                        <td>{{exportEvent.channel}}</td>
+                        <td>{{exportEvent.itemId}}</td>
+                        <td>{{exportEvent.complete}}</td>
+                        <td>{{exportEvent.stage}}</td>
+                        <td>{{exportEvent.receivedTime | date : 'short'}}</td>
+                        <td>
+                          <div ng-repeat="l in exportEvent.activityLog track by $index">
+                            <div>{{l}}</div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>-->
+               </div>
+            </div>
+         </md-tab>
+         <md-tab
+            label="Recently Produced Bundles"
+            md-on-select="$ctrl.selectTab()"
+         >
+            <div class="task-content">
+               <div class="task-list active-task-list">
+                  <div layout="column">
+                     <div
+                        class="simple-table-container md-whiteframe-2dp mb-24"
+                     >
+                        <div
+                           layout="row"
+                           class="table-title black-text"
+                           layout-align="center start"
+                        >
+                           Recently Produced Bundles
+                        </div>
+                        <div class="ms-responsive-table-wrapper">
+                           <table
+                              id="job-imports"
+                              class="simple hover dataTable"
+                           >
+                              <thead>
+                                 <tr>
+                                    <th>Id</th>
+                                    <th>Order</th>
+                                    <th>Material</th>
+                                    <th>Tooling</th>
+                                    <th>Bundle</th>
+                                    <th>Total ft</th>
+                                    <th>Total Qty</th>
+                                    <th>Scrap Ft</th>
+                                    <th>Longest ft</th>
+                                    <th>Machine</th>
+                                    <th>Completed</th>
+                                    <th>Printed?</th>
+                                    <th></th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <tr
+                                    ng-repeat="bundle in $ctrl.recentBundles track by $index"
+                                    ng-if="!bundle.hide || $ctrl.showHidden"
+                                 >
+                                    <td>{{bundle.bundleCode}}</td>
+                                    <td>
+                                       <a
+                                          ui-sref="app.orders.detail({id: {{bundle.ordId}}})"
+                                          >{{bundle.orderCode}}</a
+                                       >
+                                    </td>
+                                    <td>{{bundle.materialCode}}</td>
+                                    <td>{{bundle.toolingCode}}</td>
+                                    <td>{{bundle.bundleNumber}}</td>
+                                    <td>
+                                       {{bundle.producedLengthIn/12 | number:3}}
+                                    </td>
+                                    <td>{{bundle.totalQty}}</td>
+                                    <td>{{bundle.scrapIn/12 | number:3}}</td>
+                                    <td>
+                                       {{bundle.longestLengthIn/12 | number:3}}
+                                    </td>
+                                    <td>{{bundle.finalMachineNumber}}</td>
+                                    <td ng-if="bundle.complete">
+                                       {{bundle.endTime | amsDateTime}}
+                                    </td>
+                                    <td ng-if="!bundle.complete">
+                                       not complete
+                                    </td>
+                                    <td>
+                                       {{bundle.isTagPrinted ? 'Yes' : 'No'}}
+                                    </td>
+                                    <td>
+                                       <a
+                                          href="/_api/bundle/{{bundle.bundleCode}}/tag"
+                                          class="icon"
+                                          target="_blank"
+                                       >
+                                          <md-icon md-font-icon="icon-file-pdf">
+                                             <md-tooltip md-direction="top"
+                                                >View the bundle tag</md-tooltip
+                                             >
+                                          </md-icon>
+                                       </a>
+                                       <md-button
+                                          ng-click="$ctrl.printBundle(bundle.bundleCode)"
+                                       >
+                                          <md-icon md-font-icon="icon-printer">
+                                             <md-tooltip md-direction="top"
+                                                >Print the bundle
+                                                tag</md-tooltip
+                                             >
+                                          </md-icon>
+                                       </md-button>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </md-tab>
+      </md-tabs>
+   </div>
+</div>

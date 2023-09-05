@@ -1,0 +1,42 @@
+<div id="dashboard-report" class="page-layout simple fullwidth white-bg production-summary" ngsf-fullscreen>
+  <div class="header" layout="row" layout-align="space-between start">
+    <span class="font-size-20 mt-8 text-capitalize mb-0 line-height-26">Punch Patterns</span>
+    <div class="filters-div tooling-filter-container">
+      <md-icon md-font-icon="icon-filter-outline size-20">
+      </md-icon>
+      <input class="report-search" ng-model="$ctrl.searchTxt" ng-change="$ctrl.onFilter($ctrl.searchTxt)"
+        ng-model-options="{debounce: 400}" />
+    </div>
+  </div>
+
+  <div class="content md-background md-hue-1 scroll-content">
+    <div class="xl-list-container">
+      <div class="material-usage-item sub-header">
+        <div class="main-con" ng-repeat="item in $ctrl.columns" ng-click="$ctrl.onChangeOrder(item.orderField)">
+          {{item.displayName | translate}}
+          <md-icon md-font-icon="icon-arrow-down size-20"
+            ng-if="$ctrl.selectedOrderItem === item.orderField && $ctrl.selectedOrderDirection === ''">
+          </md-icon>
+          <md-icon md-font-icon="icon-arrow-up size-20"
+            ng-if="$ctrl.selectedOrderItem === item.orderField && $ctrl.selectedOrderDirection === '-'">
+          </md-icon>
+        </div>
+      </div>
+      <div class="material-usage-content">
+        <div class="material-usage-item link-item"
+          ng-repeat="pattern in $ctrl.filterdPatterns | orderBy: $ctrl.selectedOrder"
+          ui-sref="app.punch-patterns_list.detail({id: pattern.id})">
+          <div class="main-con" ng-repeat="item in $ctrl.columns">
+            <link-helper ng-if="item.field === 'patternName'" document-id="'PunchPattern/' + pattern.id" label="pattern.patternName" hide-type="true"></link-helper>
+            <!-- <span ng-if="item.field">{{pattern[item.field]}}</span> -->
+            <span ng-if="item.field !== 'patternName' && !item.type">{{pattern[item.field]}}</span>
+            <span ng-if="item.type==='Date'">{{pattern[item.field] | amsDate}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <md-button class="md-fab add-button" ng-click="$ctrl.addPattern()" ng-if="$ctrl.userHasEditorRole" style="position: fixed; right: 0; bottom: 0">+
+    </md-button>
+  </div>
+
+</div>

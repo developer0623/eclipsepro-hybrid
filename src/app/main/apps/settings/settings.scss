@@ -1,0 +1,45 @@
+@import './agent/agent-settings.scss';
+@import './bundling//bundling.scss';
+@import './downtime-settings//downtime-settings.scss';
+@import './experiments/experiments.scss';
+@import './integration/integration.scss';
+@import './metric-config/metric-config.scss';
+@import './performance-standards/performance-standards.scss';
+@import './printing/printing.scss';
+@import './status/status.scss';
+@import './system-preferences/system-preferences.scss';
+@import './users/users.scss';
+@import './wallboard/wallboard.scss';
+
+#settings {
+    transform: translate3d(0, 0, 0);
+
+    .header {
+        height: 76px;
+        min-height: 76px;
+        max-height: 76px;
+        padding-bottom: 0;
+        .h2{
+            margin: 0;
+            line-height: 1.4;
+        }
+        @media only screen and (max-width: 600px) {
+          background: #f5f5f5 !important;
+          height: 50px !important;
+          min-height: 50px !important;
+          padding: 24px;
+          padding-bottom: 0 !important;
+          transition: all ease 400ms;
+        }
+    }
+
+    .setting-update-btn {
+        color: rgb(33,33,33);
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.4);
+
+        &:hover {
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.6);
+        }
+    }
+
+}

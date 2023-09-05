@@ -1,0 +1,16 @@
+<div class="date-column-content-usage">
+  <md-icon class="icon-chevron-left" md-font-icon class="icon" ng-click="$ctrl.onChangeDate(-1)" aria-label="Next date">
+  </md-icon>
+  <p ng-bind-html="$ctrl.startDate | maDate: $ctrl.duration"></p>
+  <md-datepicker ng-change="$ctrl.onChangeStartDate()" md-date-filter="$ctrl.onlyAllowDate" ng-model="$ctrl.startDate"
+    md-hide-icons="triangle" md-mode="{{ $ctrl.duration }}" md-max-date="$ctrl.startMaxDate">
+  </md-datepicker>
+  <div>-</div>
+  <p ng-bind-html="$ctrl.endDate | maDate: $ctrl.duration"></p>
+  <md-datepicker ng-change="$ctrl.onChangeEndDate()" md-date-filter="$ctrl.onlyAllowEndDate" ng-model="$ctrl.endDate"
+    md-hide-icons="triangle" md-mode="{{ $ctrl.duration }}" md-max-date="$ctrl.endMaxDate">
+  </md-datepicker>
+  <md-icon class="icon-chevron-right" md-font-icon class="icon" ng-click="$ctrl.onChangeDate(1)"
+    aria-label="Previous date">
+  </md-icon>
+</div>

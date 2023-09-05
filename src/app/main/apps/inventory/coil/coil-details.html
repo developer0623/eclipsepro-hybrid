@@ -1,0 +1,197 @@
+<div id="inventory" class="page-layout simple fullwidth white-bg" layout="column">
+    <!-- CONTENT CARD -->
+    <div class="content white-bg" layout="column" flex>
+        <div class="toolbar white-bg p-0" layout="row" layout-align="space-between start">
+            <div layout="column">
+                <span class="font-size-20 mt-8 text-capitalize mb-0 line-height-26"><span
+                        translate="coilId">Coil</span>: {{$ctrl.coil.coilId}}</span>
+                <span class="font-size-16 mb-8 secondary-text">{{$ctrl.coil.description}}</span>
+                <span class="font-size-16 secondary-text"><a class="td-link ml-5"
+                        ui-sref="app.inventory.coil-types.coil-type({id: $ctrl.coil.materialCode})">{{$ctrl.coil.materialCode}}</a></span>
+            </div>
+
+            <div layout="row" layout-align="end">
+                <table class="font-size-14">
+                    <tbody>
+                        <tr>
+                            <th class="text-right pr-8">
+                                <span translate="starting">Starting</span>:
+                            </th>
+                            <td class="text-right pl-8 secondary-text">
+                                {{$ctrl.coil.lengthStartFt | unitsFormat :"ft":0 }}
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th class="text-right pr-8">
+                                <span translate="used">Used</span>:
+                            </th>
+                            <td class="text-right pl-8 secondary-text">
+                                {{$ctrl.coil.lengthUsedFt | unitsFormat :"ft":0 }}
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th class="text-right pr-8">
+                                <span translate="scrap">Scrap</span>:
+                            </th>
+                            <td class="text-right pl-8 secondary-text">
+                                {{$ctrl.coil.lengthNonExemptScrapFt +
+                                $ctrl.coil.lengthExemptScrapFt | unitsFormat :"ft":0 }}
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th class="text-right pr-8">
+                                <span translate="adjustments">Adjustments</span>:
+                            </th>
+                            <td class="text-right pl-8 secondary-text">
+                                {{$ctrl.coil.lengthOtherAdjustmentsFt | unitsFormat :"ft":0 }}
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th class="text-right pr-8">
+                                <span translate="remaining">Remaining</span>:
+                            </th>
+                            <td class="text-right pl-8 secondary-text">
+                                {{$ctrl.coil.lengthRemainingFt | unitsFormat :"ft":0 }}
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content fullpage-datatable" layout="column" flex>
+            <!-- Details accordion -->
+            <accordion class="h-145" is-open="true">
+                <accordion-toggle label="Details"></accordion-toggle>
+
+                <accordion-content>
+                    <div class="p-24" layout="row" layout-wrap layout-align="space-between start" flex="100">
+                        <div class="pr-24" flex>
+                            <table class="font-size-14">
+                                <tbody>
+                                    <tr>
+                                        <th class="text-right pr-8">Status:</th>
+                                        <td class="secondary-text">
+                                            <span ng-if="$ctrl.coil.isActive" translate="active">Active</span>
+                                            <span ng-if="!$ctrl.coil.isActive" translate="inactive">Inactive</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right pr-8">
+                                            <span translate="completed">Completed</span>:
+                                        </th>
+                                        <td class="secondary-text">
+                                            {{$ctrl.coil.completed || "NA"}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pr-24" flex>
+                            <table class="font-size-14">
+                                <tbody>
+                                    <tr>
+                                        <th class="text-right pr-8">
+                                            <span translate="vendor">Vendor</span>:
+                                        </th>
+                                        <td class="secondary-text">
+                                            {{$ctrl.coil.vendorName|| "NA"}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right pr-8">
+                                            <span translate="heatNumber">Heat ID</span>:
+                                        </th>
+                                        <td class="secondary-text">
+                                            {{$ctrl.coil.heatNumber || "NA"}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pr-24" flex>
+                            <table class="font-size-14">
+                                <tbody>
+                                    <tr>
+                                        <th class="text-right pr-8">
+                                            <span translate="dateIn">Date In</span>:
+                                        </th>
+                                        <td class="text-right secondary-text">
+                                            {{$ctrl.coil.dateIn | amsDate}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right pr-8">
+                                            <span translate="dateOut">Date Out</span>:
+                                        </th>
+                                        <td class="text-right secondary-text">
+                                            {{$ctrl.coil.dateOut | amsDate}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pr-24" flex>
+                            <table class="font-size-14">
+                                <tbody>
+                                    <tr>
+                                        <th class="text-right pr-8">
+                                            <span translate="starting">Starting Wt</span>:
+                                        </th>
+                                        <td class="text-right secondary-text">
+                                            {{$ctrl.coil.weightStartLbs | unitsFormat :"lbs":1}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right pr-8">
+                                            <span translate="scrap">Scrap</span> :
+                                        </th>
+                                        <td class="text-right pl-8 secondary-text">
+                                            {{($ctrl.coil.lengthExemptScrapFt +
+                                            $ctrl.coil.lengthNonExemptScrapFt) | unitsFormat :"ft":1
+                                            || "NA"}}
+                                        </td>
+                                        <td class="text-right secondary-text">
+                                            ({{($ctrl.coil.lengthExemptScrapFt +
+                                            $ctrl.coil.lengthNonExemptScrapFt) /
+                                            $ctrl.coil.lengthStartFt | unitsFormat :"%":1}})
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <md-button class="md-raised grey-700-bg white-fg" ng-click="$ctrl.onPrintClick($event)">
+                            Print tag
+                        </md-button>
+                    </div>
+                </accordion-content>
+            </accordion>
+            <!-- / Details accordion -->
+
+            <!-- Consumption accordion -->
+            <accordion is-open="false">
+                <accordion-toggle class="no-shadow" label="Consumption Summary">
+                </accordion-toggle>
+
+                <accordion-content>
+                    <consumption-summary coil="$ctrl.coilId" ></consumption-summary>
+                </accordion-content>
+            </accordion>
+            <!-- / Consumption accordion  -->
+
+            <accordion is-open="false">
+                <accordion-toggle class="no-shadow" label="PRODUCTION LOG"></accordion-toggle>
+                <accordion-content>
+                    <production-log coil="$ctrl.coilId"></production-log>
+                </accordion-content>
+            </accordion>
+        </div>
+        <!-- / CONTENT -->
+    </div>
+</div>

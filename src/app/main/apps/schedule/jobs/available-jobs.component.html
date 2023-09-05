@@ -1,0 +1,111 @@
+<div class="dropzone available-jobs scroll scrollable" cdnd-area cdnd-areatype="'ava'"
+  ng-class="{ 'can-drop': $ctrl.isDragingOnAssign }" cdnd-allowed-types="['ass', 'machine']"
+  cdnd-drop="$ctrl.onDropToAvailableJobs(event, hemi, dragSourceData)">
+  <md-virtual-repeat-container id="vertical-container" style="height: 100%; width: 100%">
+    <div md-virtual-repeat="row in $ctrl.availableJobs" class="schedule-grid-row">
+      <div ng-repeat="node in row track by $index" class="schedule-grid-cell multi-select-hover"
+        ng-style="$ctrl.onGetNodeStyle(node)" cdnd-draggable="node" drag-source-data="node.ids"
+        cdnd-dragstart="$ctrl.onDragStart(node)" cdnd-type="ava" ng-dblclick="$ctrl.onAssignAvailableJob(node)"
+        ng-class="{ 'summary-row': node.isSummaryRow }">
+        <div class="triangle-container" ng-if="node.warning">
+          <md-tooltip md-direction="bottom">{{ node.warningText }}</md-tooltip>
+          <div class="triangle" ng-class="'triangle-' + node.warningColor"></div>
+        </div>
+        <div class="multi-select" ng-if="node.rowspan > 1">
+          <md-checkbox aria-label="Select Tool" ng-checked="node.isSelected" ng-click="$ctrl.onToggleSelection(node)">
+          </md-checkbox>
+        </div>
+
+        <div class="schedule-grid-text">
+          <span ng-if="!node.srefObj">{{
+            node.key | unitsFormat: node.units:0
+            }}</span>
+          <span ng-if="node.srefObj">
+            <!-- note: we are keeping the href here to show the browser link preview. preventDefault disables it -->
+            <job-detail-preview ord-id="node.ids[0]" ng-if="node.srefObj.sref === 'app.orders.detail'">
+              <a href="{{ node.href }}" ng-click="$event.preventDefault();$ctrl.onSrefClick(node)">
+                {{node.key}}</a>
+            </job-detail-preview>
+            <coil-type-preview material-id="node.key" ng-if="node.srefObj.sref === 'app.inventory.coil-types.coil-type'">
+              <a href="{{ node.href }}" ng-click="$event.preventDefault();$ctrl.onSrefClick(node)">
+                {{node.key}}</a>
+            </coil-type-preview>
+            <a href="{{ node.href }}" ng-click="$event.preventDefault();$ctrl.onSrefClick(node)" ng-if="node.srefObj.sref !== 'app.orders.detail' && node.srefObj.sref !== 'app.inventory.coil-types.coil-type'">
+              {{node.key | unitsFormat: node.units:0}}</a>
+          </span>
+        </div>
+        <div class="collapse-to-summary" ng-if="
+            node.rowspan > 1 ||
+            ($index === 0 && node.isSummaryRow) ||
+            ($index > 0 && !row[$index - 1].isSummaryRow && node.isSummaryRow)
+          ">
+          <md-button class="collapse-btn" aria-label="Collapse to summary"
+            ng-class="{ 'showed-btn': node.isSummaryRow }" ng-click="$ctrl.onToggleSummarized(node)">
+            <span class="summarized-jobs" ng-if="
+                ($index === 0 && node.isSummaryRow) ||
+                ($index > 0 &&
+                  !row[$index - 1].isSummaryRow &&
+                  node.isSummaryRow)
+              ">
+              {{ node.ids.length }} jobs
+            </span>
+            <md-icon md-menu-origin md-font-icon="icon-chevron-down" ng-if="!node.isSummaryRow"></md-icon>
+            <md-icon md-menu-origin md-font-icon="icon-chevron-right" ng-if="node.isSummaryRow"></md-icon>
+          </md-button>
+        </div>
+        <!-- Last cell gets in the context menu and hold icon. -->
+        <!-- Note the extra `style="pointer-events: auto"`: This is a workaround for a bug that the MD team didn't want to fix 
+           https://github.com/angular/material/issues/6662#issuecomment-211828908 -->
+        <div class="multi-select" ng-if="$last">
+          <md-checkbox aria-label="Select Tool" ng-checked="node.isSelected" ng-click="$ctrl.onToggleSelection(node)">
+          </md-checkbox>
+        </div>
+        <div ng-if="$last" style="position: absolute; right: 0px; display: flex">
+          <!-- todo: move these styles to scss file -->
+          <md-icon md-font-icon="icon-pause-circle" ng-if="node.hold" class="hold-icon"
+            ng-class="{ 'r-14': node.patternNotDefined }">
+            <md-tooltip>On hold</md-tooltip>
+          </md-icon>
+          <div ng-if="node.patternNotDefined" class="warning-icon-container">
+            <md-icon md-font-icon="icon-exclamation" class="warn"> </md-icon>
+            <md-tooltip>Punch pattern not defined</md-tooltip>
+          </div>
+          <md-menu>
+            <md-button class="md-icon-button" ng-click="$mdMenu.open($event)"
+              style="pointer-events: auto; margin: 0; padding: 0; width: 30px">
+              <md-icon md-menu-origin md-font-icon="icon-dots-vertical"></md-icon>
+            </md-button>
+            <md-menu-content>
+              <md-menu-item>
+                <md-button ng-click="$ctrl.onToggleHold(node)" style="pointer-events: auto">
+                  <md-tooltip md-direction="left">Hold prevents a job from going to the machine.</md-tooltip>
+                  <md-icon md-font-icon="icon-pause-circle{{
+                      node.hold ? '-outline' : ''
+                    }}"></md-icon>
+                  {{ node.hold ? 'Remove hold' : 'Hold' }}
+                </md-button>
+              </md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item>
+                <md-button ng-click="$ctrl.onAssignAvailableJob(node)" style="pointer-events: auto">
+                  <md-tooltip md-direction="left">Add to the end of the schedule</md-tooltip>
+                  <md-icon md-font-icon="icon-calendar-plus"></md-icon>
+                  Schedule
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="$ctrl.onSendAvailableJob(node)" style="pointer-events: auto">
+                  <md-tooltip md-direction="left">Immediately send this job to the machine. It will be
+                    scheduled at the end of any jobs already at the
+                    machine</md-tooltip>
+                  <md-icon md-font-icon="icon-transfer"></md-icon>
+                  Send to machine
+                </md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+        </div>
+      </div>
+    </div>
+  </md-virtual-repeat-container>
+</div>

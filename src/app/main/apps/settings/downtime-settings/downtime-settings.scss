@@ -1,0 +1,62 @@
+.downtime-settings-dialog {
+    width: 700px;
+    min-height: 500px;
+    text-align: center;
+    font-size: 14px;
+    .md-dialog-content {
+      padding-top: 5px;
+    }
+  
+    md-toolbar {
+      background-color: rgba(236, 177, 0, 0.9) !important;
+    }
+}
+
+.downtime-settings-container {
+    .downtime-dialog-content {
+        padding: 16px ;
+    }
+    .main-container {
+        border: 1px solid #d4d4d4;
+    }
+    .main-item {
+        display: flex;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid #d4d4d4;
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+    .main-header {
+        font-weight: 700;
+        height: 45px;
+        .main-col {
+            padding-right: 27px !important;
+        }
+    }
+    .main-col {
+        width: 30%;
+        text-align: right;
+        padding: 0 20px 0 5px;
+    }
+    .code-col {
+        width: 20%;
+        text-align: right;
+        padding: 0 20px 0 5px;
+
+    }
+    .des-col {
+        flex: 1;
+        text-align: right;
+        padding: 0 20px 0 5px;
+    }
+    .black-fg {
+        font-weight: 400 !important;
+        margin: 0;
+        padding: 0;
+    }
+}
+  

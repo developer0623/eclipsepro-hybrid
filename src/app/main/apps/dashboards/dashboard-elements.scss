@@ -1,0 +1,471 @@
+$running: #4caf50;
+$exempt: #ffb03b;
+$changeover: #2196f3;
+$downtime: #f44336;
+$halted: #f44336;
+$breakdown: #9c27b0;
+$offline: #cdcdcd;
+
+$metricPrimary: #cbcbcb;
+$metricGood: material-color('green', '600');
+$metricOk: material-color('amber', '600');
+$metricBad: material-color('red', '600');
+
+.running {
+  fill: $running;
+  background-color: $running  !important;
+
+  &.icon {
+    background-color: transparent !important;
+    color: $running  !important;
+  }
+}
+
+.exempt {
+  fill: $exempt;
+  background-color: $exempt  !important;
+
+  &.icon {
+    background-color: transparent !important;
+    color: $exempt  !important;
+  }
+}
+
+.changeover {
+  fill: $changeover;
+  background-color: $changeover  !important;
+
+  &.icon {
+    background-color: transparent !important;
+    color: $changeover  !important;
+  }
+}
+
+.downtime {
+  fill: $downtime;
+  background-color: $downtime  !important;
+
+  &.icon {
+    background-color: transparent !important;
+    color: $downtime  !important;
+  }
+}
+
+.halted {
+  fill: $halted;
+  background-color: $halted  !important;
+
+  &.icon {
+    background-color: transparent !important;
+    color: $halted  !important;
+  }
+}
+
+.breakdown {
+  fill: $breakdown;
+  background-color: $breakdown  !important;
+
+  &.icon {
+    background-color: transparent !important;
+    color: $breakdown  !important;
+  }
+}
+
+.offline {
+  fill: $offline;
+  background-color: $offline  !important;
+
+  &.icon {
+    background-color: transparent !important;
+    color: $offline  !important;
+  }
+}
+
+.snapshot-bar {
+  position: relative;
+  border-radius: 2px;
+
+  >div {
+    padding: 0 16px 0 0;
+    position: relative;
+
+    &:first-child {
+      border-radius: 2px 0 0 2px;
+    }
+
+    &:last-child {
+      border-radius: 0 2px 2px 0;
+    }
+
+    &:not(:last-child) {
+      margin-right: 3px
+    }
+  }
+}
+
+.snapshot-label {
+  color: rgba(255, 255, 255, .87);
+  display: block;
+}
+
+.machine-panel-large {
+  .snapshot-bar {
+    height: 32px;
+
+    >div {
+      height: 32px;
+
+      .snapshot-label {
+        line-height: 32px;
+      }
+    }
+
+    @media only screen and (min-width: $layout-breakpoint-lg) {
+      height: 36px;
+
+      >div {
+        height: 36px;
+
+        .snapshot-label {
+          line-height: 36px;
+        }
+      }
+    }
+
+    @media only screen and (max-width: $layout-breakpoint-xs) {
+      height: 24px;
+
+      >div {
+        height: 24px;
+        padding: 0;
+
+        .snapshot-label {
+          line-height: 24px;
+        }
+      }
+    }
+  }
+}
+
+.machine-panel-mini {
+  .snapshot-bar {
+    height: 12px;
+
+    >div {
+      height: 12px;
+      border-left: none;
+    }
+  }
+
+  .snapshot-label {
+    display: none;
+  }
+}
+
+.table-pareto td {
+  overflow: hidden;
+  font-size: 13px;
+  text-transform: capitalize;
+  height: 32px;
+  padding: 2px 0;
+
+  @media only screen and (min-width: $layout-breakpoint-lg) {
+    font-size: 14px;
+  }
+
+  &:first-child {
+    width: 85%;
+    padding-right: 8px;
+  }
+}
+
+.pareto-rect {
+  padding-left: 8px;
+  height: 26px;
+  line-height: 26px;
+  position: relative;
+  background-color: #CCC;
+  overflow: visible;
+
+  @media only screen and (min-width: $layout-breakpoint-lg) {
+    height: 24px;
+  }
+}
+
+.pareto-value {
+  text-transform: lowercase !important;
+  max-width: 65px;
+  min-width: 65px;
+  width: 65px;
+  font-size: 12px !important;
+  text-align: right;
+  color: rgba(0, 0, 0, .87);
+
+  @media only screen and (min-width: $layout-breakpoint-lg) {
+    font-size: 13px !important;
+  }
+}
+
+.pareto-name {
+  font-size: 13px;
+  color: rgba(0, 0, 0, .54);
+
+  @media only screen and (min-width: $layout-breakpoint-lg) {
+    font-size: 14px;
+  }
+}
+
+// gradient shift for pareto bg color
+@for $i from 1 through 6 {
+  .pareto tr:nth-child(#{$i}) .pareto-rect {
+    $alphaT: (1-($i*.12));
+    background-color: rgba(170, 170, 170, $alphaT);
+  }
+}
+
+nvd3 svg {
+  overflow: visible;
+}
+
+.nvd3.nv-sparkline path {
+  stroke-width: 2px;
+  stroke: $metricPrimary  !important;
+}
+
+.nvd3.nv-sparklineplus {
+  .nv-currentValue {
+    r: 2.5px;
+  }
+
+  r: 4 !important;
+
+  .nv-minValue,
+  .nv-maxValue {
+    display: none;
+  }
+}
+
+.metric-good {
+
+  .nv-currentValue,
+  .nvd3.nv-bullet .nv-measure {
+    stroke: $metricGood  !important;
+    fill: $metricGood  !important;
+  }
+}
+
+.metric-ok {
+
+  .nv-currentValue,
+  .nvd3.nv-bullet .nv-measure {
+    stroke: $metricOk  !important;
+    fill: $metricOk  !important;
+  }
+}
+
+.metric-bad {
+
+  .nv-currentValue,
+  .nvd3.nv-bullet .nv-measure {
+    stroke: $metricBad  !important;
+    fill: $metricBad  !important;
+  }
+}
+
+.nvd3.nv-bullet .nv-range {
+  fill-opacity: 1;
+
+  &:hover {
+    fill-opacity: .7;
+  }
+
+  &.nv-rangeMin {
+    fill: #989898;
+
+    .lower-better & {
+      fill: #d1d1d1;
+    }
+  }
+
+  &.nv-rangeAvg {
+    fill: #b2b2b2;
+  }
+
+  &.nv-rangeMax {
+    fill: #d1d1d1;
+
+    .lower-better & {
+      fill: #989898;
+
+      &:hover {
+        fill-opacity: .9;
+      }
+    }
+  }
+}
+
+.nv-bulletChart.nvd3 text {
+  font: normal 10px Arial;
+  fill: rgba(0, 0, 0, .54);
+
+  @media only screen and (max-width: $layout-breakpoint-xs) {
+    display: none;
+  }
+}
+
+.nvtooltip {
+  font-family: $font-family  !important;
+  font-size: 16x;
+
+  table {
+    background: rgba(0, 0, 0, 0.54);
+    border-radius: 4px;
+    padding: 14px;
+
+    td {
+      font-weight: 500 !important;
+      padding: 2px;
+
+      &.legend-color-guide {
+        display: none;
+      }
+
+      &.value {
+        padding-left: 0;
+        text-align: left;
+        font-weight: normal;
+
+        &:after {
+          content: " %";
+        }
+      }
+    }
+  }
+}
+
+.responsive-svg-container {
+  position: relative;
+  height: 0;
+  padding-bottom: 3.8%;
+  width: 100%;
+
+  svg {
+    position: absolute;
+    left: 0;
+    width: 100%;
+  }
+}
+
+.sparkline-container {
+  position: relative;
+  bottom: 16px;
+}
+
+.bullet-container {
+  position: relative;
+}
+
+.chart-tooltip {
+  background: cornflowerblue;
+}
+
+.bullet-chart-preview {
+  rect {
+    &.border {
+      fill: none;
+      stroke: none;
+    }
+
+    &.bad {
+      fill: #989898;
+    }
+
+    &.ok {
+      fill: #b2b2b2;
+    }
+
+    &.good {
+      fill: #d1d1d1;
+    }
+
+    &.target {
+      fill: darken($metricPrimary, 80%);
+    }
+
+    &.current {
+      fill: #43A047 !important;
+      stroke: none;
+      fill-opacity: .8;
+    }
+  }
+
+  .target {
+    stroke: #000;
+    fill: #fff;
+    stroke-width: 1.5px;
+  }
+}
+
+.machine-status-tag {
+
+  .mdi-play {
+    color: $running  !important;
+  }
+
+  .mdi-stop {
+    color: $halted  !important;
+  }
+
+  .icon-close-circle-outline {
+    margin-left: 3px;
+  }
+
+  i {
+    machine-panel-mini & {
+      font-size: 20px;
+      width: 16px;
+      height: 22px;
+    }
+  }
+
+  .tag-label {
+    color: rgba(0, 0, 0, .54);
+    font-weight: 500;
+    -webkit-font-smoothing: subpixel-antialiased;
+    font-smoothing: subpixel-antialiased;
+
+    machine-panel-large & {
+      font-size: 13px;
+      height: 16px;
+
+      @media only screen and (max-width: $layout-breakpoint-xs) {
+        font-size: 12px;
+        height: 15px;
+      }
+    }
+
+    machine-panel-mini & {
+      font-size: 12px;
+      height: 15px;
+    }
+  }
+}
+
+//todo: learn css
+.lockout {
+  font-size: 18px;
+
+  .unlocked {
+    font-size: 18px;
+    color: #f44336;
+  }
+
+  .unknown {
+    font-size: 18px;
+    color: #d1d1d1;
+  }
+}
+
+.network-offline {
+  font-size: 18px !important;
+}

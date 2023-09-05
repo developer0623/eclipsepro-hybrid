@@ -1,0 +1,45 @@
+[
+    
+    {
+        "title": "Date",
+        "data": "productionDate"
+    },
+    {
+        "title": "Order Number",
+        "data": "orderCode"
+    },
+    {
+        "title": "Tooling",
+        "data": "toolingCode"
+    },
+    {
+        "title": "Good",
+        "data": "goodFeet",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Scrap",
+        "data": "scrapFeet",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Scrap %",
+        "data": "scrapPct",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Run Time",
+        "data": "runMinutes",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Down Time",
+        "data": "nonExemptMinutes",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Piece Qty",
+        "data": "goodPieceCount",
+        "class": "column-numeric"
+    }
+]

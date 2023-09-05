@@ -1,0 +1,27 @@
+<div class="ms-widget">
+  <div class="ms-widget-front white-bg" md-ink-ripple ng-style="$ctrl.renderUnlicensed && {'filter': 'grayscale(100%)'}">
+    <md-tooltip ng-if="$ctrl.renderUnlicensed" md-direction="center">This machine is not licensed</md-tooltip>
+    <div class="p-16 h-55" layout="row" layout-align="space-between center">
+        <div class="h4 text-truncate">
+          {{$ctrl.machine.machine.description}}
+          <md-tooltip>{{$ctrl.machine.machine.description}}</md-tooltip>
+        </div>
+        <hole-count-mode-icon ng-if="$ctrl.machine.isHoleCount"></hole-count-mode-icon>
+        <lockout-indicator lockout="$ctrl.machine.state.lockout"></lockout-indicator>
+        <run-state-indicator state="$ctrl.machine.state.runState" last-run-state-change="$ctrl.machine.state.lastRunStateChange" is-offline="$ctrl.machine.state.isOffline"></run-state-indicator>
+    </div>
+    <div class="ph-16 pb-16" layout="row" flex layout-fill>
+      <snapshot-bar height="10" width="100%" running="$ctrl.machine.stats.runMinutes"
+      exempt="$ctrl.machine.stats.exemptMinutes" changeover="$ctrl.machine.stats.changeoverMinutes"
+      downtime="$ctrl.machine.stats.nonExemptMinutes" breakdown="$ctrl.machine.stats.breakdownMinutes"
+      offline="$ctrl.machine.stats.offlineMinutes">
+      </snapshot-bar>
+    </div>
+    <div class="pb-8" layout="row" layout-align="start center" layout-wrap>
+      <div ng-repeat="metric in $ctrl.machine.metricSettings.settings | filter:{ showInMini:true}" layout="column" layout-align="center center" flex="33">
+        <span class="font-size-20 font-weight-500">{{$ctrl.machine.stats[$ctrl.metricDefinitions[metric.metricId].primaryDataKey] | unitsFormat :$ctrl.metricDefinitions[metric.metricId].primaryUnits:3:true:true | obscureNumberString: $ctrl.renderUnlicensed}}<sup class="font-size-12">{{$ctrl.metricDefinitions[metric.metricId].primaryUnits | userDisplayUnits}}</sup></span><!--todo:unit display filter-->
+        <span class="h4 secondary-text" translate="{{$ctrl.metricDefinitions[metric.metricId].metricId}}">{{$ctrl.metricDefinitions[metric.metricId].metricId}}</span>
+      </div>
+    </div>
+  </div>
+</div>

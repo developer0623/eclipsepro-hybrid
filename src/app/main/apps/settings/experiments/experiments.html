@@ -1,0 +1,53 @@
+<div id="settings" class="page-layout simple fullwidth">
+  <!-- HEADER -->
+  <div class="header">
+    <div layout="row" layout-align="space-between">
+      <span class="h2">Status 🧪</span>
+      <div class="toolbar">
+        <div>Uptime: <duration-display date="$ctrl.systemInfo.serverStartTime"
+            ng-if="$ctrl.systemInfo.isSignalRConnected"></duration-display><span
+            ng-if="!$ctrl.systemInfo.isSignalRConnected">*Disconnected*</span></div>
+        <div>Last start: {{$ctrl.systemInfo.serverStartTime|amsDateTime}}</div>
+      </div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+  <!-- CONTENT -->
+  <div class="content setting-experiments" md-background-bg>
+    <div class="task-content">
+      <div class="task-list active-task-list">
+        <div layout="column">
+          <div class="simple-table-container md-whiteframe-2dp mb-24">
+            <div layout="row" class="table-title black-text" layout-align="center start">
+              Machine States
+            </div>
+            <div class="ms-responsive-table-wrapper">
+              <table class="simple hover dataTable">
+                <thead>
+                  <tr>
+                    <th>Machine</th>
+                    <th>State</th>
+                    <th>Change Date</th>
+                    <th>Order</th>
+                    <th>Length</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="mach in $ctrl.machines track by $index">
+                    <td>{{mach.machineNumber}}</td>
+                    <td>{{mach.runState}}</td>
+                    <td>
+                      <duration-display date="mach.lastRunStateChange" />
+                    </td>
+                    <td>{{mach.orderCode}}</td>
+                    <td>{{mach.currentItemLength | number:2}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

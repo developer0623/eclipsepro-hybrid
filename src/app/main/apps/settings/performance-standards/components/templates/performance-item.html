@@ -1,0 +1,8 @@
+<div class="performance-item" ng-class="{'is_focus': $ctrl.isFocus}">
+  <input type="number" ng-model = "$ctrl.item.lengthIn" ng-focus="$ctrl.focus()" ng-blur="$ctrl.blur()" ng-if="$ctrl.islength">
+  <input type="number" ng-model = "$ctrl.item.fpm" ng-focus="$ctrl.focus()" ng-blur="$ctrl.blur()">
+  <md-button aria-label="Select Category" class="md-icon-button" ng-if = "$ctrl.isFocus && $ctrl.islength" ng-click="$ctrl.onRemoveItem()">
+    <md-icon class="icon-trash icon" md-font-icon ></md-icon>
+  </md-button>
+  
+</div>

@@ -1,0 +1,53 @@
+[
+    {
+        "title": "Coil Type",
+        "data": null
+    },
+    {
+        "title": "Description",
+        "data": "description"
+    },
+    {
+        "title": "On Hand",
+        "data": "onHandFt",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Demand",
+        "data": "demandFt",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Balance",
+        "data": "balanceFt",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Gauge",
+        "data": "gauge",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Thickness",
+        "data": "thicknessIn",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Width",
+        "data": "widthIn",
+        "class": "column-numeric"
+    },
+    {
+        "title": "Color",
+        "data": "color"
+    },
+    {
+        "title": "Type",
+        "data": "type"
+    },
+    {
+        "title": "Lbs Per Ft",
+        "data": "lbsPerFt",
+        "class": "column-numeric"
+    }
+]

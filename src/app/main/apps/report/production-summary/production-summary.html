@@ -1,0 +1,244 @@
+<div id="dashboard-report" class="page-layout simple fullwidth white-bg production-summary" ngsf-fullscreen>
+  <div class="header">
+    <div layout="row" layout-align="space-between">
+      <span class="h2 text-upper">PRODUCTION SUMMARY</span>
+      <div class="toolbar">
+        <md-button ui-sref="app.dashboard-eclipsepro" class="md-icon-button sidenav-toggle" ngsf-toggle-fullscreen
+          aria-label="Toggle fullscreen" ng-click="fullscreen=!fullscreen" hide-sm>
+          <md-tooltip md-direction="bottom">
+            <span translate="toggleFullscreen">Toggle fullscreen</span>
+          </md-tooltip>
+          <md-icon ng-class="{'icon-fullscreen': !fullscreen, 'icon-fullscreen-exit': fullscreen}" md-font-icon
+            class="icon"></md-icon>
+        </md-button>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary-title-header">
+    <div class="menu-column duration">
+      <div class="menu-title">
+        DURATION:
+        <span>{{$ctrl.selectedDuration.title}}</span>
+      </div>
+
+      <md-menu md-position-mode="target-right target">
+        <md-button aria-label="Select Duration" class="md-icon-button" ng-click="$mdMenu.open($event)">
+          <md-icon md-font-icon class="icon icon-chevron-down menu-icon"></md-icon>
+        </md-button>
+        <md-menu-content width="2" class="duration-menu">
+          <md-menu-item ng-repeat="item in $ctrl.durations" class="duration-menu-item"
+            ng-class="{'selected-menu-item': item.selected}">
+            <md-button ng-click="$ctrl.onClickDurationItem($event, item)">
+              {{item.title}}
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+    </div>
+
+    <div class="menu-column shift-menu-column">
+      <div class="menu-title">
+        SHIFT:
+        <span>{{$ctrl.shiftMenuTitle}}</span>
+      </div>
+
+      <md-menu md-position-mode="target-right target">
+        <md-button aria-label="Select Shift 1" class="md-icon-button" ng-click="$mdMenu.open($event)">
+          <md-icon md-font-icon class="icon icon-chevron-down menu-icon"></md-icon>
+        </md-button>
+        <md-menu-content width="2" class="shift-menu">
+          <div layout="row" class="shift-menu-title" layout-align="left center">
+            SHIFT:
+          </div>
+          <md-menu-item ng-repeat="item in $ctrl.shiftMenu" class="shift-menu-item">
+            <div layout="row">
+              <md-checkbox name="{{item.name}}" aria-label="{{item.name}}" ng-checked="item.isChecked"
+                class="filter-check" ng-click="$ctrl.onClickShiftMenuItem(item)">{{item.name}}</md-checkbox>
+            </div>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+    </div>
+
+    <div class="date-column">
+      <div class="date-column-content">
+        <md-datepicker ng-change="$ctrl.onChangeStartDate()" md-date-filter="$ctrl.onlyAllowDate"
+          ng-model="$ctrl.startDate.date" md-is-open="$ctrl.startDate.isOpen" md-hide-icons="all"
+          class="summary-duration-date" ng-class="{'is-open': $ctrl.startDate.isOpen}" md-mode="{{$ctrl.calType}}">
+        </md-datepicker>
+        <div class="showed-calendar">
+          <md-icon class="icon-chevron-left" md-font-icon class="icon" ng-click="$ctrl.onChangeDate(-1)"></md-icon>
+          <p ng-bind-html="$ctrl.startDate.date | summaryDateFilter: $ctrl.endDate.date : $ctrl.selectedDuration.title">
+          </p>
+          <md-icon class="icon-chevron-right" md-font-icon class="icon" ng-click="$ctrl.onChangeDate(1)"></md-icon>
+        </div>
+
+        <md-icon class="icon-calendar open-icon" md-font-icon class="icon" ng-click="$ctrl.onOpenCal()"></md-icon>
+        <div class="custom-date-content" ng-if="$ctrl.customDate.isOpen">
+          <md-subheader class="header">CUSTOM DATE SELECTION</md-subheader>
+          <md-content class="content">
+            <div class="main-row" layout="row" layout-align="center center" flex>
+              <div layout="column" layout-align="center center" flex>
+                <md-input-container>
+                  <label>Beginning</label>
+                  <md-datepicker ng-model="$ctrl.customDate.startDate" name="startDate" md-hide-icons="calendar"
+                    ng-change="$ctrl.onClickStartDate()"></md-datepicker>
+                </md-input-container>
+                <md-input-container>
+                  <label>Ending</label>
+                  <md-datepicker ng-model="$ctrl.customDate.endDate" name="endDate" md-hide-icons="calendar"
+                    ng-change="$ctrl.onClickEndDate()"></md-datepicker>
+                </md-input-container>
+              </div>
+              <div class="right-column" flex>
+                <div class="custom-duration-content">
+                  <label class="custom-duration-label">For Duration:</label>
+                  <input ng-model="$ctrl.durationLength" ng-change="$ctrl.onClickCustomDuration()" />
+                  <md-select ng-model="$ctrl.customSelectedDuration" placeholder="Duration" class="md-no-underline"
+                    ng-change="$ctrl.onClickCustomDuration()">
+                    <md-option class="text-capitalize" value="{{item}}" ng-repeat="item in $ctrl.customDurations">
+                      {{item}}</md-option>
+                  </md-select>
+                </div>
+              </div>
+            </div>
+          </md-content>
+          <md-toolbar class="footer">
+            <div layout="row" layout-align="center center" flex>
+              <md-button ng-click="$ctrl.onCancelCustomDate()">CANCEL</md-button>
+              <div flex="50"></div>
+              <md-button ng-click="$ctrl.onApplyCustomDate()">APPLY</md-button>
+            </div>
+          </md-toolbar>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-column float-right">
+      <div class="menu-title">
+        MACHINES:
+        <span>{{$ctrl.selectedMachinesNum}}</span>
+      </div>
+
+      <md-menu md-position-mode="target-right target">
+        <md-button aria-label="Select Shift 1" class="md-icon-button" ng-click="$mdMenu.open($event)">
+          <md-icon md-font-icon class="icon icon-chevron-down menu-icon"></md-icon>
+        </md-button>
+        <md-menu-content width="2" class="shift-menu menu-machines">
+          <div layout="row" class="shift-menu-title">SHOW MACHINES:</div>
+          <md-menu-item class="shift-menu-item">
+            <div layout="row">
+              <md-checkbox name="All" aria-label="All" ng-checked="$ctrl.allMachineItem.isChecked"
+                md-indeterminate="$ctrl.isAllMchinesIndeterminate()" class="filter-check"
+                ng-click="$ctrl.onClickMachineMenuItem($ctrl.allMachineItem)">All</md-checkbox>
+            </div>
+          </md-menu-item>
+
+          <md-menu-item ng-repeat="item in $ctrl.machines" class="shift-menu-item">
+            <div layout="row">
+              <md-checkbox name="{{item.name}}" aria-label="{{item.name}}" ng-checked="item.isChecked"
+                class="filter-check" ng-click="$ctrl.onClickMachineMenuItem(item)">{{item.name}}</md-checkbox>
+            </div>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+    </div>
+
+    <div class="menu-column float-right">
+      <div class="menu-title">
+        MEASURE:
+        <span>{{$ctrl.selectedMeasure.title}}</span>
+      </div>
+
+      <md-menu md-position-mode="target-right target">
+        <md-button aria-label="Select Duration" class="md-icon-button" ng-click="$mdMenu.open($event)"
+          style="visibility: hidden">
+          <md-icon md-font-icon class="icon icon-chevron-down menu-icon"></md-icon>
+        </md-button>
+        <md-menu-content width="2" class="duration-menu">
+          <md-menu-item ng-repeat="item in $ctrl.measureMenu" class="duration-menu-item"
+            ng-class="{'selected-menu-item': item.selected}">
+            <md-button ng-click="$ctrl.onClickMeasureItem($event, item)">
+              {{item.title}}
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+    </div>
+
+    <div class="header-icon-column float-right">
+      <md-button aria-label="Select Shift 1" class="md-icon-button" ng-click="$ctrl.openPrintPreview($event)">
+        <md-icon md-font-icon class="icon icon-printer header-icon"></md-icon>
+      </md-button>
+    </div>
+  </div>
+  <div class="content md-background md-hue-1 scroll-content">
+    <div class="machine-summary-header">
+      <div class="mh-column column-title">MACHINE</div>
+      <div class="mh-column column-good-scrap">
+        <div header-tooltip tooltip-content="$ctrl.headers.good" dbl-click-callback="$ctrl.onSort(index)">
+          {{$ctrl.headers.good.title}}
+        </div>
+      </div>
+      <div class="mh-column column-good-scrap">
+        <div header-tooltip tooltip-content="$ctrl.headers.scrap" dbl-click-callback="$ctrl.onSort(index)">
+          {{$ctrl.headers.scrap.title}}
+        </div>
+      </div>
+      <div class="mh-column column-asy first-hide">
+        <div header-tooltip tooltip-content="$ctrl.headers.reclaimed" dbl-click-callback="$ctrl.onSort(index)">
+          {{$ctrl.headers.reclaimed.title}}
+        </div>
+      </div>
+      <div class="mh-column column-running">
+        <div header-tooltip tooltip-content="$ctrl.headers.throughput" dbl-click-callback="$ctrl.onSort(index)">
+          {{$ctrl.headers.throughput.title}}
+        </div>
+      </div>
+      <div class="mh-column column-oee-target">
+        <div header-tooltip tooltip-content="$ctrl.headers.oee" dbl-click-callback="$ctrl.onSort(index)">
+          {{$ctrl.headers.oee.title}}
+        </div>
+      </div>
+      <div class="mh-column column-oee-target">
+        <div header-tooltip tooltip-content="$ctrl.headers.target" dbl-click-callback="$ctrl.onSort(index)">
+          <div>{{$ctrl.headers.target.title}}</div>
+          <div>%</div>
+        </div>
+      </div>
+      <div class="mh-column column-asy first-hide">
+        <div header-tooltip tooltip-content="$ctrl.headers.availability" dbl-click-callback="$ctrl.onSort(index)">
+          <div>{{$ctrl.headers.availability.title}}</div>
+          <div>%</div>
+        </div>
+      </div>
+      <div class="mh-column column-asy first-hide">
+        <div header-tooltip tooltip-content="$ctrl.headers.speed" dbl-click-callback="$ctrl.onSort(index)">
+          <div>{{$ctrl.headers.speed.title}}</div>
+          <div>%</div>
+        </div>
+      </div>
+      <div class="mh-column column-asy first-hide">
+        <div header-tooltip tooltip-content="$ctrl.headers.yield" dbl-click-callback="$ctrl.onSort(index)">
+          <div>{{$ctrl.headers.yield.title}}</div>
+          <div>%</div>
+        </div>
+      </div>
+      <div class="mh-column column-time-bar second-hide">
+        <div header-tooltip tooltip-content="$ctrl.headers.timebar" is-timebar="true">
+          <div>{{$ctrl.headers.timebar.title}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="machine-summary-list" ng-repeat="item in $ctrl.summaryList">
+      <machine-summary machine="item.machineName" data="item" ng-if="item.availability"></machine-summary>
+      <div class="summary-empty-item" ng-if="!item.availability">
+        <div class="column-title ms-column">{{item.machineName}}</div>
+        <div class="summary-empty-item__content ms-column">
+          No data available
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

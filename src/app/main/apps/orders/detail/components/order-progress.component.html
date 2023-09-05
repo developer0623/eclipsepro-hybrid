@@ -1,0 +1,9 @@
+<div class="order-progress">
+  <div class="order-progress__total">
+    <div class="order-progress__percent" ng-style="$ctrl.getWidth()"></div>
+  </div>
+  <div class="order-progress__value">
+    {{$ctrl.percent | number : 0}}% <span>Complete</span>
+  </div>
+  
+</div>

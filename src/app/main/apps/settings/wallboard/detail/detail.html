@@ -1,0 +1,18 @@
+<div id="andon-wallboard">
+    <div class="andon-frame">
+        <andon-display display="wallboard" 
+            machine=vm.machineData.machines[vm.machineNumber] 
+            machine-state=vm.machineData.states[vm.machineNumber] 
+            shift-stats=vm.machineData.statistics[vm.machineNumber] 
+            stats-history=vm.machineData.statisticsHistory[vm.machineNumber]
+            schedule-summary=vm.machineData.scheduleSummaries[vm.machineNumber] 
+            metric-configuration=vm.machineData.metricSettings[vm.machineNumber] 
+            sequence="vm.sequence" 
+            curr-task="vm.readyTask"
+            current-job="vm.currentJob"
+            metric-definitions="vm.metricDefinitions" 
+            view-key="viewKey" 
+            play-key="playKey" 
+            theme="vm.sequence.theme"></andon-display>        
+    </div>
+</div>

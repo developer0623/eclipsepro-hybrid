@@ -1,0 +1,35 @@
+<md-dialog aria-label="what">
+  <form ng-cloak id="add-license-form">
+
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Add License</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-font-icon="icon-close" class="icon"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <md-input-container flex md-no-float>
+          <textarea ng-model="licenseText" placeholder="paste license here..." required>
+            </textarea>
+        </md-input-container>
+
+        <md-button class="add-bt" aria-label="Add" ng-click="add()">
+          Add
+        </md-button>
+
+        <md-list>
+          <md-list-item ng-repeat="error in licenseErrors">
+            {{error}}
+          </md-list-item>
+        </md-list>
+
+      </div>
+    </md-dialog-content>
+  </form>
+</md-dialog>

@@ -1,0 +1,592 @@
+.jobs-container .dropzone ul[dnd-list] {
+   margin: 0px;
+   padding-left: 0px;
+}
+
+.jobs-container .dropzone li {
+   display: block;
+   width: 100%;
+}
+
+.jobs-container {
+   .dropzone.assigned-jobs {
+      height: calc(100vh - 230px) !important;
+   }
+
+   .dropzone.available-jobs {
+      height: calc(100vh - 234px) !important;
+   }
+
+   .dropzone.draggingover {
+      box-shadow: 0px 0px 4px 10px black;
+   }
+
+   a {
+      color: rgba(0, 0, 0, 0.87) !important;
+   }
+}
+
+.jobSetSummary {
+   padding: 4px;
+   background: rgba(202, 202, 202, 0.4);
+   border: solid;
+   border-radius: 6px;
+   border-width: 2px;
+   max-height: 72px;
+   min-width: 160px;
+   margin-right: 10px;
+}
+
+.multi-select {
+   display: none;
+}
+
+.multi-select-hover:hover>.multi-select {
+   display: block;
+}
+
+.multi-select-showall .multi-select {
+   display: block;
+}
+
+.schedule-grid-cell:hover .collapse-btn {
+   display: block;
+}
+
+.assigned-cell-group:hover .collapse-btn {
+   display: block;
+}
+
+.more-btn {
+   margin: 0;
+   position: relative;
+   top: -6px;
+   left: 3px;
+}
+
+.rotate-text {
+   -webkit-transform: rotate(180deg);
+   -moz-transform: rotate(180deg);
+   -ms-transform: rotate(180deg);
+   -o-transform: rotate(180deg);
+   transform: rotate(180deg);
+
+   -webkit-writing-mode: vertical-rl;
+   -ms-writing-mode: tb-rl;
+   writing-mode: vertical-rl;
+   // text-orientation: upright;
+}
+
+.rotate-text-cw {
+   -webkit-transform: rotate(0deg);
+   -moz-transform: rotate(0deg);
+   -ms-transform: rotate(0deg);
+   -o-transform: rotate(0deg);
+   transform: rotate(0deg);
+
+   -webkit-writing-mode: vertical-rl;
+   -ms-writing-mode: tb-rl;
+   writing-mode: vertical-rl;
+   // text-orientation: upright;
+}
+
+.jobs-container .dndDragging {
+   opacity: 0.7;
+}
+
+.jobs-container .dndDraggingSource {
+   opacity: 0.5;
+}
+
+.jobs-container .dndPlaceholder {
+   background-color: green !important;
+   display: block;
+   // min-height: 42px;
+   min-height: 3px;
+}
+
+.jobs-container .itemlist {
+   min-height: 120px !important;
+}
+
+.jobs-container .itemlist>li {
+   background-color: #337ab7;
+   border: none;
+   border-radius: 0.25em;
+   color: #fff;
+   float: left;
+   font-weight: 700;
+   height: 50px;
+   margin: 5px;
+   padding: 3px;
+   text-align: center;
+   width: 80px;
+}
+
+.jobs-container .dropzone .container-element {
+   margin: 10px;
+}
+
+.group-title {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-left: 1px solid white;
+   border-right: 1px solid white;
+   min-height: 50px;
+   // max-height: $height;
+   position: sticky;
+   top: 0px;
+   background-color: red;
+
+   //    white-space: nowrap;
+   // overflow: hidden;
+   // text-overflow: ellipsis;
+}
+
+.group-title-bg {
+   width: 10%;
+   position: absolute;
+   left: 0;
+   top: 0;
+   height: 100%;
+}
+
+.group-item {
+   position: relative;
+   // pointer-events: none;
+}
+
+.strict-title {
+   position: sticky;
+   top: 0px;
+   bottom: 0px;
+}
+
+.tool-class {
+   background: rgb(236, 212, 129);
+   width: 10%;
+   // max-height: 100%;
+   // height: 2000px;
+}
+
+.coil-class {
+   background: rgb(249, 181, 112);
+   width: 20%;
+}
+
+.date-class {
+   background: rgb(186, 205, 113);
+}
+
+.key-content {
+   max-height: 80px;
+   text-align: center;
+   position: sticky;
+   top: 0px;
+   bottom: 0px;
+}
+
+.available-jobs {
+   .key-content {
+      max-height: 36px;
+      overflow: hidden;
+   }
+}
+
+.border-top-2 {
+   border-top: 2px solid white;
+}
+
+.border-bottom-2 {
+   border-bottom: 2px solid white;
+}
+
+.item-bg {
+   position: absolute;
+   top: 0;
+   left: 0;
+   display: block;
+   width: 100%;
+   height: 100%;
+   border: 0px solid green;
+   z-index: 0;
+   text-align: center;
+}
+
+.item-bg11 {
+   width: 100%;
+   height: 100%;
+   border: 0px solid green;
+   z-index: 0;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.item-bg22 {
+   padding: 0px 10px 0px 10px;
+   width: 100%;
+   height: 100%;
+   border: 0px solid green;
+   z-index: 0;
+   // text-align: center;
+}
+
+.assigned-jobs.disabled {
+   filter: grayscale(1);
+   font-style: italic;
+}
+
+.jobs-title {
+   margin-left: 16px;
+   font-size: 2.2rem;
+}
+
+.ava-menu {
+   margin-top: 5px;
+   position: relative;
+   width: 100%;
+   display: block;
+   height: 34px;
+   overflow: hidden;
+
+   .ava-menu-content {
+      left: 0px;
+      top: 0px;
+      min-width: 100%;
+      position: absolute;
+      display: flex;
+   }
+
+   // overflow: auto;
+   .menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+      padding: 7px 0;
+      float: left;
+      position: relative;
+      text-align: center;
+      cursor: move;
+   }
+
+   .item-bg.draggingover-east {
+      border-width: 0 2px 0 0;
+      border-color: black;
+   }
+
+   .item-bg.draggingover-west {
+      border-width: 0 0 0 2px;
+      border-color: black;
+   }
+
+   li {
+      display: block;
+   }
+}
+
+.available-jobs {
+   //     .search-container {
+   //         .search-div {
+   //             margin-bottom: 5px;
+   //             float: right;
+   //             margin-top: -11px;
+   //             box-shadow: none !important;
+   //             .helpIconDiv {
+   //                 padding: 24px 0 6px 24px !important;
+   //                 cursor: pointer;
+   //                 md-icon {
+   //                     svg {
+   //                         fill: #545454;
+   //                     }
+   //                 }
+   //             }
+   //         }
+   //         .addColumn {
+   //             display: block;
+   //             border-bottom: 1px solid #bbb;
+   //             padding-left: 7px !important;
+   //             color: #bbb;
+   //             padding: 5px;
+   //         }
+   //     }
+}
+
+.availJobsFilterDiv {
+
+   // .filter-items-div {
+   //     color: black;
+   // }
+   .addColumn {
+      text-align: center;
+      font-weight: bold;
+   }
+
+   .filter-check {
+      color: black;
+   }
+}
+
+.ui-sortable-placeholder {
+   margin: 0px !important;
+   padding: 0px !important;
+}
+
+.font-size-10 {
+   font-size: 11px;
+}
+
+.custom-flex {
+   flex: 1 1 100%;
+   // max-height: 100%;
+   box-sizing: border-box;
+}
+
+.flex-167 {
+   flex: 1 1 100%;
+   max-width: 16.67%;
+   max-height: 100%;
+   box-sizing: border-box;
+}
+
+.flex-49 {
+   flex: 1 1 100%;
+   max-width: 50.3%;
+   max-height: 100%;
+   box-sizing: border-box;
+}
+
+.opacity-6 {
+   background: rgba(202, 202, 202, 0.7) !important;
+   color: white !important;
+}
+
+.menu-14 {
+   padding-right: 16px;
+}
+
+.triangle-container {
+   position: absolute;
+   top: 0;
+   right: 0;
+   width: 2em;
+   height: 2em;
+   z-index: 100;
+   display: flex;
+   justify-content: flex-end;
+}
+
+.triangle {
+   width: 0;
+   height: 0;
+   border-top: 2em solid transparent;
+   border-left: 2em solid transparent;
+}
+
+.triangle-red {
+   border-top-color: #f44336;
+}
+
+.triangle-yellow {
+   border-top-color: #efae00;
+}
+
+// I'm a css idiot and could not figure out how to get the bottom triangle to be flipped. I used a clip-path instead. Which is better?
+.triangle-bottom {
+   position: absolute;
+   bottom: -2px;
+   right: 0;
+   width: 2em;
+   height: 2em;
+   z-index: 100;   
+   clip-path: polygon(0% 100%, 100% 0%, 100% 100%);
+}
+.triangle-bottom-red {
+   background: #f44336;
+}
+.triangle-bottom-yellow {
+   background: #efae00;
+}
+
+.wide-toggle-btn {
+   width: 36px !important;
+   height: 36px !important;
+   min-width: 36px !important;
+   padding: 0 !important;
+   margin: 0;
+   border-radius: 20px;
+
+   &:hover {
+      background-color: rgba(158, 158, 158, 0.2) !important;
+   }
+}
+
+.available-jobs-content {
+   width: 100%;
+   height: 100%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-weight: 500;
+   font-size: 3rem;
+   background: rgba(202, 202, 202, 0.7);
+}
+
+.pr-0 {
+   padding-right: 0 !important;
+}
+
+.assigned-jobs-wide-container {
+   flex: 1;
+   padding: 0 15px;
+}
+
+.available-jobs-container {
+   width: 60px;
+   padding-left: 15px;
+}
+
+.collapse-to-summary {
+   position: absolute;
+   top: 0;
+   right: 0;
+}
+
+.collapse-btn {
+   height: 24px !important;
+   min-height: 0 !important;
+   padding: 0 !important;
+   margin: 0 !important;
+   pointer-events: auto;
+   z-index: 100;
+   display: none;
+   min-width: 0;
+   align-items: center;
+   justify-content: center;
+   font-size: 11px !important;
+   font-weight: 400;
+   line-height: 20px;
+
+   &:hover {
+      filter: brightness(0.8);
+   }
+}
+
+.summarized-jobs {
+   position: relative;
+   right: -5px;
+}
+
+.summary-row {
+   font-style: italic;
+   filter: brightness(0.9);
+}
+
+.showed-btn {
+   display: flex !important;
+}
+
+.cell-menu-btn {
+   min-width: 0 !important;
+   margin: 0 !important;
+   padding: 0 !important;
+}
+
+.remaining-content {
+   margin-left: auto;
+}
+
+.helpIconDiv {
+   min-width: 35px;
+}
+
+.machine-detail__item {
+   display: flex;
+   width: 33%;
+   min-height: 30px;
+   align-items: center;
+}
+
+.machine-detail__title {
+   width: 40%;
+   text-align: right;
+   color: gray;
+   font-size: 12px;
+}
+
+.machine-detail__content {
+   flex: 1;
+   padding-left: 10px;
+   font-size: 16px;
+   min-height: 30px;
+   display: flex;
+   align-items: center;
+
+   .machine-search {
+      height: 35px;
+      -webkit-box-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      border-radius: 5px;
+      box-shadow: none;
+      border: 1px solid #ccc;
+      margin: 5px 0;
+   }
+
+   .auto-push-num {
+      margin-bottom: 5px;
+      font-size: 18px;
+      min-width: 10px;
+      min-height: 20px;
+      margin-right: 2px;
+      margin-left: 6px;
+   }
+
+   .auto-push-num+form {
+      width: 70px !important;
+
+      input {
+         width: 70px !important;
+      }
+   }
+
+   .auto-push-unit {
+      margin-bottom: 5px;
+   }
+}
+
+@media screen and (max-width: 1200px) and (min-width: 960px) {
+   .available-jobs {
+      padding: 0 3px 0 10px !important;
+   }
+
+   .job-item-title {
+      font-size: 11px !important;
+   }
+
+   .job-item-content {
+      font-size: 11px !important;
+   }
+
+   .assigned-machine-end {
+      width: 3px !important;
+   }
+
+   .assigned-machine-start {
+      width: 3px !important;
+   }
+
+   .assigned-datetime {
+      flex: 0 0 80px !important;
+   }
+
+   .job-id {
+      font-size: 1.4rem !important;
+   }
+
+   .job-sys {
+      font-size: 1.2rem !important;
+   }
+}

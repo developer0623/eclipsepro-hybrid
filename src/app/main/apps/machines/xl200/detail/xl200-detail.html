@@ -1,0 +1,496 @@
+<div id="dashboard-report" class="
+    page-layout
+    simple
+    fullwidth
+    white-bg
+    production-summary
+    xl200-detail-page
+  " ngsf-fullscreen>
+  <div class="header back-header" layout="row" layout-align="space-between start">
+    <md-icon ui-sref="app.machines_xl200" md-font-icon="icon-arrow-left" class="icon back-icon"></md-icon>
+  </div>
+  <div class="content md-background md-hue-1 scroll-content">
+    <accordion is-open="true">
+      <accordion-toggle-in label="Details"> </accordion-toggle-in>
+
+      <accordion-content>
+        <div class="machine-detail">
+          <div class="machine-detail__item" ng-repeat="item in $ctrl.machineKeys">
+            <div class="machine-detail__title">{{item.name}}:</div>
+            <div ng-if="item.isEditable && $ctrl.userHasAdminRole" class="machine-detail__content"
+              editable-text="$ctrl.machine[item.field]" onaftersave="$ctrl.onChangeDetail($data, item.field)">
+              {{$ctrl.machine[item.field]}}
+            </div>
+            <div ng-if="!item.isEditable || !$ctrl.userHasAdminRole" class="machine-detail__content">
+              {{$ctrl.machine[item.field]}}
+            </div>
+          </div>
+        </div>
+      </accordion-content>
+    </accordion>
+
+    <accordion is-open="false">
+      <accordion-toggle-in label="Controller Settings"> </accordion-toggle-in>
+      <accordion-content class="restriction-accordian-content">
+        <div class="setting-warning" ng-if="$ctrl.machine.eclipseEnforcedSetupsWarning">
+          <md-icon md-font-icon="mdi-alert" class="mdi s20"></md-icon>
+          <span class="setting-warning-text">
+            {{ $ctrl.machine.eclipseEnforcedSetupsWarning }}
+          </span>
+        </div>
+        <div layout="row" class="setting-part">
+          <div class="setting-container">
+            <div class="setting-header">
+              <div>Enabled</div>
+              <div>Locked</div>
+            </div>
+            <div class="setting-body">
+              <div class="setting-item">
+                <md-checkbox class="setting-enabled"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.haltDelayMinimum.isEnabled"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.haltDelayMinimum.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <div class="setting-label" translate>
+                  xl200.HaltDelayMinimum
+                </div>
+                <md-input-container aria-label="input" aria-label="input">
+                  <input aria-label="input" class="setting-value" min="0" max="99" type="number"
+                    ng-model="$ctrl.machine.eclipseEnforcedSetups.haltDelayMinimum.value"
+                    ng-change="$ctrl.onChangeEnforcedSetups()" ng-model-options="{debounce: 400}"
+                    ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.haltDelayMinimum.available && !$ctrl.userHasAdminRole" />
+                </md-input-container>
+                <div class="setting-unit">minutes</div>
+                <md-checkbox class="setting-locked"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.haltDelayMinimum.isLocked"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.haltDelayMinimum.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <help-icon header="'xl200.HaltDelayMinimum'" help="'xl200.HaltDelayMinimum.help'"></help-icon>
+              </div>
+              <div class="setting-item">
+                <md-checkbox class="setting-enabled"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.useScrapCodes.isEnabled"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.useScrapCodes.available">
+                </md-checkbox>
+                <div class="setting-label" translate>xl200.UseScrapCodes</div>
+                <md-select aria-label="select" ng-model="$ctrl.machine.eclipseEnforcedSetups.useScrapCodes.value"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" class="setting-select"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.useScrapCodes.available && !$ctrl.userHasAdminRole">
+                  <md-option ng-value="0">No</md-option>
+                  <md-option ng-value="1">Yes</md-option>
+                </md-select>
+                <md-checkbox class="setting-locked"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.useScrapCodes.isLocked"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.useScrapCodes.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <help-icon header="'xl200.UseScrapCodes'" help="'xl200.UseScrapCodes.help'"></help-icon>
+              </div>
+              <div class="setting-item">
+                <md-checkbox class="setting-enabled"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.manualShearScrapLengthIn.isEnabled"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.manualShearScrapLengthIn.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <div class="setting-label" translate>
+                  xl200.ShearScrapLength
+                </div>
+                <md-input-container aria-label="input">
+                  <input aria-label="input" class="setting-value" min="0" max="1000" type="number"
+                    ng-model="$ctrl.machine.eclipseEnforcedSetups.manualShearScrapLengthIn.value"
+                    ng-change="$ctrl.onChangeEnforcedSetups()" ng-model-options="{debounce: 400}"
+                    ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.manualShearScrapLengthIn.available && !$ctrl.userHasAdminRole" />
+                </md-input-container>
+                <div class="setting-unit">inches</div>
+                <md-checkbox class="setting-locked"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.manualShearScrapLengthIn.isLocked"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.manualShearScrapLengthIn.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <help-icon header="'xl200.ShearScrapLength'" help="'xl200.ShearScrapLength.help'"></help-icon>
+              </div>
+              <div class="setting-item">
+                <md-checkbox class="setting-enabled"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.useCoilInventory.isEnabled"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.useCoilInventory.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <div class="setting-label" translate>
+                  xl200.UseCoilInventory
+                </div>
+                <md-select aria-label="select" ng-model="$ctrl.machine.eclipseEnforcedSetups.useCoilInventory.value"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" class="setting-select"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.useCoilInventory.available && !$ctrl.userHasAdminRole">
+                  <md-option ng-value="0">No</md-option>
+                  <md-option ng-value="1">Yes</md-option>
+                  <md-option ng-value="2">Remote</md-option>
+                </md-select>
+                <md-checkbox class="setting-locked"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.useCoilInventory.isLocked"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.useCoilInventory.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <help-icon header="'xl200.UseCoilInventory'" help="'xl200.UseCoilInventory.help'"></help-icon>
+              </div>
+              <div class="setting-item">
+                <md-checkbox class="setting-enabled"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.allowCoilOverride.isEnabled"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.allowCoilOverride.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <div class="setting-label" translate>
+                  xl200.AllowCoilOverride
+                </div>
+                <md-select aria-label="select" ng-model="$ctrl.machine.eclipseEnforcedSetups.allowCoilOverride.value"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" class="setting-select"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.allowCoilOverride.available && !$ctrl.userHasAdminRole">
+                  <md-option ng-value="0">Always</md-option>
+                  <md-option ng-value="1">Only With Key</md-option>
+                </md-select>
+                <md-checkbox class="setting-locked"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.allowCoilOverride.isLocked"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.allowCoilOverride.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <help-icon header="'xl200.AllowCoilOverride'" help="'xl200.AllowCoilOverride.help'"></help-icon>
+              </div>
+              <div class="setting-item">
+                <md-checkbox class="setting-enabled"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.enforceEclipseCoilValidation.isEnabled"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.enforceEclipseCoilValidation.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <div class="setting-label">Enforce Eclipse Coil Validation</div>
+                <md-select aria-label="select"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.enforceEclipseCoilValidation.value"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" class="setting-select"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.enforceEclipseCoilValidation.available && !$ctrl.userHasAdminRole">
+                  <md-option ng-value="0">No</md-option>
+                  <md-option ng-value="1">Yes</md-option>
+                </md-select>
+                <md-checkbox class="setting-locked"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.enforceEclipseCoilValidation.isLocked"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.enforceEclipseCoilValidation.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <help-icon header="'xl200.EnforceEclipseCoilValidation'"
+                  help="'xl200.EnforceEclipseCoilValidation.help'"></help-icon>
+              </div>
+              <div class="setting-item">
+                <md-checkbox class="setting-enabled"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.enforceBundlingRules.isEnabled"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.enforceBundlingRules.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <div class="setting-label">Enforce Bundling Rules</div>
+                <md-select aria-label="select" ng-model="$ctrl.machine.eclipseEnforcedSetups.enforceBundlingRules.value"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" class="setting-select"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.enforceBundlingRules.available && !$ctrl.userHasAdminRole">
+                  <md-option ng-value="0">No</md-option>
+                  <md-option ng-value="1">Yes</md-option>
+                </md-select>
+                <md-checkbox class="setting-locked"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.enforceBundlingRules.isLocked"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.enforceBundlingRules.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <help-icon header="'xl200.EnforceBundlingRules'" help="'xl200.EnforceBundlingRules.help'"></help-icon>
+              </div>
+            </div>
+          </div>
+
+          <div class="setting-container">
+            <div class="setting-header">
+              <div>Enabled</div>
+              <div>Locked</div>
+            </div>
+            <div class="setting-body">
+              <div class="setting-item">
+                <md-checkbox class="setting-enabled"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.autoRequestOrderFootage.isEnabled"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.autoRequestOrderFootage.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <div class="setting-label">Auto-Request Order Footage</div>
+                <md-input-container aria-label="input">
+                  <input aria-label="input" class="setting-value" min="0" max="9999" type="number"
+                    ng-model="$ctrl.machine.eclipseEnforcedSetups.autoRequestOrderFootage.value"
+                    ng-change="$ctrl.onChangeEnforcedSetups()" ng-model-options="{debounce: 400}"
+                    ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.autoRequestOrderFootage.available && !$ctrl.userHasAdminRole" />
+                </md-input-container>
+                <div class="setting-unit">Feet</div>
+                <md-checkbox class="setting-locked"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.autoRequestOrderFootage.isLocked"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.autoRequestOrderFootage.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <help-icon header="'xl200.AutoRequestOrderFootage'" help="'xl200.AutoRequestOrder.help'"></help-icon>
+              </div>
+              <div class="setting-item">
+                <md-checkbox class="setting-enabled"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.displayBundleIdPrompts.isEnabled"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.displayBundleIdPrompts.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <div class="setting-label">Display Bundle ID Prompts</div>
+                <md-select aria-label="select"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.displayBundleIdPrompts.value"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" class="setting-select"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.displayBundleIdPrompts.available && !$ctrl.userHasAdminRole">
+                  <md-option ng-value="0">No</md-option>
+                  <md-option ng-value="1">Yes</md-option>
+                </md-select>
+                <md-checkbox class="setting-locked"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.displayBundleIdPrompts.isLocked"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.displayBundleIdPrompts.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <help-icon header="'xl200.DisplayBundleIdPrompts'" help="'xl200.DisplayBundleIdPrompts.help'">
+                </help-icon>
+              </div>
+              <div class="setting-item">
+                <md-checkbox class="setting-enabled"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.autoDeleteDoneOrdersAfter.isEnabled"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.autoDeleteDoneOrdersAfter.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <div class="setting-label" translate>
+                  xl200.AutoDeleteDoneOrdersAfter
+                </div>
+                <md-input-container aria-label="input">
+                  <input aria-label="input" class="setting-value" min="0" max="28" type="number"
+                    ng-model="$ctrl.machine.eclipseEnforcedSetups.autoDeleteDoneOrdersAfter.value"
+                    ng-change="$ctrl.onChangeEnforcedSetups()" ng-model-options="{debounce: 400}"
+                    ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.autoDeleteDoneOrdersAfter.available && !$ctrl.userHasAdminRole" />
+                </md-input-container>
+                <div class="setting-unit">days</div>
+                <md-checkbox class="setting-locked"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.autoDeleteDoneOrdersAfter.isLocked"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.autoDeleteDoneOrdersAfter.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <help-icon header="'xl200.AutoDeleteDoneOrdersAfter'" help="'xl200.AutoDeleteDoneOrdersAfter.help'">
+                </help-icon>
+              </div>
+              <div class="setting-item">
+                <md-checkbox class="setting-enabled"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.showUserDataProgram.isEnabled"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.showUserDataProgram.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <div class="setting-label" translate>
+                  xl200.ShowUserDataProgram
+                </div>
+                <md-select aria-label="select" ng-model="$ctrl.machine.eclipseEnforcedSetups.showUserDataProgram.value"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" class="setting-select"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.showUserDataProgram.available && !$ctrl.userHasAdminRole">
+                  <md-option ng-value="0">Disabled</md-option>
+                  <md-option ng-value="1">One Line</md-option>
+                  <md-option ng-value="2">Two Lines</md-option>
+                  <md-option ng-value="3">Three Lines</md-option>
+                  <md-option ng-value="4">Four Lines</md-option>
+                </md-select>
+                <md-checkbox class="setting-locked"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.showUserDataProgram.isLocked"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.showUserDataProgram.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <help-icon header="'xl200.ShowUserDataProgram'" help="'xl200.ShowUserDataProgram.help'"></help-icon>
+              </div>
+              <div class="setting-item">
+                <md-checkbox class="setting-enabled"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.showUserDataStatus.isEnabled"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.showUserDataStatus.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <div class="setting-label" translate>
+                  xl200.ShowUserDataStatus
+                </div>
+                <md-select aria-label="select" ng-model="$ctrl.machine.eclipseEnforcedSetups.showUserDataStatus.value"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" class="setting-select"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.showUserDataStatus.available && !$ctrl.userHasAdminRole">
+                  <md-option ng-value="0">Disabled</md-option>
+                  <md-option ng-value="1">One Line</md-option>
+                  <md-option ng-value="2">Two Lines</md-option>
+                  <md-option ng-value="3">Three Lines</md-option>
+                  <md-option ng-value="4">Four Lines</md-option>
+                </md-select>
+                <md-checkbox class="setting-locked"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.showUserDataStatus.isLocked"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.showUserDataStatus.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <help-icon header="'xl200.ShowUserDataStatus'" help="'xl200.ShowUserDataStatus.help'"></help-icon>
+              </div>
+              <div class="setting-item">
+                <md-checkbox class="setting-enabled"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.staggerPanelField.isEnabled"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.staggerPanelField.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <div class="setting-label" translate>
+                  xl200.StaggerPanelField
+                </div>
+                <md-select aria-label="select" ng-model="$ctrl.machine.eclipseEnforcedSetups.staggerPanelField.value"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" class="setting-select"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.staggerPanelField.available && !$ctrl.userHasAdminRole">
+                  <md-option ng-value="0">Disabled</md-option>
+                  <md-option ng-value="1">Enabled</md-option>
+                </md-select>
+                <md-checkbox class="setting-locked"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.staggerPanelField.isLocked"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.staggerPanelField.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <help-icon header="'xl200.StaggerPanelField'" help="'xl200.StaggerPanelField.help'"></help-icon>
+              </div>
+              <div class="setting-item">
+                <md-checkbox class="setting-enabled"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.setDoneItemsToReady.isEnabled"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.setDoneItemsToReady.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <div class="setting-label" translate>
+                  xl200.SetDoneItemsToReady
+                </div>
+                <md-select aria-label="select" ng-model="$ctrl.machine.eclipseEnforcedSetups.setDoneItemsToReady.value"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" class="setting-select"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.setDoneItemsToReady.available && !$ctrl.userHasAdminRole">
+                  <md-option ng-value="0">No</md-option>
+                  <md-option ng-value="1">Yes</md-option>
+                </md-select>
+                <md-checkbox class="setting-locked"
+                  ng-model="$ctrl.machine.eclipseEnforcedSetups.setDoneItemsToReady.isLocked"
+                  ng-change="$ctrl.onChangeEnforcedSetups()" aria-label="checkbox"
+                  ng-disabled="!$ctrl.machine.eclipseEnforcedSetups.setDoneItemsToReady.available && !$ctrl.userHasAdminRole">
+                </md-checkbox>
+                <help-icon header="'xl200.SetDoneItemsToReady'" help="'xl200.SetDoneItemsToReady.help'"></help-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+      </accordion-content>
+    </accordion>
+
+    <accordion is-open="false">
+      <accordion-toggle-in label="Controller Restrictions">
+      </accordion-toggle-in>
+      <accordion-content class="restriction-accordian-content">
+        <div class="setting-warning" ng-if="$ctrl.machine.lockdownWarning">
+          <md-icon md-font-icon="mdi-alert" class="mdi s20"></md-icon>
+          <span class="setting-warning-mdi">
+            {{ $ctrl.machine.lockdownWarning }}
+          </span>
+        </div>
+        <div layout="row" class="lock-code-part">
+          <div class="lock-code-container radio-container">
+            <div class="lock-down-container">
+              <div class="lock-code-row lock-header">
+                <div class="label-col">Order Restrictions</div>
+                <div class="check-col">Always</div>
+                <div class="check-col">With Key</div>
+                <div class="check-col">Never</div>
+                <div class="help-icon-header"></div>
+              </div>
+              <div class="lock-code-row" ng-repeat="oItem in $ctrl.machine.orderLockdownModel">
+                <xl200-lockout-item label="oItem.label" lock-value="oItem.value"
+                  ng-click="$ctrl.onOrderLockdownChange(oItem)"></xl200-lockout-item>
+              </div>
+            </div>
+          </div>
+
+          <div class="lock-code-container radio-container">
+            <div class="lock-down-container">
+              <div class="lock-code-row lock-header">
+                <div class="label-col">Pattern Restrictions</div>
+                <div class="check-col">Always</div>
+                <div class="check-col">With Key</div>
+                <div class="check-col">Never</div>
+              </div>
+              <div class="lock-code-row" ng-repeat="pItem in $ctrl.machine.patternLockdownModel">
+                <xl200-lockout-item label="pItem.label" lock-value="pItem.value"
+                  ng-click="$ctrl.onPatternLockdownChange(pItem)"></xl200-lockout-item>
+              </div>
+            </div>
+          </div>
+        </div>
+      </accordion-content>
+    </accordion>
+
+    <accordion is-open="false">
+      <accordion-toggle-in label="Setups">
+      </accordion-toggle-in>
+
+      <accordion-content>
+        <xl200-setups class="xl-200-setup" machine-id="$ctrl.machineId">
+        </xl200-setups>
+      </accordion-content>
+    </accordion>
+
+    <accordion is-open="false">
+      <accordion-toggle-in label="Tools">
+      </accordion-toggle-in>
+
+      <accordion-content>
+        <xl200-tools machine-id="$ctrl.machineId"></xl200-tools>
+      </accordion-content>
+    </accordion>
+
+    <accordion is-open="false">
+      <accordion-toggle-in label="Patterns">
+      </accordion-toggle-in>
+
+      <accordion-content>
+        <div class="xl-list-container xl-punch-container">
+          <div class="material-usage-item sub-header">
+             <div class="main-con" ng-repeat="item in $ctrl.xlPatternsColumns">
+                {{item.displayName}}
+             </div>
+          </div>
+          <div class="material-usage-content">
+             <accordion ng-repeat="pattern in $ctrl.pattern" class="xl-row"
+                is-open="pattern.isOpen">
+                <accordion-header on-close="$ctrl.onClose(pattern)">
+                   <div class="material-usage-item item-header">
+                      <div class="main-con" ng-repeat="item in $ctrl.xlPatternsColumns">
+                         {{item.field === "operations" ?
+                         pattern[item.field].length : item.field ===
+                         "dontSave" && pattern[item.field] ? "YES" :
+                         item.field === "dontSave" && !pattern[item.field]
+                         ? "NO" : pattern[item.field]}}
+                      </div>
+                   </div>
+                   <div></div>
+                </accordion-header>
+
+                <accordion-content>
+                   <div class="material-usage-item sub-header">
+                      <div class="main-con" ng-repeat="item in $ctrl.xlPatternSubColumns">
+                         {{item.displayName}}
+                      </div>
+                   </div>
+                   <div class="material-usage-content">
+                      <div class="material-usage-item" ng-repeat="operation in pattern.operations">
+                         <div class="main-con" ng-repeat="item in $ctrl.xlPatternSubColumns">
+                            {{ item.field === "xReference" ?
+                            $ctrl.referenceColumns[operation[item.field]].text :
+                            item.field === "yReference" ?
+                            $ctrl.yReferenceColumns[operation[item.field]].text
+                            : operation[item.field] }}
+                         </div>
+                      </div>
+                      <div></div>
+                   </div>
+                </accordion-content>
+             </accordion>
+          </div>
+          <div ng-if="$ctrl.pattern && $ctrl.pattern.length === 0" class="xl-punch-nodata">
+            No data to display
+          </div>
+       </div>
+      </accordion-content>
+    </accordion>
+  </div>
+</div>

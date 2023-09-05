@@ -1,0 +1,91 @@
+.settings-bundling {
+  .complete-checkbox {
+    font-size: 16px;
+    margin: 0px;
+  }
+
+  .edit-btn {
+    width: 36px;
+    border-radius: 20px;
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.5) !important;
+    }
+  }
+
+  .table-title {
+    margin: 24px 24px 5px 24px !important;
+    font-size: 20px;
+  }
+  .config-add-btn {
+    float: right;
+    width: 36px;
+    min-width: 36px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background-color: rgb(245, 245, 245);
+    border-radius: 5px;
+  }
+  .config-table,
+  .event-table {
+    max-width: none;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    th {
+      background-color: rgb(245, 245, 245);
+    }
+    td {
+      &:first-child {
+        padding-left: 24px !important;
+      }
+    }
+    th,
+    td {
+      text-align: center;
+      padding: 10px 8px !important;
+    }
+
+    md-checkbox {
+      left: 0 !important;
+      width: 20px;
+    }
+  }
+
+  .config-table {
+    margin-top: 50px;
+    .config-table-settings {
+      width: 25%;
+    }
+
+    .config-table-actions {
+      min-width: 77px !important;
+    }
+  }
+
+  .integration-setting-item {
+    white-space: nowrap;
+  }
+
+  .editable-click {
+    width: 50px;
+    text-align: right;
+  }
+
+  .editable-wrap {
+    position: absolute;
+    left: 18px;
+    top: -4px;
+
+    .editable-controls .editable-input {
+      width: 50px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: normal;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    }
+  }
+}

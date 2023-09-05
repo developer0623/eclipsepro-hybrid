@@ -1,0 +1,121 @@
+<div class="item-settings-dialog" aria-label="Item Dialog">
+  <div class="item-settings-dialog__wrapper">
+    <div class="item-settings-dialog__header">Split Selected Items</div>
+    <div class="item-settings-dialog__title">SPLIT BY:</div>
+    <md-tabs
+      class="item-settings-dialog__tabs"
+      md-dynamic-height
+      md-border-bottom
+      md-selected="$ctrl.selectedTabIdx"
+    >
+      <md-tab label="Max Pieces" ng-click="$ctrl.tabClicked()">
+        <md-content>
+          <md-switch ng-model="$ctrl.splitToNewBundles">
+            Split directly into new bundles
+          </md-switch>
+        </md-content>
+        <md-content class="item-settings-dialog__tab">
+          <md-input-container class="input-container">
+            <input
+              required
+              type="number"
+              ng-model="$ctrl.targetQty"
+              placeholder="Pieces per Item"
+            />
+          </md-input-container>
+
+          <md-list class="error-list">
+            <md-list-item class="error-item" ng-repeat="err in $ctrl.errors">
+              <i class="icon icon-close"></i>
+              <p>{{err}}</p>
+            </md-list-item>
+          </md-list>
+        </md-content>
+      </md-tab>
+
+      <md-tab label="Max Weight" ng-click="$ctrl.tabClicked()">
+        <md-content>
+          <md-switch ng-model="$ctrl.splitToNewBundles">
+            Split directly into new bundles
+          </md-switch>
+        </md-content>
+        <md-content class="item-settings-dialog__tab">
+          <md-input-container class="input-container">
+            <input
+              ng-model="$ctrl.targetWeight"
+              type="number"
+              required
+              placeholder="Max Weight Per Item"
+            />
+          </md-input-container>
+          <md-list class="error-list">
+            <md-list-item class="error-item" ng-repeat="err in $ctrl.errors">
+              <i class="icon icon-close"></i>
+              <p>{{err}}</p>
+            </md-list-item>
+          </md-list>
+        </md-content>
+      </md-tab>
+
+      <md-tab label="Line Item Count" ng-click="$ctrl.tabClicked()">
+        <md-content>
+          <md-switch ng-model="$ctrl.splitToNewBundles">
+            Split directly into new bundles
+          </md-switch>
+        </md-content>
+        <md-content class="item-settings-dialog__tab">
+          <md-input-container class="input-container">
+            <input
+              required
+              type="number"
+              ng-model="$ctrl.targetItemCount"
+              placeholder="Total Number of Items to Split Each Item Into"
+            />
+          </md-input-container>
+          <md-list class="error-list">
+            <md-list-item class="error-item" ng-repeat="err in $ctrl.errors">
+              <i class="icon icon-close"></i>
+              <p>{{err}}</p>
+            </md-list-item>
+          </md-list>
+        </md-content>
+      </md-tab>
+
+      <md-tab label="Move To New Item" ng-click="$ctrl.tabClicked()">
+        <md-content>
+          <md-switch ng-model="$ctrl.splitToNewBundles">
+            Split directly into new bundles
+          </md-switch>
+        </md-content>
+        <md-content class="item-settings-dialog__tab">
+          <md-input-container class="input-container">
+            <input
+              required
+              type="number"
+              ng-model="$ctrl.moveQty"
+              placeholder="Quantity to Move to the New Item"
+            />
+          </md-input-container>
+          <md-list class="error-list">
+            <md-list-item class="error-item" ng-repeat="err in $ctrl.errors">
+              <i class="icon icon-close"></i>
+              <p>{{err}}</p>
+            </md-list-item>
+          </md-list>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+    <md-dialog-actions layout="row" class="item-settings-dialog__footer">
+      <span flex></span>
+      <div class="item-settings-dialog__button" ng-click="$ctrl.cancel()">
+        CANCEL
+      </div>
+      <div
+        class="item-settings-dialog__button x--active"
+        ng-click="$ctrl.save()"
+      >
+        SAVE
+      </div>
+    </md-dialog-actions>
+  </div>
+</div>

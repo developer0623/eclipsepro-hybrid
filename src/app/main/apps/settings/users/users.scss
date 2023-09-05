@@ -1,0 +1,51 @@
+
+
+.settings-users {
+    .table-title {
+        margin: 24px 24px 5px 24px !important;
+        font-size: 20px;
+    }
+    .users-table {
+        max-width: none;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        margin-top: 50px;
+        table-layout: fixed;
+        th {
+            background-color: rgb(245, 245, 245);
+        }
+        td {
+            &:first-child {
+                padding-left: 24px !important;
+            }
+        }
+        th, td {
+            text-align: center;
+            padding: 10px 8px !important;
+        }
+
+        .reset-btn {
+            padding: 0 5px !important;
+        }
+        
+
+        .users-table-actions {
+            min-width: 77px !important;
+        }
+    }
+    
+    .disabled { 
+            filter: grayscale(1); 
+            font-style: italic; 
+            md-checkbox {
+                /* disables clicking */ 
+                pointer-events: none;
+                cursor: default;
+            }
+    }
+
+    .allow-guest-user {
+        position: relative;
+        top: 12px;
+    }
+}
+

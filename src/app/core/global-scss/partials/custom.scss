@@ -1,0 +1,63 @@
+[md-theme="eclipse-pro-theme"] {
+	.header {
+		.md-ripple {
+			border-color: #000 !important;
+			background-color: #000 !important;
+		}
+	}
+	.md-accent-bg {
+		background-color: #E0E0E0 !important;
+	}
+}
+
+// Hide tooltip on mobile
+[md-no-tooltip='true'] {
+  md-tooltip,
+	.nvtooltip,
+	.nv-hoverValue {
+    display: none !important;
+		visibility: hidden !important;
+  }
+}
+
+md-tooltip {
+	background-color: black !important;
+	color: white !important;
+	font-size: 14px !important;
+}
+
+md-option {
+	.md-text {
+		color: black;
+	}
+}
+
+md-optgroup {
+	label {
+		color: black !important;
+	}
+}
+  
+.time-sign {
+	opacity: 0.8;
+	margin-left: 2px;
+	font-weight: 300;
+}
+
+
+.page-title {
+	padding-left: 24px;
+	padding-bottom: 16px;
+	box-shadow: 0px 8px 9px -3px #BFBFBF; 
+	margin: 16px 0;
+	line-height: 1.4 !important;
+
+	h1 {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	md-input-container {
+		margin-top: 2px;
+	}
+}

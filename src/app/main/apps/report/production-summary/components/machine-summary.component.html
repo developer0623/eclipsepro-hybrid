@@ -1,0 +1,172 @@
+<div class="machine-summary-content">
+  <div class="ms-column column-title">
+    <div class="machine-content">{{$ctrl.machine}}
+      <md-tooltip md-direction="bottom">Record Date Range: {{$ctrl.data.startTime | amsDateTime}} - {{$ctrl.data.endTime | amsDateTime}}</md-tooltip>
+    </div>
+  </div>
+
+  <div class="ms-column column-good-scrap" ng-click="$ctrl.showPopover($event, $ctrl.data.totalGoodLn, 0)">
+    <div class="left-right-header">
+      <div class="main-content">
+        <p class="primary">{{$ctrl.data.totalGoodLn.primary | unitsFormat :"ft":1:true}}<span>{{'ft' |
+            userDisplayUnits}}</span></p>
+        <p class="secondary">{{$ctrl.data.totalGoodLn.secondary}} <span>pcs</span></p>
+      </div>
+      <div class="chart-content">
+        <summary-history data="$ctrl.data.totalGoodLn"></summary-history>
+      </div>
+    </div>
+    <div class="bullet-content">
+      <summary-state data='$ctrl.data.totalGoodLn.bullet' ng-if="$ctrl.data.totalGoodLn.bullet"></summary-state>
+    </div>
+  </div>
+
+  <div class="ms-column column-good-scrap" ng-click="$ctrl.showPopover($event, $ctrl.data.netScrap, 1)">
+    <div class="left-right-header">
+      <div class="main-content">
+        <p class="primary">{{$ctrl.data.netScrap.primary | summarPercent}} <span>%</span></p>
+        <p class="secondary">{{$ctrl.data.netScrap.secondary | unitsFormat :"ft":1:true}}<span>{{'ft' |
+            userDisplayUnits}}</span></p>
+      </div>
+      <div class="chart-content">
+        <summary-history data='$ctrl.data.netScrap' state="true"></summary-history>
+      </div>
+    </div>
+    <div class="bullet-content">
+      <summary-state data='$ctrl.data.netScrap.bullet' state="true"></summary-state>
+    </div>
+  </div>
+
+  <div class="ms-column column-asy first-hide" ng-click="$ctrl.showPopover($event, $ctrl.data.reclaimedScrap, 1)">
+    <div class="left-right-header">
+      <div class="main-content">
+        <p class="primary">{{$ctrl.data.reclaimedScrap.primary | unitsFormat :"ft":1:true}}<span>{{'ft' |
+            userDisplayUnits}}</span></p>
+        <p class="secondary">{{$ctrl.data.reclaimedScrap.secondary | summarPercent}} <span>%</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ms-column column-running" ng-click="$ctrl.showPopover($event, $ctrl.data.runningThroughput, 0)">
+    <div class="top-bottom-header">
+      <div class="main-content">
+        {{$ctrl.data.runningThroughput.primary | unitsFormat :"fpm":1:true}}<span>{{'fpm' | userDisplayUnits}}</span>
+      </div>
+      <div class="chart-content">
+        <summary-history data='$ctrl.data.runningThroughput'></summary-history>
+      </div>
+    </div>
+    <div class="bullet-content">
+      <summary-state data='$ctrl.data.runningThroughput.bullet'></summary-state>
+    </div>
+
+  </div>
+
+  <div class="ms-column column-oee-target" ng-click="$ctrl.showPopover($event, $ctrl.data.oEE, 2)">
+    <div class="top-bottom-header">
+      <div class="main-content">
+        {{$ctrl.data.oEE.primary | summarPercent}} <span>%</span>
+      </div>
+      <div class="chart-content">
+        <summary-history data='$ctrl.data.oEE'></summary-history>
+      </div>
+    </div>
+    <div class="bullet-content">
+      <summary-state data='$ctrl.data.oEE.bullet'></summary-state>
+    </div>
+  </div>
+
+  <div class="ms-column column-oee-target" ng-click="$ctrl.showPopover($event, $ctrl.data.target, 2)">
+    <div class="top-bottom-header">
+      <div class="main-content">
+        {{$ctrl.data.target.primary | summarPercent}} <span>%</span>
+      </div>
+      <div class="chart-content">
+        <summary-history data='$ctrl.data.target'></summary-history>
+      </div>
+    </div>
+    <div class="bullet-content">
+      <summary-state data='$ctrl.data.target.bullet'></summary-state>
+    </div>
+  </div>
+
+
+
+  <div class="ms-column column-asy first-hide" ng-click="$ctrl.showPopover($event, $ctrl.data.availability, 2)">
+    <div class="top-bottom-header">
+      <div class="main-content">
+        {{$ctrl.data.availability.primary | summarPercent}} <span>%</span>
+      </div>
+      <div class="chart-content">
+        <summary-history data='$ctrl.data.availability'></summary-history>
+      </div>
+    </div>
+    <div class="bullet-content">
+      <summary-state data='$ctrl.data.availability.bullet'></summary-state>
+    </div>
+  </div>
+
+  <div class="ms-column column-asy first-hide" ng-click="$ctrl.showPopover($event, $ctrl.data.speed, 2)">
+    <div class="top-bottom-header">
+      <div class="main-content">
+        {{$ctrl.data.speed.primary | summarPercent}} <span>%</span>
+      </div>
+      <div class="chart-content">
+        <summary-history data='$ctrl.data.speed'></summary-history>
+      </div>
+    </div>
+    <div class="bullet-content">
+      <summary-state data='$ctrl.data.speed.bullet'></summary-state>
+    </div>
+  </div>
+
+  <div class="ms-column column-asy first-hide" ng-click="$ctrl.showPopover($event, $ctrl.data.yield, 2)">
+    <div class="top-bottom-header">
+      <div class="main-content">
+        {{$ctrl.data.yield.primary | summarPercent}} <span>%</span>
+      </div>
+      <div class="chart-content">
+        <summary-history data='$ctrl.data.yield'></summary-history>
+      </div>
+    </div>
+    <div class="bullet-content">
+      <summary-state data='$ctrl.data.yield.bullet'></summary-state>
+    </div>
+  </div>
+
+  <div class="ms-column column-time-bar second-hide">
+    <div class="timebar-header">
+      <div class="timebar-header__item1">
+        <div class="timebar-header__title">RUNNING</div>
+        <div class="timebar-header__body">{{$ctrl.data.timeBar.running | timebarPercent}}<span>%</span></div>
+      </div>
+      <div class="timebar-header__item1">
+        <div class="timebar-header__title">CHANGEOVER</div>
+        <div class="timebar-header__body">{{$ctrl.data.timeBar.changeover | timebarPercent}}<span>%</span></div>
+      </div>
+      <div class="timebar-header__item1">
+        <div class="timebar-header__title">BREAKDOWN</div>
+        <div class="timebar-header__body">{{$ctrl.data.timeBar.breakdown | timebarPercent}}<span>%</span></div>
+      </div>
+      <div class="timebar-header__item2">
+        <div class="timebar-header__title">OTHER UNEXPECTED</div>
+        <div class="timebar-header__body">{{$ctrl.data.timeBar.otherUnexpected | timebarPercent}}<span>%</span></div>
+      </div>
+      <div class="timebar-header__item2">
+        <div class="timebar-header__title">OTHER EXPECTED</div>
+        <div class="timebar-header__body">{{$ctrl.data.timeBar.otherExpected | timebarPercent}}<span>%</span></div>
+      </div>
+      <div class="timebar-header__item2">
+        <div class="timebar-header__title">UNSCHEDULED</div>
+        <div class="timebar-header__body">{{$ctrl.data.timeBar.unscheduled | timebarPercent}}<span>%</span></div>
+      </div>
+    </div>
+
+    <div class="bullet-content">
+      <summary-timebar data='$ctrl.data.timeBar'></summary-timebar>
+    </div>
+
+  </div>
+
+
+</div>

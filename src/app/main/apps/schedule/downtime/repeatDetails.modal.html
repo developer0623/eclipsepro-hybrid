@@ -1,0 +1,113 @@
+<md-dialog aria-label="Repeat Details" class="repeat-details-modal">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>Repeat Details</h2>
+    </div>
+  </md-toolbar>
+  <md-dialog-content class="repeat-details-content">
+    <div
+      class="md-dialog-content"
+      ng-class="{paddingBottom: vm.downtimeData.occurs === 'Daily' || 'OneTime'}"
+    >
+      <div class="common-content">
+        <md-input-container class="frequency-input">
+          <label class="option-label">Frequency</label>
+          <md-select
+            ng-model="vm.downtimeData.occurs"
+            placeholder="Select"
+            class="downtime-type"
+            aria-label="occurs"
+          >
+            <md-option ng-repeat="item in vm.repeatData" value="{{item.value}}"
+              >{{item.label}}</md-option
+            >
+          </md-select>
+        </md-input-container>
+        <md-input-container
+          class="every-input"
+          ng-show="vm.downtimeData.occurs !== 'OneTime'"
+        >
+          <label class="option-label">Every</label>
+          <md-select
+            ng-model="vm.downtimeData.everyCount"
+            ng-change="vm.frequencyChange()"
+            class="downtime-duration"
+            aria-label="every count"
+          >
+            <md-option ng-repeat="item in vm.everyCount" value="{{item}}"
+              >{{item}}</md-option
+            >
+          </md-select>
+        </md-input-container>
+        <label class="side-label" ng-show="vm.downtimeData.occurs === 'Daily'"
+          >Days</label
+        >
+        <label class="side-label" ng-show="vm.downtimeData.occurs === 'Weekly'"
+          >Week(s)on</label
+        >
+        <label class="side-label" ng-show="vm.downtimeData.occurs === 'Monthly'"
+          >Month(s)</label
+        >
+      </div>
+      <div class="week-content" ng-show="vm.downtimeData.occurs === 'Weekly'">
+        <span
+          ng-repeat="weekDay in vm.weekData"
+          class="week-day"
+          ng-class="{isChecked: vm.downtimeData.daysOfWeek.indexOf(weekDay.day) > -1}"
+          ng-click="vm.selectedWeekDay(weekDay.day)"
+          >{{weekDay.id}}</span
+        >
+      </div>
+      <div class="month-content" ng-show="vm.downtimeData.occurs === 'Monthly'">
+        <md-radio-group ng-model="vm.downtimeData.monthValue">
+          <md-radio-button value="Each">Each</md-radio-button>
+          <md-radio-button value="OnThe">On the</md-radio-button>
+        </md-radio-group>
+        <div class="onTheDiv" ng-show="vm.downtimeData.monthValue === 'OnThe'">
+          <md-input-container>
+            <md-select
+              ng-model="vm.downtimeData.dayOfMonth"
+              class="downtime-duration"
+              aria-label="day of month"
+            >
+              <md-option ng-repeat="item in vm.DayOfMonth" value="{{item}}"
+                >{{item}}</md-option
+              >
+            </md-select>
+          </md-input-container>
+          <md-input-container>
+            <md-select
+              ng-model="vm.downtimeData.weekDayOfMonth"
+              class="downtime-duration"
+              aria-label="weekDay of month"
+            >
+              <md-option ng-repeat="item in vm.weekDayOfMonth" value="{{item}}"
+                >{{item}}</md-option
+              >
+            </md-select>
+          </md-input-container>
+        </div>
+        <div ng-show="vm.downtimeData.monthValue === 'Each'" class="calendar">
+          <table cellspacing="0" cellpadding="0" class="calendar-table">
+            <colgroup span="7"></colgroup>
+            <tbody>
+              <tr ng-repeat="days in vm.dates">
+                <td ng-repeat="day in days">
+                  <span
+                    ng-class="{active: vm.downtimeData.selectedDate.indexOf(day) > -1, today: vm.todayDate === day}"
+                    ng-click="vm.selectedDay(day)"
+                    >{{ day }}</span
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row" class="btn-group repeat-btn-group">
+    <md-button ng-click="vm.cancel()">Cancel</md-button>
+    <md-button ng-click="vm.saveRepeatDetails(vm.downtimeData)">Save</md-button>
+  </md-dialog-actions>
+</md-dialog>

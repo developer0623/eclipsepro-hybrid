@@ -1,0 +1,169 @@
+<div id="settings" class="system-preferences page-layout simple fullwidth">
+   <!-- HEADER -->
+   <div class="header">
+      <div layout="row" layout-align="space-between">
+         <span class="h2" translate="systemPreferences"
+            >SYSTEM PREFERENCES</span
+         >
+      </div>
+   </div>
+   <!-- / HEADER -->
+
+   <!-- CONTENT -->
+   <div class="content p-24" md-background-bg>
+      <div class="form-wrapper md-whiteframe-1dp" flex="100">
+         <div layout="column">
+            <table class="simple dataTable row-border" style="width: 100%">
+               <thead>
+                  <tr>
+                     <th><span translate="settings">Setting</span></th>
+                     <th><span translate="globalSettings">Global</span></th>
+                     <th></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td style="width: 25%">
+                        <span translate="language">Language</span>:
+                     </td>
+                     <td colspan="2">
+                        <md-menu class="language-menu">
+                           <md-button
+                              class="language-button black-fg"
+                              ng-click="$mdMenu.open()"
+                              aria-label="Language"
+                              md-menu-origin
+                              md-menu-align-target
+                           >
+                              <div layout="row" layout-align="center center">
+                                 <span class="iso"
+                                    >{{$ctrl.selectedLanguage.title}}
+                                    <md-icon
+                                       md-font-icon="icon-menu-down"
+                                       class="icon"
+                                    ></md-icon>
+                                 </span>
+                              </div>
+                           </md-button>
+
+                           <md-menu-content
+                              width="3"
+                              id="language-menu-content"
+                              class="md-background-bg"
+                           >
+                              <md-menu-item ng-repeat="lang in $ctrl.languages">
+                                 <md-button
+                                    ng-click="$ctrl.changeLanguage(lang)"
+                                    aria-label="{{lang.title}}"
+                                    translate
+                                    translate-attr-aria-label="{{lang.title}}"
+                                 >
+                                    <span
+                                       layout="row"
+                                       layout-align="start center"
+                                    >
+                                       <span translate="{{lang.translation}}"
+                                          >{{lang.title}}</span
+                                       >
+                                    </span>
+                                 </md-button>
+                              </md-menu-item>
+                           </md-menu-content>
+                        </md-menu>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td style="width: 25%">
+                        <span translate="displayUnits">Display Units</span>:
+                     </td>
+                     <td colspan="2">
+                        <md-menu class="language-menu">
+                           <md-button
+                              class="language-button black-fg"
+                              ng-click="$mdMenu.open()"
+                              aria-label="Display Units"
+                              md-menu-origin
+                              md-menu-align-target
+                           >
+                              <div layout="row" layout-align="center center">
+                                 <span class="iso"
+                                    >{{$ctrl.selectedUnit.title}}
+                                    <md-icon
+                                       md-font-icon="icon-menu-down"
+                                       class="icon"
+                                    ></md-icon>
+                                 </span>
+                              </div>
+                           </md-button>
+
+                           <md-menu-content
+                              width="3"
+                              id="language-menu-content"
+                              class="md-background-bg"
+                           >
+                              <md-menu-item ng-repeat="unit in $ctrl.units">
+                                 <md-button
+                                    ng-click="$ctrl.changeUnit(unit)"
+                                    aria-label="{{unit.title}}"
+                                    translate
+                                    translate-attr-aria-label="{{unit.title}}"
+                                 >
+                                    <span
+                                       layout="row"
+                                       layout-align="start center"
+                                    >{{unit.title | translate}}
+                                    </span>
+                                 </md-button>
+                              </md-menu-item>
+                           </md-menu-content>
+                        </md-menu>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><span translate="experimentalFeatures">Experimental Features</span></td>
+                     <td>
+                        <md-tooltip md-direction="top"
+                           >Changing this value will refresh your browser.
+                        </md-tooltip>
+                        <md-checkbox
+                           class="md-primary"
+                           ng-model="$ctrl.experimentalFeatures"
+                           aria-label="Experimental"
+                           ng-change="$ctrl.setExperimentalFeatures()"
+                        ></md-checkbox>
+                     </td>
+                     <td> <span translate="experimentalFeaturesDescription"></span> 🧪.
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><span translate="redirectToIntranetUrl">Redirect to intranet url</span></td>
+                     <td>
+                        <md-checkbox
+                           class="md-primary"
+                           ng-model="$ctrl.systemPreferences.redirectFromLocalhost"
+                           ng-change="$ctrl.update('redirectFromLocalhost')"
+                        ></md-checkbox>
+                     </td>
+                     <td><span translate="redirectToIntranetUrlDescription"></span>
+                        <a ng-href="{{$ctrl.systemPreferences.intranetUrl}}"
+                           >{{$ctrl.systemPreferences.intranetUrl}}</a
+                        >.
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><span translate="showMaterialShortageAlerts">Show Material Shortage Alerts</span></td>
+                     <td>
+                        <md-checkbox
+                           class="md-primary"
+                           ng-model="$ctrl.systemPreferences.showMaterialShortageAlerts"
+                           ng-change="$ctrl.update('showMaterialShortageAlerts')"
+                        ></md-checkbox>
+                     </td>
+                     <td><span translate="showMaterialShortageAlertsDescription"></span></td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+</div>

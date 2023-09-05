@@ -1,0 +1,103 @@
+<div id="report" class="page-layout blank" layout="row" ms-scroll>
+    <div class="report-container">
+
+        <!-- REPORT -->
+        <div class="card md-whiteframe-8dp">
+            <div class="header" layout="row" layout-align="space-between start">
+                <div class="ids" layout="column">
+                    <div layout="row" class="seller" layout-align="start center">
+                        <div class="logo md-accent-bg" layout="row" layout-align="center center">
+                            <div>F</div>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="detail">
+                            <div class="title">{{vm.report.from.title}}</div>
+                            <div ng-if="vm.report.from.address" class="address">{{vm.report.from.address}}</div>
+                            <div ng-if="vm.report.from.phone" class="phone"><span
+                                    translate="REPORT.PHONE">Phone</span>:
+                                {{vm.report.from.phone}}
+                            </div>
+                            <div ng-if="vm.report.from.email" class="email"><span
+                                    translate="REPORT.EMAIL">Email</span>:
+                                {{vm.report.from.email}}
+                            </div>
+                            <div ng-if="vm.report.from.website" class="website"><span
+                                    translate="REPORT.WEB">Web</span>:
+                                {{vm.report.from.website}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div layout="row" class="client" layout-align="start center">
+                        <div class="label" layout="row" layout-align="end center">
+                            <div translate="REPORT.CLIENT">CLIENT</div>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="detail">
+                            <div class="title">{{vm.report.client.title}}</div>
+                            <div ng-if="vm.report.client.address" class="address">{{vm.report.client.address}}</div>
+                            <div ng-if="vm.report.client.phone" class="phone"><span
+                                    translate="REPORT.PHONE">Phone</span>:
+                                {{vm.report.client.phone}}
+                            </div>
+                            <div ng-if="vm.report.client.email" class="email"><span
+                                    translate="REPORT.EMAIL">Email</span>:
+                                {{vm.report.client.email}}
+                            </div>
+                            <div ng-if="vm.report.client.website" class="website"><span
+                                    translate="REPORT.WEB">Web</span>:
+                                {{vm.report.client.website}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="summary">
+                    <tr class="code">
+                        <td class="label" translate="REPORT.REPORT">REPORT</td>
+                        <td class="value">{{vm.report.number}}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="label" translate="REPORT.REPORT_DATE">REPORT DATE</td>
+                        <td class="value">{{vm.report.date}}</td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <div class="content">
+
+            </div>
+
+            <div class="footer">
+                <div class="note" translate="REPORT.NOTE">In condimentum malesuada efficitur. Mauris
+                    volutpat placerat auctor.</div>
+                <div layout="row" layout-align="start start">
+                    <div class="logo md-accent-bg" layout="row" layout-align="center center">
+                        <div>F</div>
+                    </div>
+                    <div class="small-note" translate="REPORT.SMALL_NOTE">In condimentum malesuada efficitur. Mauris
+                        volutpat placerat auctor. Ut ac
+                        congue dolor. Quisque scelerisque lacus sed feugiat fermentum. Cras aliquet facilisis
+                        pellentesque. Nunc hendrerit quam at leo commodo,
+                        a suscipit tellus dapibus. Etiam at felis volutpat est mollis lacinia. Mauris placerat sem sit
+                        amet velit mollis, in porttitor ex finibus. Proin eu nibh id libero tincidunt lacinia et eget
+                        eros. Nulla laoreet ipsum quam, quis
+                        auctor velit sodales sit amet. Phasellus at felis iaculis, sodales lectus vitae, egestas mauris.
+                        Duis cursus, metus non dignissim consectetur, augue erat convallis massa, sit amet mollis lacus
+                        lorem eu purus. Praesent
+                        posuere ante quam. Curabitur ultricies magna diam, non consequat purus suscipit quis. Proin
+                        egestas nibh id massa dapibus, sed auctor velit ullamcorper. Integer id dolor nunc.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / REPORT -->
+
+    </div>
+</div>

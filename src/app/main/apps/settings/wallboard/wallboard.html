@@ -1,0 +1,266 @@
+<div id="wallboard-view" class="page-layout simple fullwidth dashboard">
+
+   <!-- HEADER -->
+   <div class="header">
+      <div layout="row" layout-align="space-between">
+         <span class="h2">Wallboard</span>
+         <!-- <a class="toolbar" href="/app/wallboard/index.html" target="_blank">
+          <i class="icon s24 icon-launch"></i>
+          <span class="h2">Launch Wallboard App</span>
+        </a> -->
+      </div>
+   </div>
+   <!-- / HEADER -->
+
+   <!-- MAIN CONTENT -->
+   <div class="content md-background md-hue-1">
+      <md-tabs md-dynamic-height md-border-bottom md-selected="$ctrl.selectedTabIndex">
+         <md-tab label="Wallboard devices" md-on-select="$ctrl.selectTab()">
+            <div class="task-content">
+               <div>
+                  <p>
+                     To create a new device registration, open a browser on the
+                     <span style="font-style: italic; font-weight: bold">target device</span>
+                     at this address: {{$ctrl.serverHost}}/app/wallboard/
+                  </p>
+                  <p>
+                     The same address should be used for each Wallboard device. More
+                     details about Wallboard devices is available
+                     <a href="https://www.amscontrols.com/kb/eclipse-pro-wallboard-andon-app-setup/"
+                        target="_blank">here</a>.
+                  </p>
+               </div>
+               <div class="simple-table-container md-whiteframe-2dp mb-24">
+                  <div class="ms-responsive-table-wrapper">
+                     <table class="simple hover wallboard-device-table">
+                        <thead>
+                           <tr>
+                              <th>ID</th>
+                              <th>Name</th>
+                              <th>Type</th>
+                              <th>Details</th>
+                              <th>Actions</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr ng-repeat="device in $ctrl.wallboardDevices" class="hover">
+                              <td>{{device.wallboardDeviceKey}}</td>
+                              <td>{{device.wallboardDeviceName}}</td>
+                              <td>{{device.contentType}}</td>
+                              <td class="detail-td" ng-if="device.contentType !== 'Message'">{{device.displayDetail}}
+                              </td>
+                              <td class="detail-td" ng-if="device.contentType === 'Message'">
+                                 <div btf-markdown="device.displayDetail"></div>
+                              </td>
+                              <td>
+                                 <!-- todo: convert these actions to icon buttons -->
+                                 <span class="edit-btn" ng-click="$ctrl.showEditModal(device, $event)">Edit</span>
+                                 <span class="edit-btn" ng-click="$ctrl.deleteDevice(device)">Delete</span>
+                                 <a class="delete-btn"
+                                    href="/app/wallboard/?deviceKey={{device.wallboardDeviceKey}}"
+                                    target="_blank">
+                                    <span>Preview</span>
+                                    <i class="icon s14 icon-launch"></i>
+                                 </a>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+
+               </div>
+
+            </div>
+
+         </md-tab>
+         <md-tab label="Andon Config" md-on-select="$ctrl.selectTab()">
+            <md-content class="andon-cards content md-background md-hue-1">
+               <div layout="row" class="add-sequence">
+                  <md-button class="md-primary md-raised md-hue-2" ng-click="$ctrl.addNewSequence()"
+                     aria-label="New Sequence">
+                     <span translate="addSequence">Add Sequence</span>
+                     <md-icon md-font-icon="icon-plus" class="icon"></md-icon>
+                  </md-button>
+               </div>
+               <div flex layout-fill layout="column" layout-gt-xs="row" layout-align="space-between">
+                  <div flex-gt-xs="55">
+
+                     <!-- ANDON SEQUENCE -->
+                     <div class="pb-40 mb-24" ng-class="{'border-bottom': !$last, 'mr-24': $ctrl.mdMedia('gt-xs')}"
+                        ng-repeat="sequence in $ctrl.andonSequences track by $index">
+
+                        <!-- EDITABLE ANDON SEQUENCE NAME -->
+                        <div ng-class="{'p-8': $ctrl.mdMedia('gt-xs')}" class="sequence-title">
+                           <span editable-text="sequence.name" onshow="$ctrl.onEditedSeq(sequence,true)"
+                              onhide="$ctrl.onEditedSeq(sequence, false)"
+                              onaftersave="$ctrl.updatePanelSequence(sequence);"
+                              class="pl-5 line-height-40 font-weight-500 h3">{{sequence.name}} <md-icon
+                                 md-font-icon="icon-pencil" class="icon s16 ml-5 mb-5 hint-text icon-pencil"></md-icon>
+                           </span>
+                           <span ng-if="!!sequence.isShowed" class="delete-andon"
+                              ng-class="{'disable-delete': sequence.count > 0}"
+                              ng-click="$ctrl.deletePanelSequence(sequence, $index)">
+                              <span ng-if="sequence.count > 0" class="disable-badge">{{sequence.count}}</span>
+                              delete
+                           </span>
+                        </div>
+                        <!-- END EDITABLE ANDON SEQUENCE NAME -->
+
+                        <!-- ANDON PANEL THUMBNAILS -->
+                        <div layout="row" flex="100" layout-wrap ui-sortable="$ctrl.andonGridOptions"
+                           ng-model="sequence.panels">
+
+                           <!-- ANDON DRAG AND DROP PANEL THUMBNAIL -->
+                           <div layout="column" layout-align="center" class="md-whiteframe-1dp andon-card"
+                              ng-repeat="panel in sequence.panels track by $index"
+                              ng-click="$ctrl.restartSequence(sequence, $index); $ctrl.sequence = sequence"
+                              ng-focus="$ctrl.restartSequence(sequence, $index); $ctrl.sequence = sequence"
+                              ng-class="{'current-panel': $ctrl.currentPanel(sequence, panel) && sequence === $ctrl.sequence}"
+                              tabindex="-1">
+
+                              <div class="andon-name font-size-14 text-upper">
+                                 <span ng-if="(panel.viewKey !== 'message') || !panel.title"><span
+                                       translate="{{panel.viewKey}}">{{$ctrl.andonViews[panel.viewKey].name}}</span><span
+                                       ng-if="panel.chart"><br /><span translate="chart">Chart</span></span></span>
+                                 <span ng-if="(panel.viewKey === 'message') && panel.title">{{panel.title}}</span>
+                              </div>
+
+                              <!-- ANDON PANEL CONTROLS -->
+                              <div class="andon-card-controls">
+                                 <div class="andon-panel-duration">
+                                    <span class="secondary-text" editable-text="panel.duration" buttons="no"
+                                       tabindex="1" e-tabindex="1" ng-focus="$form.$show()"
+                                       onshow="$ctrl.focusSelect($form)" ng-click="$ctrl.onPanelClicked($event)"
+                                       e-ng-blur="$ctrl.onPanelSaved($form, sequence)"
+                                       onaftersave="$ctrl.updatePanelSequence(sequence)">{{panel.duration || 0
+                                       }}s</span>
+                                 </div>
+                                 <md-button ng-if="$ctrl.andonViews[panel.viewKey].hasChart === 'true'"
+                                    class="andon-panel-option" md-no-ink
+                                    ng-click="$ctrl.togglePanelChart(sequence, panel)" aria-label="Edit Panel Chart">
+                                    <md-icon md-font-icon="icon-chart-line" class="icon s16"
+                                       ng-class="{'blue-500-fg': panel.chart, 'hint-text': !panel.chart}"></md-icon>
+                                 </md-button>
+                                 <md-button ng-if="$ctrl.andonViews[panel.viewKey].editKey" class="andon-panel-option" md-no-ink
+                                    ng-click="$ctrl.editPanelDetail($event, $parent.$parent.$index, $parent.$index, sequence, $ctrl.andonViews[panel.viewKey].editKey)"
+                                    aria-label="Custom Message">
+                                    <md-icon md-font-icon="icon-pencil" class="icon s16 hint-text"></md-icon>
+                                 </md-button>
+                                 <md-button class="remove-andon-panel" md-no-ink
+                                    ng-click="sequence.panels.splice($index,1); $ctrl.updatePanelSequence(sequence)"
+                                    aria-label="Remove Panel">
+                                    <md-icon md-font-icon="icon-delete" class="icon s16 hint-text"></md-icon>
+                                 </md-button>
+                              </div>
+                              <!-- END ANDON PANEL CONTROLS -->
+
+                           </div>
+                           <!-- END ANDON DRAG AND DROP PANEL THUMBNAIL -->
+
+                           <!-- ADD ANDON PANEL THUMBNAIL BUTTON -->
+                           <md-menu class="unsortable" flex-xs="100">
+                              <md-button class="add-andon-panel andon-card" ng-click="$mdMenu.open($event)"
+                                 aria-label="Andon View" md-menu-origin md-menu-align-target>
+                                 <md-tooltip><span translate="addAndonView">Add Andon View</span></md-tooltip>
+                                 <md-icon md-font-icon="icon-plus" class="icon" md-menu-align-target></md-icon>
+                              </md-button>
+
+                              <md-menu-content width="3">
+                                 <md-menu-item ng-repeat="view in $ctrl.andonViews">
+                                    <md-button ng-click="$ctrl.addNewPanel($event, $parent.$index, view.viewKey)"
+                                       aria-label="Add Andon View">
+                                       <span translate="{{view.viewKey}}">{{view.name}}</span>
+                                    </md-button>
+                                 </md-menu-item>
+                              </md-menu-content>
+                           </md-menu>
+                           <!-- END ADD ANDON PANEL THUMBNAIL BUTTON -->
+
+                        </div>
+                        <!-- END ANDON PANEL THUMBNAILS -->
+
+                     </div>
+                     <!-- END ANDON SEQUENCE -->
+
+                  </div>
+
+                  <div flex="45" hide-xs>
+
+                     <!-- ANDON DISPLAY PREVIEW -->
+                     <div id="andon-preview" class="grey-50-bg md-whiteframe-2dp">
+
+                        <!-- ANDON DISPLAY FRAME -->
+                        <div class="andon-frame">
+
+                           <andon-display display="preview"
+                              machine=$ctrl.machineData.machines[$ctrl.selectedMachine.machineNumber]
+                              machine-state=$ctrl.machineData.states[$ctrl.selectedMachine.machineNumber]
+                              shift-stats=$ctrl.machineData.statistics[$ctrl.selectedMachine.machineNumber]
+                              stats-history=$ctrl.machineData.statisticsHistory[$ctrl.selectedMachine.machineNumber]
+                              schedule-summary=$ctrl.machineData.scheduleSummaries[$ctrl.selectedMachine.machineNumber]
+                              metric-configuration=$ctrl.machineData.metricSettings[$ctrl.selectedMachine.machineNumber]
+                              sequence="$ctrl.sequence" curr-task=$ctrl.readyTask current-job="$ctrl.currentJob"
+                              current-item="$ctrl.currentItem" metric-definitions="$ctrl.metricDefinitions"
+                              view-key="viewKey" play-key="playKey" theme="$ctrl.sequence.theme">
+                           </andon-display>
+                        </div>
+                        <!-- END ANDON DISPLAY FRAME -->
+
+                        <div class="andon-preview-footer">
+
+                           <div class="h-40 pl-16" layout="row" layout-align="space-between center">
+                              <div class="text-upper hint-text line-height-40" translate="previewDisplay">
+                                 Preview Display
+                              </div>
+                              <div ng-if="$ctrl.andonSequences.length && $ctrl.sequence.panels.length">
+                                 <md-button class="md-icon-button"
+                                    ui-sref="app.andon_wallboard({ machineNumber: $ctrl.selectedMachine.machineNumber, andonId: $ctrl.sequence.id })"
+                                    target="_blank">
+                                    <md-tooltip md-direction="left"><span translate="launchDisplay">Launch
+                                          Display</span></md-tooltip>
+                                    <md-icon class="icon" md-font-icon="icon-launch"></md-icon>
+                                 </md-button>
+                              </div>
+                           </div>
+
+                           <!-- SELECT MACHINE DATA AND SEQUENCE TO LOAD INTO PREVIEW FRAME -->
+                           <md-toolbar class="grey-50-bg pl-16 pr-8 pb-16 black-text font-size-14" layout="row"
+                              layout-wrap layout-align="center">
+
+                              <md-input-container flex="50">
+                                 <md-select ng-model="$ctrl.selectedMachine" placeholder="Machine"
+                                    ng-change="$ctrl.machineChange($ctrl.selectedMachine)">
+                                    <md-option ng-value="$ctrl.machineData.machines[machineNumber]"
+                                       ng-repeat="(machineNumber, machine) in $ctrl.machineData.machines track by machine.machineNumber"
+                                       ng-selected="$first">{{ machine.description }}</md-option>
+                                 </md-select>
+                              </md-input-container>
+
+                              <md-input-container flex="50">
+                                 <md-select ng-model="$ctrl.selectedSequence" placeholder="Sequence"
+                                    ng-change="$ctrl.restartSequence($ctrl.selectedSequence, 0)">
+                                    <md-option ng-value="$ctrl.andonSequences[$index]"
+                                       ng-repeat="sequence in $ctrl.andonSequences" ng-selected="$first">{{
+                                       sequence.name }}</md-option>
+                                 </md-select>
+                              </md-input-container>
+
+                           </md-toolbar>
+
+                        </div>
+
+                     </div>
+                     <!-- END ANDON DISPLAY PREVIEW -->
+
+                  </div>
+               </div>
+
+            </md-content>
+
+         </md-tab>
+      </md-tabs>
+
+   </div>
+   <!-- / MAIN CONTENT -->
+
+</div>

@@ -1,0 +1,114 @@
+<div id="dashboard-explorer" class="page-layout simple fullwidth dashboard" ngsf-fullscreen>
+  <!-- HEADER -->
+  <div class="header">
+    <div layout="row" layout-align="space-between">
+      <span class="h2 text-upper" translate="goodProductionExplorer">Good Production Explorer</span>
+
+      <div class="toolbar">
+        <md-button ng-click="$ctrl.resetAll()">
+          <md-tooltip md-direction="bottom">
+            <span>Reset All</span>
+          </md-tooltip>
+          <md-icon md-font-icon="mdi-filter-remove" class="mdi"></md-icon>
+        </md-button>
+
+        <label class="datepicker-label">Start Date</label>
+        <md-datepicker ng-model="$ctrl.dataService.startDate" ng-change="$ctrl.update()"
+          md-min-date="$ctrl.dataService.minDate" md-max-date="$ctrl.dataService.maxDate"></md-datepicker>
+        <label class="datepicker-label">End Date</label>
+        <md-datepicker ng-model="$ctrl.dataService.endDate" ng-change="$ctrl.update()"
+          md-min-date="$ctrl.dataService.minDate" md-max-date="$ctrl.dataService.maxDate"></md-datepicker>
+
+        <md-button
+          href="/api/productionexplorer/download?startDate={{$ctrl.dataService.startDate.toISOString()}}&endDate={{$ctrl.dataService.endDate.toISOString()}}"
+          target="_self">
+          <md-tooltip md-direction="bottom">
+            <span translate="downloadCsv"></span>
+          </md-tooltip>
+          <md-icon md-font-icon="mdi-microsoft-excel" class="mdi"></md-icon>
+        </md-button>
+      </div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- MD-CONTENT -->
+  <md-content class="content md-background md-hue-1" flex>
+    <div ng-if="$ctrl.records.length === 0">
+      <h2 translate="noDataAvailable"></h2>
+    </div>
+    <!-- WIDGET GROUP -->
+    <div class="widget-group" layout-gt-xs="row" flex="100" layout-wrap ng-if="$ctrl.dataService.data.length">
+      <!-- WIDGET 1 -->
+      <div class="ms-card" flex="100">
+        <dc-time-bar-chart dimension="$ctrl.cfData.byDayDimension" group="$ctrl.cfData.byDayGroup" chart-title="Day"
+          value-property="goodLocal" height="150"></dc-time-bar-chart>
+      </div>
+
+      <div class="ms-card" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart dimension="$ctrl.cfData.byShiftDimension" top-count="8" group="$ctrl.cfData.byShiftGroup"
+          value-property="goodLocal" chart-title="Shift" height="200"></dc-pareto-chart>
+      </div>
+
+      <div class="ms-card" flex-xs="100" flex-sm="50" flex="25">
+        <dc-linear-bar-chart dimension="$ctrl.cfData.byDayOfWeekDimension" group="$ctrl.cfData.byDayOfWeekGroup"
+          value-property="goodLocal" group-property="dayOfWeek" chart-title="Day" height="200"></dc-linear-bar-chart>
+      </div>
+
+      <div class="ms-card" flex-xs="100" flex-sm="50" flex="25">
+        <dc-linear-bar-chart dimension="$ctrl.cfData.byHourOfDayDimension" group="$ctrl.cfData.byHourOfDayGroup"
+          value-property="goodLocal" group-property="hourOfDay" chart-title="Hour" height="200"></dc-linear-bar-chart>
+      </div>
+
+      <!-- WIDGET 3 -->
+      <div class="ms-card" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart dimension="$ctrl.cfData.byMachineDimension" top-count="8" group="$ctrl.cfData.byMachineGroup"
+          chart-title="Machine" value-property="goodLocal" height="200"></dc-pareto-chart>
+      </div>
+
+      <!-- WIDGET 4 -->
+      <div class="ms-card" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart dimension="$ctrl.cfData.byMaterialDimension" top-count="8" group="$ctrl.cfData.byMaterialGroup"
+          chart-title="Material" value-property="goodLocal" height="200"></dc-pareto-chart>
+      </div>
+
+      <!-- WIDGET 5 -->
+      <div class="ms-card" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart dimension="$ctrl.cfData.byProductDimension" top-count="8" group="$ctrl.cfData.byProductGroup"
+          chart-title="Product" value-property="goodLocal" height="200"></dc-pareto-chart>
+      </div>
+
+      <div class="ms-card" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart dimension="$ctrl.cfData.byCustomerDimension" top-count="8" group="$ctrl.cfData.byCustomerGroup"
+          chart-title="Customer" value-property="goodLocal" height="200"></dc-pareto-chart>
+      </div>
+
+      <!-- WIDGET 6 -->
+      <div class="ms-card" flex-xs="100" flex-sm="50" flex="25">
+        <dc-linear-bar-chart dimension="$ctrl.cfData.byPartLengthDimension" group="$ctrl.cfData.byPartLengthGroup"
+          chart-title="Part Length" value-property="goodLocal" group-property="partLengthLocal" height="200">
+        </dc-linear-bar-chart>
+      </div>
+
+      <!-- WIDGET 7 -->
+      <div class="ms-card" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart dimension="$ctrl.cfData.byCoilDimension" top-count="8" group="$ctrl.cfData.byCoilGroup"
+          chart-title="Coil" value-property="goodLocal" height="200"></dc-pareto-chart>
+      </div>
+
+      <!-- WIDGET 8 -->
+      <div class="ms-card" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart dimension="$ctrl.cfData.byOperatorDimension" top-count="8" group="$ctrl.cfData.byOperatorGroup"
+          chart-title="Operator" value-property="goodLocal" height="200"></dc-pareto-chart>
+      </div>
+
+      <div class="ms-card" flex-xs="100" flex-sm="50" flex="25">
+        <dc-pareto-chart dimension="$ctrl.cfData.byPunchedDimension" top-count="8" group="$ctrl.cfData.byPunchedGroup"
+          chart-title="Punched" value-property="goodLocal" height="200"></dc-pareto-chart>
+      </div>
+    </div>
+    <!-- END WIDGET GROUP -->
+  </md-content>
+  <!-- END MD CONTENT -->
+</div>
+<!-- END EXPLORER -->
