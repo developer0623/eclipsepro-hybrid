@@ -88,9 +88,9 @@ export const app = module('eclipsePro', [
     customDndModule, /* 'dndLists', */ 'angular.filter',
     'agGrid'
 ])
-    .controller('AppController', ['eclipseProTheming', AppController])
-    .run(['$rootScope', '$state', '$timeout', runBlock])
-    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', routeConfig])
-    .config(['$httpProvider', httpConfig]);
+.controller('AppController', AppController)
+.run(runBlock)
+.config(routeConfig)
+.config(httpConfig);
 
 // bootstrap(document.querySelector('#main'), ['eclipsePro'])

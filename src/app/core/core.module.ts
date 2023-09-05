@@ -71,19 +71,16 @@ const coreModule = module('app.core', [
     angularDc,
     'asyncFilter'
 ])
-.constant('eclipseProPalettes', [eclipseProPalettes])
-    .run(['eclipseProGenerator', 'eclipseProConfig', 'eclipseProHelper', 'featureFlagService', 'clientDataStore',
-    'clientDataDispatcher', 'subscriptionService', 'apiResolver', 'authService', '$location', '$translate',
-    '$mdToast', '$http', 'editableOptions',  '$rootScope','$transitions', runBlock])
-    .config(['$ariaProvider','$logProvider', 'msScrollConfigProvider', '$translateProvider', '$provide', 'eclipseProConfigProvider', config])
-   .factory('errors', [raygunService])
+.run(runBlock)
+    .config(config)
+   .factory('errors', raygunService)
    .provider('eclipseProConfig', [eclipseProConfigProvider])
-   .factory('eclipseProHelper', ['$q', eclipseProHelperService])
-   .factory('eclipseProGenerator', ['eclipseProTheming', '$cookies', eclipseProGeneratorService])
-   .constant('eclipseProThemes', [eclipseProThemes])
-   .config(['$mdThemingProvider','eclipseProPalettes', 'eclipseProThemes', 'eclipseProThemingProvider', themeConfig])
-
-   .provider('eclipseProTheming', [eclipseProThemingProvider])
+   .factory('eclipseProHelper', eclipseProHelperService)
+   .factory('eclipseProGenerator', eclipseProGeneratorService)
+   .constant('eclipseProThemes', eclipseProThemes)
+   .config(themeConfig)
+   .constant('eclipseProPalettes', eclipseProPalettes)
+   .provider('eclipseProTheming', eclipseProThemingProvider)
    .name;
 
 export default coreModule;

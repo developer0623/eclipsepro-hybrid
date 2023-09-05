@@ -565,7 +565,7 @@ md-select-menu {
          margin-right: 5px;
          z-index: 1000;
          padding: 15px;
-         background: url(../assets/images/helpImages/cancel.png) no-repeat;
+         background: url(../../../../assets/images/helpImages/cancel.png) no-repeat;
       }
       .slide {
          position: absolute;
@@ -593,12 +593,12 @@ md-select-menu {
          // background: url(../../assets/images/helpImages/blank.gif) no-repeat;
          &.prev {
             left: 0;
-            background-image: url(../assets/images/helpImages/left.png);
+            background-image: url(../../../../assets/images/helpImages/left.png);
             transition: 0.2s linear all;
          }
          &.next {
             right: 0;
-            background-image: url(../assets/images/helpImages/right.png);
+            background-image: url(../../../../assets/images/helpImages/right.png);
             transition: 0.2s linear all;
          }
       }

@@ -17,7 +17,60 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.7/d3.min.js"
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
-<body>
-  <div ui-view="main"></div>
+<body ng-controller="AppController as vm">
+  <div md-theme="eclipse-pro-theme" md-theme-watch id="main" class="animate slide-up" ui-view="main">
+    <ms-splash-screen id="splash-screen">
+      <div class="center">
+          <div class="logo">
+              <span><i class="icon icon-brightness-3 s50 amber-500-fg"></i></span>
+          </div>
+
+          <div class="spinner-wrapper">
+              <div class="spinner">
+                  <div class="inner">
+                      <div class="gap"></div>
+                      <div class="left">
+                          <div class="half-circle"></div>
+                      </div>
+                      <div class="right">
+                          <div class="half-circle"></div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+  </ms-splash-screen>
+  </div>
+  <div id="print-body"></div>
+
+    <script type="text/javascript">
+        let BUILD_NUMBER = '<!-- inject:BUILD_NUMBER -->';
+    </script>
+
+    <script id="NO_IEMESSAGE" type="text/html">
+            <div style="color:white">Eclipse Pro does not support Internet Explorer. Please switch browsers.</div>
+        </script>
+    <script type="text/javascript">
+        function isIE() {
+            return ((navigator.appName === 'Microsoft Internet Explorer') || ((navigator.appName === 'Netscape') && (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null)));
+        }
+
+        if (isIE()) {
+            // Replace the spinner with the message.
+            let splash = document.getElementById('splash-screen');
+            splash.getElementsByClassName('spinner-wrapper')[0].innerHTML = document.getElementById('NO_IEMESSAGE').innerHTML;
+        }
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BDC1YCMCXH"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-BDC1YCMCXH', { send_page_view: false });
+    </script>
 </body>
 </html>

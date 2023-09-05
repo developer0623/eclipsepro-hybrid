@@ -22,20 +22,20 @@ export function themeConfig($mdThemingProvider, eclipseProPalettes, eclipseProTh
         $mdThemingProvider.alwaysWatchTheme(true);
 
         // Define custom palettes
-        // angular.forEach(eclipseProPalettes, function (palette)
-        // {
-        //     $mdThemingProvider.definePalette(palette.name, palette.options);
-        // });
+        angular.forEach(eclipseProPalettes, function (palette)
+        {
+            $mdThemingProvider.definePalette(palette.name, palette.options);
+        });
 
         // Register custom themes
-        // angular.forEach(eclipseProThemes, function (theme, themeName)
-        // {
-        //     $mdThemingProvider.theme(themeName)
-        //         .primaryPalette(theme.primary.name, theme.primary.hues)
-        //         .accentPalette(theme.accent.name, theme.accent.hues)
-        //         .warnPalette(theme.warn.name, theme.warn.hues)
-        //         .backgroundPalette(theme.background.name, theme.background.hues);
-        // });
+        angular.forEach(eclipseProThemes, function (theme, themeName)
+        {
+            $mdThemingProvider.theme(themeName)
+                .primaryPalette(theme.primary.name, theme.primary.hues)
+                .accentPalette(theme.accent.name, theme.accent.hues)
+                .warnPalette(theme.warn.name, theme.warn.hues)
+                .backgroundPalette(theme.background.name, theme.background.hues);
+        });
 
         // Store generated PALETTES and THEMES objects from $mdThemingProvider
         // in our custom provider, so we can inject them into other areas
