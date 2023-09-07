@@ -1,0 +1,109 @@
+$running: #4caf50;
+$exempt: #ffb03b;
+$changeover: #2196f3;
+$downtime: #f44336;
+$halted: #f44336;
+$breakdown: #9c27b0;
+$offline: #cdcdcd;
+
+$metricPrimary: #cbcbcb;
+$metricGood: material-color('green', '600');
+$metricOk: material-color('amber', '600');
+$metricBad: material-color('red', '600');
+
+.running {
+  fill: $running;
+  background-color: $running  !important;
+
+  &.icon {
+    background-color: transparent !important;
+    color: $running  !important;
+  }
+}
+
+.exempt {
+  fill: $exempt;
+  background-color: $exempt  !important;
+
+  &.icon {
+    background-color: transparent !important;
+    color: $exempt  !important;
+  }
+}
+
+.changeover {
+  fill: $changeover;
+  background-color: $changeover  !important;
+
+  &.icon {
+    background-color: transparent !important;
+    color: $changeover  !important;
+  }
+}
+
+.downtime {
+  fill: $downtime;
+  background-color: $downtime  !important;
+
+  &.icon {
+    background-color: transparent !important;
+    color: $downtime  !important;
+  }
+}
+
+.halted {
+  fill: $halted;
+  background-color: $halted  !important;
+
+  &.icon {
+    background-color: transparent !important;
+    color: $halted  !important;
+  }
+}
+
+.breakdown {
+  fill: $breakdown;
+  background-color: $breakdown  !important;
+
+  &.icon {
+    background-color: transparent !important;
+    color: $breakdown  !important;
+  }
+}
+
+.offline {
+  fill: $offline;
+  background-color: $offline  !important;
+
+  &.icon {
+    background-color: transparent !important;
+    color: $offline  !important;
+  }
+}
+
+.snapshot-bar {
+  position: relative;
+  border-radius: 2px;
+
+  >div {
+    padding: 0 16px 0 0;
+    position: relative;
+
+    &:first-child {
+      border-radius: 2px 0 0 2px;
+    }
+
+    &:last-child {
+      border-radius: 0 2px 2px 0;
+    }
+
+    &:not(:last-child) {
+      margin-right: 3px
+    }
+  }
+}
+
+.snapshot-label {
+  color: rgba(255, 255, 255, .87);
+  display: block;
+}

@@ -10,8 +10,8 @@ import { QuickPanelController } from './quick-panel/quick-panel.controller';
 routeConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
 export default function routeConfig($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
-
-    $urlRouterProvider.otherwise('dashboards/machines');
+    $urlRouterProvider.otherwise('test');
+    // $urlRouterProvider.otherwise('dashboards/machines');
 
     // State definitions
     $stateProvider

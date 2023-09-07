@@ -1,0 +1,10 @@
+<div class="lockout lockout-indicator">
+  <mat-icon *ngIf="lockout ==='Unlocked'" class="mdi unlocked" matTooltip="The lockout for this machine is Off." matTooltipPosition="top"
+    aria-hidden="false" aria-label="lock-open-alert" fontIcon="lock-open-alert">
+
+  </mat-icon>
+  <mat-icon *ngIf="lockout ==='Unknown'" class="mdi unknown" matTooltip="This machine does not send its lockout state. This is available in XL200 version 4.58.00 or greater." matTooltipPosition="top"
+    aria-hidden="false" aria-label="lock-question" fontIcon="lock-question">
+
+  </mat-icon>
+</div>`

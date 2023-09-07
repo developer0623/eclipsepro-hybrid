@@ -16,7 +16,6 @@ import 'angular-translate-loader-url';
 import 'angular-translate-storage-local';
 import 'angular-translate-storage-cookie';
 import 'angular-timer';
-import 'angular-ui-router'
 import 'textangular';
 // import 'ng-sortable';
 // import 'sortablejs'
@@ -56,7 +55,6 @@ const coreModule = module('app.core', [
     'nvd3',
     'pascalprecht.translate',
     'timer',
-    'ui.router',
     'textAngular',
    //  // 'ng-sortable',
     'ui.sortable',

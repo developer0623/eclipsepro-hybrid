@@ -1,10 +1,12 @@
-import { module, bootstrap } from 'angular';
 import * as angular from 'angular';
 import "angulartics";
 import "angulartics-google-analytics";
 import "angular-advanced-searchbox";
 import "angular-ui-bootstrap";
 import "angular-filter";
+
+import uiRouter from "@uirouter/angularjs";
+import { upgradeModule } from "@uirouter/angular-hybrid";
 
 //@require "./**/*.html";
 
@@ -39,7 +41,9 @@ import * as agGrid from 'ag-grid-community'
 
 agGrid.initialiseAgGridWithAngular1(angular);
 
-export const app = module('eclipsePro', [
+export const eclipseProApp = angular.module('eclipsePro', [
+  uiRouter,
+  upgradeModule.name,
     // Core
     coreModule,
 

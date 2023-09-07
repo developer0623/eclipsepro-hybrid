@@ -1,5 +1,5 @@
 import rg4js from 'raygun4js';
-import { Transition } from 'angular-ui-router';
+import { Transition } from '@uirouter/angularjs';
 
 declare let gtag;
 
@@ -13,7 +13,6 @@ export function MainController(
 ) {
    // Data
    let vm = this;
-   console.log('111111111')
 
    // Remove the splash screen
    $scope.$on("$viewContentAnimationEnded", function (event) {

@@ -1,0 +1,15 @@
+machine-panel-mini {
+  .ms-widget{
+    .ms-widget-front{
+      .text-truncate{
+        margin: 0 !important;
+      }
+      .pb-8{
+        .secondary-text{
+          margin: 0 !important;
+          line-height: 20px;
+        }
+      }
+    }
+  }
+}
