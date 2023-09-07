@@ -51,7 +51,8 @@ const AvailableJobs = {
       isSelected: node.isSelected,
       isSummaryRow: node.isSummaryRow,
       patternNotDefined: node.patternNotDefined,
-      width: node.style.width
+      width: node.style.width,
+      summary: node.summary,
     });
 
     private getOrderedIds = (node: AvailableJobsTree): number[] => {

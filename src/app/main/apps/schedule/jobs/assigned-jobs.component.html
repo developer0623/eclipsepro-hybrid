@@ -110,8 +110,14 @@
                      ">
                      {{ row[idx].ids.length }} jobs
                   </span>
-                  <md-icon md-menu-origin md-font-icon="icon-chevron-down" ng-if="!row[idx].isSummaryRow"></md-icon>
-                  <md-icon md-menu-origin md-font-icon="icon-chevron-right" ng-if="row[idx].isSummaryRow"></md-icon>
+                  <md-icon md-menu-origin md-font-icon="{{row[idx].isSummaryRow && 'icon-chevron-right' || 'icon-chevron-down'}}">                     
+                     <ms-tooltip>
+                        <div class="tooltip-header">{{row[idx].summary.count}} Jobs</div>
+                        <div class="tooltip-body">
+                           <div>Total: {{row[idx].summary.totalFt | unitsFormat: 'ft'}}</div>
+                        </div>
+                    </ms-tooltip>
+                  </md-icon>
                </md-button>
             </div>
             <div class="assigned-narrow-text">

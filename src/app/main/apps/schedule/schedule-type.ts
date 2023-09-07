@@ -1,4 +1,4 @@
-import { RangeValue, IScheduleItem, IJobSummaryDto } from "../../../core/dto";
+import { RangeValue, IScheduleItem, IJobSummaryDto, ISchedulerGroupSummary } from "../../../core/dto";
 export type ExpandedScheduledJob = IScheduleItem &
   IJobSummaryDto & { isSelected: boolean, mainIndex?: number };
 export interface IANode {
@@ -15,6 +15,7 @@ export interface IANode {
   background: string;
   isSelected: boolean;
   isSummaryRow: boolean;
+  summary: ISchedulerGroupSummary;
 }
 export interface IACell {
   key: string | RangeValue;
@@ -26,6 +27,7 @@ export interface IACell {
   jobs: ExpandedScheduledJob[];
   isSelected: boolean;
   isSummaryRow: boolean;
+  summary: ISchedulerGroupSummary;
 }
 
 export interface ICell {
@@ -44,4 +46,5 @@ export interface ICell {
   isSummaryRow: boolean;
   patternNotDefined: boolean;
   width?: number | undefined;
+  summary: ISchedulerGroupSummary;
 }

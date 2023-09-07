@@ -10,7 +10,7 @@ const PathfinderGoodPartsExplorer = {
   selector: 'pathfinderGoodpartsExplorer',
   template: PathfinderTemplate,
   bindings: {},
-  controller: ['$scope', 'productionExplorerDataService', class PathfinderGoodpartsExplorerComponent {
+  controller: ['$scope', 'productionDeviceExplorerDataService', class PathfinderGoodpartsExplorerComponent {
     dataService: any;
     cfData: any;
 

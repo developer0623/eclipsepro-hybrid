@@ -7,7 +7,7 @@ import 'angular-resource';
 import 'angular-sanitize';
 import 'angular-material';
 // import 'angular-datatables';
-// import 'datatables.net';
+import 'datatables.net';
 import 'angular-nvd3';
 import 'angular-translate';
 import 'angular-translate-loader-partial';
@@ -69,7 +69,7 @@ const coreModule = module('app.core', [
     angularDc,
     'asyncFilter'
 ])
-.run(runBlock)
+    .run(runBlock)
     .config(config)
    .factory('errors', raygunService)
    .provider('eclipseProConfig', [eclipseProConfigProvider])

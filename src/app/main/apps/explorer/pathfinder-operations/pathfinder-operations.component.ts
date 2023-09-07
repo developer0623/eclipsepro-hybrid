@@ -10,7 +10,7 @@ const PathfinderOperationsExplorer = {
   selector: 'pathfinderOperationsExplorer',
   template: PathfinderTemplate,
   bindings: {},
-  controller: ['$scope', 'productionExplorerDataService', class PathfinderOperationsExplorerComponent {
+  controller: ['$scope', 'productionDeviceExplorerDataService', class PathfinderOperationsExplorerComponent {
     dataService: any;
     cfData: any;
 

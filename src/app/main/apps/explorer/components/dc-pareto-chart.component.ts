@@ -1,10 +1,9 @@
 import * as _ from 'lodash';
 import dc, { RowChart } from 'dc';
 // import * as d3 from 'd3';
+declare let d3: any
 
 import ParetoTemp from './dc-pareto-chart.component.html';
-
-declare let d3: any
 
 const DcParetoChart = {
     selector: 'dcParetoChart',

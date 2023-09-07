@@ -456,10 +456,7 @@
                    <div class="material-usage-item item-header">
                       <div class="main-con" ng-repeat="item in $ctrl.xlPatternsColumns">
                          {{item.field === "operations" ?
-                         pattern[item.field].length : item.field ===
-                         "dontSave" && pattern[item.field] ? "YES" :
-                         item.field === "dontSave" && !pattern[item.field]
-                         ? "NO" : pattern[item.field]}}
+                         pattern[item.field].length : pattern[item.field]}}
                       </div>
                    </div>
                    <div></div>

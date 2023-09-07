@@ -1,10 +1,9 @@
 import * as _ from 'lodash';
 import dc, { BarChart } from 'dc';
 // import * as d3 from 'd3';
+declare let d3: any
 
 import TimebarTemp from './dc-time-bar-chart.component.html';
-
-declare let d3: any
 
 const DcTimeBarChart = {
     selector: 'dcTimeBarChart',

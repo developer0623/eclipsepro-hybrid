@@ -92,7 +92,7 @@ const PunchPatternlPreview = {
             <div class="job-detail-tooltip-header">
                <div class="job-detail-tooltip-title">Pattern: {{$ctrl.pattern.patternName}}</div>
             </div>
-            <md-tabs md-dynamic-height md-center-tabs md-stretch-tabs="always" md-no-pagination>
+            <md-tabs md-selected="1" md-dynamic-height md-center-tabs md-stretch-tabs="always" md-no-pagination>
                <md-tab label="Pattern">
                   <md-content class="md-padding flex-container right-padding-0"  ng-style="{ 'height' : $ctrl.tableHeight + 'px' }">
                      <div class="left-container">

@@ -79,7 +79,7 @@ const MachineSummary = {
           return 2;
         }
         this.getMarkerColor = () => {
-
+      
           const state = ctrl.getValueState();
           let bgCol = '';
           // if(ctrl.state) {
@@ -87,7 +87,7 @@ const MachineSummary = {
           // } else {
             bgCol = ctrl.valueBgCol[state];
           // }
-
+          
           return bgCol;
         }
         this.init = function() {
@@ -95,7 +95,7 @@ const MachineSummary = {
               width = 500 - margin.left - margin.right,
               height = 220 - margin.top - margin.bottom;
           let hisLength = ctrl.data.history.length;
-
+  
           let x = d3.scale.linear().domain([0, hisLength - 1]).range([0, width]);
           let y = d3.scale.linear().range([height, 0]);
           y.domain([0, d3.max(ctrl.data.history, function(d: any) { return d.value; })]);
@@ -105,7 +105,7 @@ const MachineSummary = {
               .y(function(d: any) { return y(d.value); })
               .interpolate("basis");
 
-
+              
           let svg = d3.select("#report-popover__d3")
             .append("svg")
             .attr("width", width + margin.left + margin.right)
@@ -114,11 +114,11 @@ const MachineSummary = {
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
           const markerCol = ctrl.getMarkerColor();
-
+          
           svg.append("svg:defs").append("svg:marker")
             .attr("id", 'markgerId')
             .attr("refX", 6)
-            .attr("refY", 6)
+            .attr("refY", 6)              
             .attr("markerWidth", 10)
             .attr("markerHeight", 10)
             .attr("orient", "auto")
@@ -141,8 +141,8 @@ const MachineSummary = {
       $timeout(function() {
         ctrl.init();
       });
-
-
+    
+        
       }
 
     }]

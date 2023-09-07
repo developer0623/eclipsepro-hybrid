@@ -3,6 +3,7 @@ import { InitSingleOrder } from '../../core/services/store/order/actions';
 import { SingleOrder } from '../../core/services/store/order/selectors';
 import { IJobItem } from '../../core/dto';
 import { GridOptions } from 'ag-grid-community';
+import Rx from 'rx';
 
 const CoilTypelPreview = {
    selector: "coilTypePreview",
@@ -60,6 +61,8 @@ const CoilTypelPreview = {
       ];
       knownCoilIds: string[] = [];
       hoverTimeout: any;
+      coils = [];
+      mainSub_;
       constructor(private $scope, private $document, private $compile, private api, private clientDataStore, private $timeout, private $filter) {
          $scope.$on('$destroy', () => {
             if(!!this.coilsSub_) {
@@ -67,7 +70,6 @@ const CoilTypelPreview = {
                this.coilsSub_.dispose();
             }
          });
-
          this.agCoilGridOptions = {
             angularCompileRows: true,
             headerHeight: 25,
@@ -90,47 +92,27 @@ const CoilTypelPreview = {
          };
       }
       onGetData(pos) {
-
-         this.coilTypeSub_ = this.clientDataStore
-            .SelectCoilTypes()
-            .flatMap(cts => cts.filter(ct => ct.materialCode === this.materialId))
-            .subscribe(coilType => {
-               this.coilType = coilType;
-            });
-
-         this.coilsSub_ = this.clientDataStore
-            .SelectCoilDtosIn({ property: 'MaterialCode', values: [this.materialId] })
-            .subscribe(coils => {
-               //this.coilsGridOptions.data = coils;if (this.agGridOptions.api) {
-               let n = [];
-               let u = [];
-               let d = [];
-               let newKnown: string[] = [];
-               if (this.agCoilGridOptions.api) {
-                  coils.forEach(coil => {
-                     // if (job.isDeleted){
-                     //   d.push(job);
-                     // } else {
-                     newKnown.push(coil.coilId);
-                     if (this.knownCoilIds.indexOf(coil.coilId) >= 0){
-                        u.push(coil);
-                     } else {
-                        n.push(coil);
-                     }
-                     //}
-                  });
-                  this.knownCoilIds = newKnown;
-                  this.agCoilGridOptions.api.applyTransaction({
-                     add: n,
-                     update: u,
-                     remove: d});
-
-                  this.agCoilGridOptions.api.sizeColumnsToFit();
-               }
-               this.mainComp.append(this.tip);
-               this.onShowContents(pos);
+         if(!!this.mainSub_) {
+            this.mainSub_.dispose();
+         }
+         this.mainSub_ = Rx.Observable.combineLatest(
+            this.clientDataStore
+               .SelectCoilTypes()
+               .flatMap(cts => cts.filter(ct => ct.materialCode === this.materialId)),
+            this.clientDataStore.SelectCoilDtosIn({ property: 'MaterialCode', values: [this.materialId] })
+         )
+         .subscribe(([coilType, coils]: [any, any[]]) => {
+            this.coilType = coilType;
+            console.log('coils-----', coils)
+            if(!!this.agCoilGridOptions.api) {
+               this.agCoilGridOptions.api.setRowData(coils);
+            } else {
+               this.agCoilGridOptions.rowData = coils;
             }
-         );
+            this.coils = coils;
+            this.mainComp.append(this.tip);
+            this.onShowContents(pos);
+         });
       }
 
 
@@ -309,17 +291,21 @@ const CoilTypelPreview = {
             return;
          }
          this.hoverTimeout = this.$timeout(() => {
-         if(!this.tip) {
-            this.mainComp = this.$document.find('body');
-               this.bodyHeight = this.mainComp[0]?.clientHeight ?? 0;
-               this.bodyWidth = this.mainComp[0]?.clientWidth ?? 0;
-            this.onShowLoading(pos);
-            this.tip = this.onGetContents();
-            this.onGetData(pos);
-         } else {
-            this.tip.addClass(this.tipActiveClassName);
-            this.onShowContents(pos);
-         }
+            if(!this.tip) {
+               this.mainComp = this.$document.find('body');
+                  this.bodyHeight = this.mainComp[0]?.clientHeight ?? 0;
+                  this.bodyWidth = this.mainComp[0]?.clientWidth ?? 0;
+               this.onShowLoading(pos);
+               this.tip = this.onGetContents();
+               this.onGetData(pos);
+            } else if(this.tip && (!this.coilType || this.coils.length === 0)) {
+               this.onShowLoading(pos);
+               this.tip = this.onGetContents();
+               this.onGetData(pos);
+            } else {
+               this.tip.addClass(this.tipActiveClassName);
+               this.onShowContents(pos);
+            }
          }, 300);
       }
 
@@ -327,8 +313,12 @@ const CoilTypelPreview = {
          this.$timeout.cancel(this.hoverTimeout);
          if (this.tip) {
             this.tip.removeClass(this.tipActiveClassName);
+            if(!!this.mainSub_) {
+               this.mainSub_.dispose();
+            }
          }
          if(this.loadingTip) {
+            console.log('3333333')
             this.loadingTip.remove();
          }
       }
@@ -339,6 +329,9 @@ const CoilTypelPreview = {
 
       onHideTooltip1() {
          this.tip.removeClass(this.tipActiveClassName);
+         if(!!this.mainSub_) {
+            this.mainSub_.dispose();
+         }
       }
 
    }],

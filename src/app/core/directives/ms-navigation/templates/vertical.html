@@ -35,14 +35,17 @@
             <i class="icon-chevron-right s16 arrow" ng-if="vm.collapsable && vm.hasChildren"></i>
       </div>
 
-        <!-- <a class="ms-navigation-button" href="{{node.href}}" target="{{node.target}}" ui-sref-active="active md-primary-bg md-hue-2"
+        <!-- I assume this was commented out because it breaks the 'are you sure' warning.
+            Unfortunately, it also broke the warehouse app launch. I'm adding it back. 
+            // todo: make this honor the 'are you sure' guard  -->
+        <a class="ms-navigation-button" href="{{node.href}}" target="{{node.target}}" ui-sref-active="active md-primary-bg md-hue-2"
            ng-if="node.href && node.title">
             <i class="icon s16 {{node.icon}}" ng-if="node.icon.indexOf('icon-') === 0"></i>
             <i class="icon mdi s16 {{node.icon}}" ng-if="node.icon.indexOf('mdi-') === 0"></i>
             <span class="title" translate="{{node.translate}}" flex>{{node.title}}</span>
             <span class="badge white-fg" ng-style="{'background': node.badge.color}" ng-if="node.badge">{{node.badge.content}}</span>
             <i class="icon-chevron-right s16 arrow" ng-if="vm.collapsable && vm.hasChildren"></i>
-        </a> -->
+        </a>
 
     </div>
 

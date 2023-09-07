@@ -261,7 +261,7 @@ const JobDetailPreview = {
                </div>
                <p class="machine-title">{{$ctrl.order.job.status | orderStatus}}</p>
             </div>
-            <md-tabs md-dynamic-height md-center-tabs md-stretch-tabs="always" md-no-pagination>
+            <md-tabs md-selected="1" md-dynamic-height md-center-tabs md-stretch-tabs="always" md-no-pagination>
                <md-tab label="Order">
                   <md-content class="md-padding flex-container right-padding-0 " ng-style="{ 'height' : $ctrl.tableHeight + 'px' }">
                      <div class="left-container">

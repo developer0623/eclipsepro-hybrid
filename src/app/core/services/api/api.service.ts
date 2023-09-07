@@ -750,7 +750,7 @@ export function apiService($resource): IApiService {
           update: {
             method: 'patch',
             contentType: '@contentType',
-            contentParams: '@contentParams',
+            deviceParams: '@deviceParams',
             wallboardDeviceName: '@wallboardDeviceName',
             isArray: false,
           },

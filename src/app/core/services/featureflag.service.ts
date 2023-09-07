@@ -26,7 +26,7 @@ export class FeatureFlagService {
             this.features = { ...data, ...this.features };
          },
          error => {
-            // console.log('Error loading features: ' + JSON.stringify(error));
+            console.log('Error loading features: ' + JSON.stringify(error));
          }
       );
    }

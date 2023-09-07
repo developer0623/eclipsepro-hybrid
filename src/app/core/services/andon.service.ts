@@ -47,8 +47,8 @@ export class AndonService {
          .finally(() => subscriptions_.dispose());
    }
 
-   updateWallboardDevice(id, contentType, contentParams, wallboardDeviceName) {
-      this.apiResolver.resolve<IWallboardDevice>('wallboard.updateDevice@update', { id, contentType, contentParams, wallboardDeviceName }).then((result) => {
+   updateWallboardDevice(id, contentType, deviceParams, wallboardDeviceName) {
+      this.apiResolver.resolve<IWallboardDevice>('wallboard.updateDevice@update', { id, contentType, deviceParams, wallboardDeviceName }).then((result) => {
          this.clientDataStore.Dispatch(new Put<IWallboardDevice>('WallboardDevices', result));
       });
    }

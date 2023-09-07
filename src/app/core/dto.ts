@@ -3,8 +3,8 @@ export interface ILicense {
   serverId: string;
   lastUpdate: string;
   updateCount: number;
-  modules: Array<{ name: string; expiry: string }>;
-  machines: Array<{ unitNum: string; name: string; expiry: string }>;
+  modules: Array<{ name: string; expiry: string, status: string }>;
+  machines: Array<{ unitNum: string; name: string; expiry: string, status: string }>;
 }
 
 export interface IWebhookConfig {
@@ -897,7 +897,7 @@ export interface ReferenceColumnsDef {
 export interface MachinePattern {
   machineNumber: Number,
   pattern: Number,
-  dontSave: boolean,
+  status: string,
   operations: MachinePatternOperation[],
 }
 
@@ -1063,8 +1063,31 @@ export interface IWallboardDevice {
   id: string;
   wallboardDeviceKey: string;
   wallboardDeviceName: string;
-  contentType: 'NoContent' | 'Andon' | 'ExternalUrl' | 'Message' | 'Warehouse';
-  contentParams: any;
+  contentType: 'NoContent' | 'Andon' | 'ExternalUrl' | 'Message' | 'Warehouse' | 'ProductionSummary';
+  deviceParams: IWallboardDeviceParams;
+}
+
+export interface IWallboardDeviceParams {
+  // Andon
+  machineNumber: number;
+  andonSequenceId: string;
+  showSchedule: boolean;
+  forcePanelIndex: number;
+
+  // Message
+  message: string;
+
+  // ExternalUrl
+  externalUrl: string;
+
+  // ProductionSummary
+  machines: string[];
+  metrics: string[];
+  ranges: string[];
+  cycleSec: number;
+
+  // General
+  theme: string;
 }
 
 export interface ITaskFacet {
@@ -1610,4 +1633,11 @@ export interface IWarehouseTask {
   userName: string;
   overrideCode: IReasonCode;
   unnattainableCode?: string;
+}
+
+export interface ISchedulerGroupSummary {
+  count: number;
+  totalFt: number;
+  //remainingFt: number;
+  //estimatedTime: ???;
 }

@@ -52,6 +52,7 @@
 
 
          <div class="wallboard-select-container" ng-if="vm.selectedType === 'ProductionSummary'">
+            <h1>Experimental  🧪</h1>
             <md-input-container class="md-block wallboard-select-container imp-mb-14">
                <label class="typeLabel">Machine</label>
                <md-select ng-model="vm.selectedMachines" required placeholder="Machine Select" class="wallboard-select"
@@ -143,7 +144,7 @@
 
             <md-input-container class="md-block">
                <label class="typeLabel">Cycle Seconds:</label>
-               <input ng-model="vm.cycleSeconds" type="number" min="1" />
+               <input ng-model="vm.deviceParams.cycleSec" type="number" min="1" />
             </md-input-container>
 
          </div>

@@ -104,31 +104,13 @@
                   </div>
                </div>
                <div class="material-usage-content">
-                  <!-- <div
-                     class="material-usage-item"
-                     ng-repeat="pattern in $ctrl.xlPatterns"
-                  > -->
-                  <!--  <div
-                        class="main-con"
-                        ng-repeat="item in $ctrl.xlPatternsColumns"
-                     >
-                        {{item.field === "operations" ?
-                        pattern[item.field].length : item.field === "dontSave"
-                        && pattern[item.field] ? "YES" : item.field ===
-                        "dontSave" && !pattern[item.field] ? "NO" :
-                        pattern[item.field]}}
-                     </div>
-                  </div> -->
                   <accordion ng-repeat="pattern in $ctrl.pattern.machinePatterns" class="xl-row"
                      is-open="pattern.isOpen">
                      <accordion-header on-close="$ctrl.onClose(pattern)">
                         <div class="material-usage-item item-header">
                            <div class="main-con" ng-repeat="item in $ctrl.xlPatternsColumns">
                               {{item.field === "operations" ?
-                              pattern[item.field].length : item.field ===
-                              "dontSave" && pattern[item.field] ? "YES" :
-                              item.field === "dontSave" && !pattern[item.field]
-                              ? "NO" : pattern[item.field]}}
+                              pattern[item.field].length : pattern[item.field]}}
                            </div>
                         </div>
                         <div></div>

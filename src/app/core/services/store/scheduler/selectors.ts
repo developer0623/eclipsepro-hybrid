@@ -75,6 +75,7 @@ export type SJT = {
   href: string;
   srefObj?: {sref: string, param: any}
   isSummaryRow: boolean;
+  summary: any
 };
 
 function groupWhile<T, TKey>(array: T[], keyselector: (t: T) => TKey) {
@@ -116,8 +117,16 @@ function buildSummaryItem(
     isSelected: items.every(j => j.isSelected),
     href: '',
     isSummaryRow: true,
+    summary: toSummaryModel(items)
   };
 }
+
+const toSummaryModel = (
+  jobs: ScheduledJobGridItem[]
+) => ({
+  count: jobs.length,
+  totalFt: jobs.reduce((sum, j) => sum + j.totalFt, 0)
+})
 
 const buildScheduledJobsTree = (
   jobs: ScheduledJobGridItem[],
@@ -159,6 +168,7 @@ const buildScheduledJobsTree = (
                 id: grp.items[0].materialCode}}
               : undefined,
         isSummaryRow: isSummaryRow,
+        summary: toSummaryModel(grp.items)
       };
     });
   } else return [];

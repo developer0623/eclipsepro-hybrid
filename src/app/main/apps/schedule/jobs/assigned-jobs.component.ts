@@ -85,6 +85,7 @@ const AssignedJobs = {
       jobs: node.jobs,
       isSelected: node.isSelected,
       isSummaryRow: node.isSummaryRow,
+      summary: node.summary,
       // background:node.background,
       // hold:node.jobs[0].hold,
       // warning:node.warning,

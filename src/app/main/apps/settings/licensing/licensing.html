@@ -69,7 +69,7 @@
                      <tbody>
                         <tr ng-repeat="m in $ctrl.license.modules | orderBy:'name'">
                            <td>{{m.name}}</td>
-                           <td>{{m.expiry | amsDateTime}}</td>
+                           <td ng-class="{ 'error-cell': m.status == 'Expired', 'warn-cell': m.status == 'Expiring' }">{{m.expiry | amsDateTime}}</td>
                         </tr>
                      </tbody>
                   </table>
@@ -94,7 +94,7 @@
                         <tr ng-repeat="m in $ctrl.license.machines | orderBy:['unitNum','name']">
                            <td> {{m.unitNum}} </td>
                            <td> {{m.name}} </td>
-                           <td> {{m.expiry | amsDateTime}} </td>
+                           <td ng-class="{ 'error-cell': m.status == 'Expired', 'warn-cell': m.status == 'Expiring' }"> {{m.expiry | amsDateTime}} </td>
                         </tr>
                      </tbody>
                   </table>

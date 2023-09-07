@@ -58,8 +58,8 @@ const PunchPatternDetail = {
             displayName: "punchCount",
          },
          {
-            field: "dontSave",
-            displayName: "permanent",
+            field: "status",
+            displayName: "Status",
          },
       ];
       xlPatternSubColumns = [

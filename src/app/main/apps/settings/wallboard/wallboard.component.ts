@@ -55,124 +55,6 @@ const Wallboard = {
         sequence;
         selectedMachine;
         selectedSequence;
-        metrics = [
-         {
-           title: 'Total(ft)',
-           field: 'totalGoodLn',
-           unit: 'ft',
-           isChecked: true
-         },
-         {
-           title: 'Scrap(%)',
-           field: 'netScrap',
-           unit: '%',
-           isChecked: false
-         },
-         {
-           title: 'ReclaimedScrap(ft)',
-           field: 'reclaimedScrap',
-           unit: 'ft',
-           isChecked: false
-         },
-         {
-           title: 'Run(fpm)',
-           field: 'runningThroughput',
-           unit: 'fpm',
-           isChecked: false
-         },
-         {
-           title: 'OEE(%)',
-           field: 'oEE',
-           unit: '%',
-           isChecked: false
-         },
-         {
-           title: 'Target(%)',
-           field: 'target',
-           unit: '%',
-           isChecked: false
-         },
-         {
-           title: 'Availability(%)',
-           field: 'availability',
-           unit: '%',
-           isChecked: false
-         },
-         {
-           title: 'Speed(%)',
-           field: 'speed',
-           unit: '%',
-           isChecked: false
-         },
-         {
-           title: 'Yield(%)',
-           field: 'yield',
-           unit: '%',
-           isChecked: false
-         },
-       ];
-       ranges = [
-         {
-           title: 'Current Shift',
-           field: 'CurrentShift',
-           isChecked: false
-         },
-         {
-           title: 'Previous Shift',
-           field: 'PreviousShift',
-           isChecked: false
-         },
-         {
-           title: 'Current Day',
-           field: 'CurrentDay',
-           isChecked: true
-         },
-         {
-           title: 'Previous Day',
-           field: 'PreviousDay',
-           isChecked: false
-         },
-         {
-           title: 'Current Week',
-           field: 'CurrentWeek',
-           isChecked: true
-         },
-         {
-           title: 'Previous Week',
-           field: 'PreviousWeek',
-           isChecked: false
-         },
-         {
-           title: 'Current Month',
-           field: 'CurrentMonth',
-           isChecked: true
-         },
-         {
-           title: 'Previous Month',
-           field: 'PreviousMonth',
-           isChecked: false
-         },
-         {
-           title: 'Past 7 Days',
-           field: 'Past7Days',
-           isChecked: false
-         },
-         {
-           title: 'Past 30 Days',
-           field: 'Past30Days',
-           isChecked: false
-         },
-         {
-           title: 'Past 90 Days',
-           field: 'Past90Days',
-           isChecked: false
-         },
-         {
-           title: 'Year To Date',
-           field: 'YearToDate',
-           isChecked: false
-         }
-       ];
 
         constructor($scope, private $interval: ng.IIntervalService,
             private $mdDialog, private $mdMedia, private api, machineData: MachineDataService,
@@ -200,16 +82,18 @@ const Wallboard = {
                         let newDevice = { ...device, displayDetail: '' };
                         if (device.contentType === 'Andon') {
                             this.selectedMachine = machines.find(
-                                m => m.machineNumber === Number(device.contentParams.MachineNumber)
+                                m => m.machineNumber === device.deviceParams.machineNumber
                             ) || { description: '' };
                             this.selectedSequence = sequences.find(
-                                q => q.id === device.contentParams.AndonSequenceId
+                                q => q.id === device.deviceParams.andonSequenceId
                             ) || { name: '' };
                             newDevice.displayDetail = `${this.selectedMachine.description}, ${this.selectedSequence.name}`;
                         } else if (device.contentType === 'ExternalUrl') {
-                            newDevice.displayDetail = device.contentParams.ExternalUrl;
+                            newDevice.displayDetail = device.deviceParams.externalUrl;
                         } else if (device.contentType === 'Message') {
-                            newDevice.displayDetail = device.contentParams.Message;
+                            newDevice.displayDetail = device.deviceParams.message;
+                        } else if (device.contentType === 'ProductionSummary') {
+                            // todo: fill in
                         }
 
                         return newDevice;
@@ -270,14 +154,12 @@ const Wallboard = {
                 locals: {
                     machines: this.machines,
                     sequences: this.sequences,
-                    device: newDevice,
-                    metrics: this.metrics,
-                    ranges: this.ranges
+                    device: newDevice
                 }
             })
                 .then((deviceData) => {
-                    const { wallboardDeviceKey, contentType, contentParams, wallboardDeviceName } = deviceData;
-                    this.andonService.updateWallboardDevice(wallboardDeviceKey, contentType, contentParams, wallboardDeviceName);
+                    const { wallboardDeviceKey, contentType, deviceParams, wallboardDeviceName } = deviceData;
+                    this.andonService.updateWallboardDevice(wallboardDeviceKey, contentType, deviceParams, wallboardDeviceName);
                 });
         };
 
@@ -441,7 +323,7 @@ const Wallboard = {
                         <div layout="row">
                             <md-switch ng-model="panel.shiftRun_ShowThroughput" aria-label="Show Throughput">
                                 Show Throughput
-                            </md-switch>                    
+                            </md-switch>
                         </div>
                         <div layout="row">
                             <md-input-container class="md-block" flex="100">
@@ -578,8 +460,8 @@ const Wallboard = {
 
 export default Wallboard;
 
-EditWallboardController.$inject = ['$mdDialog', 'machines', 'sequences', 'device', 'metrics', 'ranges']
-function EditWallboardController($mdDialog, machines, sequences, device, metrics, ranges) {
+EditWallboardController.$inject = ['$mdDialog', 'machines', 'sequences', 'device']
+function EditWallboardController($mdDialog, machines, sequences, device) {
     let vm = this;
     vm.displayTypes = ['NoContent', 'Andon', 'Message', 'ExternalUrl', 'Warehouse', 'ProductionSummary']; // todo: warehouse only if claim exists
     vm.themes = [
@@ -592,27 +474,153 @@ function EditWallboardController($mdDialog, machines, sequences, device, metrics
             value: "dark"
         }
     ];
+    vm.metrics = [
+      {
+        title: 'Total(ft)',
+        field: 'totalGoodLn',
+        unit: 'ft',
+        isChecked: true
+      },
+      {
+        title: 'Scrap(%)',
+        field: 'netScrap',
+        unit: '%',
+        isChecked: false
+      },
+      {
+        title: 'ReclaimedScrap(ft)',
+        field: 'reclaimedScrap',
+        unit: 'ft',
+        isChecked: false
+      },
+      {
+        title: 'Run(fpm)',
+        field: 'runningThroughput',
+        unit: 'fpm',
+        isChecked: false
+      },
+      {
+        title: 'OEE(%)',
+        field: 'oEE',
+        unit: '%',
+        isChecked: false
+      },
+      {
+        title: 'Target(%)',
+        field: 'target',
+        unit: '%',
+        isChecked: false
+      },
+      {
+        title: 'Availability(%)',
+        field: 'availability',
+        unit: '%',
+        isChecked: false
+      },
+      {
+        title: 'Speed(%)',
+        field: 'speed',
+        unit: '%',
+        isChecked: false
+      },
+      {
+        title: 'Yield(%)',
+        field: 'yield',
+        unit: '%',
+        isChecked: false
+      },
+    ];
+    vm.ranges = [
+//// The server can't calculate the current shift yet.
+    //   {
+    //     title: 'Current Shift',
+    //     field: 'CurrentShift',
+    //     isChecked: false
+    //   },
+    //   {
+    //     title: 'Previous Shift',
+    //     field: 'PreviousShift',
+    //     isChecked: false
+    //   },
+      {
+        title: 'Current Day',
+        field: 'CurrentDay',
+        isChecked: true
+      },
+      {
+        title: 'Previous Day',
+        field: 'PreviousDay',
+        isChecked: false
+      },
+      {
+        title: 'Current Week',
+        field: 'CurrentWeek',
+        isChecked: true
+      },
+      {
+        title: 'Previous Week',
+        field: 'PreviousWeek',
+        isChecked: true
+      },
+      {
+        title: 'Current Month',
+        field: 'CurrentMonth',
+        isChecked: true
+      },
+      {
+        title: 'Previous Month',
+        field: 'PreviousMonth',
+        isChecked: false
+      },
+      {
+        title: 'Past 7 Days',
+        field: 'Past7Days',
+        isChecked: false
+      },
+      {
+        title: 'Past 30 Days',
+        field: 'Past30Days',
+        isChecked: false
+      },
+      {
+        title: 'Past 90 Days',
+        field: 'Past90Days',
+        isChecked: false
+      },
+      {
+        title: 'Year To Date',
+        field: 'YearToDate',
+        isChecked: false
+      }
+    ];
     vm.machines = machines.map(m => ({machineNumber: m.machineNumber, description: m.description}));
     vm.sequences = sequences;
     vm.selectedDevice = device;
     vm.selectedType = device.contentType;
-    vm.selectedMachine = device.contentParams.MachineNumber ? Number(device.contentParams.MachineNumber) : -1;
-    vm.selectedSequence = device.contentParams.AndonSequenceId;
-    vm.showSchedule = device.contentParams.ShowSchedule?.toLowerCase() !== 'false';
-    vm.selectedExternalUrl = device.contentParams.ExternalUrl || '';
-    vm.message = device.contentParams.Message;
-    vm.selectedTheme = device.contentParams.Theme || 'dark';
-    vm.metrics = _.cloneDeep(metrics);
+    // todo: stop using these vm properties and use deviceParams instead
+    vm.deviceParams = device.deviceParams;
+    vm.selectedMachine = device.deviceParams?.machineNumber || 0;
+    vm.selectedSequence = device.deviceParams?.andonSequenceId || '';
+    vm.showSchedule = device.deviceParams?.showSchedule || false;
+    vm.selectedExternalUrl = device.deviceParams?.externalUrl || '';
+    vm.message = device.deviceParams?.message || '';
+    vm.selectedTheme = device.deviceParams?.theme || 'dark';
+   //  vm.metrics = _.cloneDeep(metrics);
     vm.allMetricsItem = { field: 'All', isChecked: false };
     vm.selectedMetricsNum = 0;
-    vm.selectedMachines = [];
+    vm.selectedMachines = device.deviceParams?.machines || [];
 
-    vm.ranges = _.cloneDeep(ranges);
+   //  vm.ranges = _.cloneDeep(ranges);
     vm.allRangesItem = { field: 'All', isChecked: false };
     vm.selectedRangesNum = 0;
-    console.log('11111122222', device, machines);
+    console.log('device------', device);
+    if (device.deviceParams?.metrics.length > 0) {
+      vm.metrics = vm.metrics.map(m => ({...m, isChecked: device.deviceParams?.metrics.includes(m.field)}));
+    }
 
-    vm.cycleSeconds = 10;
+    if (device.deviceParams?.ranges.length > 0) {
+      vm.ranges = vm.ranges.map(m => ({...m, isChecked: device.deviceParams?.ranges.includes(m.field)}));
+    }
 
     vm.onClickMetricMenuItem = item => {
       //still needs to adjust visable list
@@ -630,11 +638,6 @@ function EditWallboardController($mdDialog, machines, sequences, device, metrics
         vm.allMetricsItem.isChecked =
           vm.selectedMetricsNum === vm.metrics.length;
       }
-      // vm.reportFilterSubject$.onNext({
-      //   machines: vm.machines
-      //     .filter(x => x.isChecked)
-      //     .map(m => m.machineNumber),
-      // });
     };
 
     vm.isAllMetricsIndeterminate = () => {
@@ -727,38 +730,39 @@ function EditWallboardController($mdDialog, machines, sequences, device, metrics
     }
 
     vm.saveWallboard = function () {
-        let contentParams = {};
+        let updatedParams = {};
         switch (vm.selectedType) {
             case 'Andon': {
-                contentParams = {
-                    MachineNumber: vm.selectedMachine,
+                updatedParams = {
+                    machineNumber: vm.selectedMachine,
                     AndonSequenceId: vm.selectedSequence,
-                    ShowSchedule: vm.showSchedule ? 'true' : 'false',
-                    Theme: vm.selectedTheme
+                    showSchedule: vm.showSchedule,
+                    theme: vm.selectedTheme
                 };
                 break;
             }
             case 'ExternalUrl': {
-                contentParams = {
-                    ExternalUrl: vm.selectedExternalUrl
+                updatedParams = {
+                    externalUrl: vm.selectedExternalUrl
                 };
                 break;
             }
             case 'Message': {
-                contentParams = {
-                    Message: vm.message,
-                    Theme: vm.selectedTheme
+                updatedParams = {
+                    message: vm.message,
+                    theme: vm.selectedTheme
                 };
                 break;
             }
             case 'ProductionSummary': {
                const checkedMetrics = vm.metrics.filter(m => m.isChecked).map(m => m.field);
                const checkedRanges = vm.ranges.filter(m => m.isChecked).map(m => m.field);
-               contentParams = {
+               updatedParams = {
                    machines: vm.selectedMachines,
                    metrics: checkedMetrics,
                    ranges: checkedRanges,
-                   Theme: vm.selectedTheme
+                   cycleSec: vm.deviceParams.cycleSec,
+                   theme: vm.selectedTheme
                };
                break;
            }
@@ -767,7 +771,7 @@ function EditWallboardController($mdDialog, machines, sequences, device, metrics
         const newDevie = {
             ...device,
             contentType: vm.selectedType,
-            contentParams
+            deviceParams: {...vm.deviceParams, ...updatedParams}
         };
         $mdDialog.hide(newDevie);
 

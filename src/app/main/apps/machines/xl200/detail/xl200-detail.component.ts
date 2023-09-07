@@ -101,8 +101,8 @@ const XL200Detail = {
           displayName: "Punches",
        },
        {
-          field: "dontSave",
-          displayName: "Permanent",
+          field: "status",
+          displayName: "Status",
        },
     ];
     xlPatternSubColumns = [

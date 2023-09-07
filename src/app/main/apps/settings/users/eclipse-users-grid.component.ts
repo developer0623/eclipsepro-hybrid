@@ -38,7 +38,7 @@ const EclipseUsersGrid = {
             </td>
             <td>
                 <md-menu if-role="administrator">
-                <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
+                <md-button class="md-icon-button" ng-click="$mdMenu.open($event);$ctrl.onUserMenuOpen()">
                     <md-icon md-menu-origin md-font-icon="mdi-dots-vertical" class="mdi"></md-icon>
                 </md-button>
                 <md-menu-content width="4">
@@ -62,17 +62,19 @@ const EclipseUsersGrid = {
     </div>
     `,
   /** @ngInject */
-  controller: ['$mdDialog', '$mdToast', 'clientDataStore', 'api', class EclipseUsersGridComponent {
+  controller: ['$mdDialog', '$mdToast', 'clientDataStore', 'api', '$scope', class EclipseUsersGridComponent {
     loading = false;
     users: IUser[] = [];
     systemPreferences: ISystemPreferences;
     userIsAdmin: boolean;
     usersSub_: Rx.IDisposable;
+    isEditing: boolean = false;
     constructor(
       private $mdDialog,
       private $mdToast,
       private clientDataStore: ClientDataStore,
-      private api
+      private api,
+      private $scope
     ) {
       // This takes the necessary server subscription and gets the initial data.
       // It's hacky (because we're ignoring the data) but it's the only way to
@@ -81,10 +83,24 @@ const EclipseUsersGrid = {
 
       clientDataStore.Selector(UserListModel).subscribe((model) => {
         console.log(model);
-        this.users = model.users;
+        if (!this.isEditing) {
+          // SignalR updates will cause the edit menu to close, so only update the model when we are not editing.
+          // We might want to hold onto the updated data and update the model when the menu closes.
+          this.users = model.users;
+        }
         this.systemPreferences = model.systemPreferences;
         this.userIsAdmin = model.userIsAdmin;
       });
+
+      $scope.$on("$mdMenuClose", () =>{ this.onUserMenuClose(); });
+    }
+    onUserMenuOpen(){
+      console.log('onUserMenuOpen');
+      this.isEditing = true;
+    }
+    onUserMenuClose(){
+      console.log('onUserMenuClose');
+      this.isEditing = false;
     }
     toggleRole(user: IUser, role: { roleName: string, enabled: boolean }) {
       const onUserUpdateSuccess = (data) =>

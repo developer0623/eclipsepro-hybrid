@@ -196,6 +196,29 @@ const OrderDetailComponent = {
         headerName: 'Complete',
       },
       {
+         field: 'itemId',
+         headerName: 'Action',
+         cellRenderer: params => {
+            return params.data.complete ? `` : `<div class="agGrid-button">
+                <md-button
+                  ng-click="$ctrl.triggerExport('${params.value}')"
+                  aria-label="Export"
+                >
+                  <md-tooltip>Retry export attempt</md-tooltip>
+                  <md-icon md-font-icon="mdi-upload" class="mdi"></md-icon>
+                </md-button>
+                <md-button
+                  ng-click="$ctrl.cancelExport('${params.value}')"
+                  aria-label="Export"
+                >
+                  <md-tooltip>Cancel export attempt</md-tooltip>
+                  <md-icon md-font-icon="mdi-close-circle-outline" class="mdi"></md-icon>
+                </md-button>
+              </div>
+            `;
+         },
+      },
+      {
         field: 'stage',
         headerName: 'Stage',
       },
@@ -217,6 +240,7 @@ const OrderDetailComponent = {
          field: 'activityLog',
          headerName: 'Messages',
          autoHeight: true,
+         wrapText: true,
          cellRenderer: params => {
           // params.value is a collection of strings. We want to display each string on a new line.
           let messages = '';
@@ -385,7 +409,7 @@ const OrderDetailComponent = {
             { params: {id: `JobDetail/${this.ordId}`} }
          )
       ).subscribe((response) => {
-         this.integrationHeight = (response.data.length + 1)*28;
+         this.integrationHeight = (response.data.length + 1)*128; // this was 28 but I want multi line messages to be visible
         this.integrationAgGridOptions.api.setRowData(response.data);
          this.integrationAgGridOptions.api.sizeColumnsToFit();
       });

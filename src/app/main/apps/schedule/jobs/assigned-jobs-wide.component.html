@@ -153,8 +153,14 @@
               ">
               {{ node.ids.length }} jobs
             </span>
-            <md-icon md-menu-origin md-font-icon="icon-chevron-down" ng-if="!node.isSummaryRow"></md-icon>
-            <md-icon md-menu-origin md-font-icon="icon-chevron-right" ng-if="node.isSummaryRow"></md-icon>
+            <md-icon md-menu-origin md-font-icon="{{node.isSummaryRow && 'icon-chevron-right' || 'icon-chevron-down'}}">                     
+               <ms-tooltip>
+                  <div class="tooltip-header">{{node.summary.count}} Jobs</div>
+                  <div class="tooltip-body">
+                     <div>Total: {{node.summary.totalFt | unitsFormat: 'ft'}}</div>
+                  </div>
+              </ms-tooltip>
+            </md-icon>
           </md-button>
         </div>
         <div ng-if="$index === row.length - 2" style="position: absolute; right: 0px; display: flex">

@@ -2,7 +2,7 @@ import * as angular from "angular";
 import Rx from 'rx';
 import * as _ from "lodash";
 import * as moment from "moment";
-import { IJobSummaryDto, IAvailableJobColumn, RangeValue } from "../dto";
+import { IJobSummaryDto, IAvailableJobColumn, RangeValue, ISchedulerGroupSummary } from "../dto";
 import { ClientDataStore } from "./clientData.store";
 import { InitSchedulerData } from "./store/scheduler/actions";
 import { AvailableJobGridItem, AvailableJobColumnsSelector, AvailableJobsGridData } from "./store/scheduler/selectors";
@@ -32,12 +32,22 @@ export type AvailableJobsTree = {
   isSelected: boolean;
   isSummaryRow: boolean;
   patternNotDefined?: boolean;
+  summary: ISchedulerGroupSummary;
 };
 
 export class JobsService {
   constructor(private clientDataStore: ClientDataStore, private $state) {
     clientDataStore.Dispatch(new InitSchedulerData());
   }
+
+   isNumber(value) {
+      const conv = +value;
+      if (conv) {
+         return true;
+      } else {
+         return false;
+      }
+   }
 
   private buildSummary(
     jobs: AvailableJobGridItem[],
@@ -69,9 +79,17 @@ export class JobsService {
         pastDueText: '',
         isSelected: jobs.every(j => j.isSelected),
         isSummaryRow: true,
+        summary: this.toSummaryModel(jobs),
       },
     ];
   }
+  private toSummaryModel = (
+    jobs: AvailableJobGridItem[]
+  ): ISchedulerGroupSummary => ({
+    count: jobs.length,
+    totalFt: jobs.reduce((sum, j) => sum + j.totalFt, 0)
+  })
+
   private buildAvailableJobsTree(
     jobs: AvailableJobGridItem[],
     jobsTitles: IAvailableJobColumn[]
@@ -134,10 +152,11 @@ export class JobsService {
           pastDueText: 'Job is late!',
           isSelected: jobs.every(j => j.isSelected),
           isSummaryRow: summarize,
-          patternNotDefined: jobs[0].patternNotDefined
+          patternNotDefined: jobs[0].patternNotDefined,
+          summary: this.toSummaryModel(jobs),
         };
       })
-      .sortBy(n => n.key)
+      .sortBy(n => this.isNumber(n.key) ? Number(n.key) : n.key)
       .value();
   }
 
