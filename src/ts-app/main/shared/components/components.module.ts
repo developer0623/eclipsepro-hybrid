@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {MatIconModule} from '@angular/material/icon';
+import { FlexLayoutModule } from '@angular/flex-layout'
 import {TooltipPosition, MatTooltipModule} from '@angular/material/tooltip';
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
+import { PipesModule } from '../pipes/pipes.module';
 import { MachineDashboardMiniComponent } from './machine-dashboard-mini/machine-dashboard-mini.component';
 import { HoleCountModeIconComponent } from './hole-count-mode-icon/hole-count-mode-icon.component';
 import { LockoutIndicatorComponent } from './lockout-indicator/lockout-indicator.component';
@@ -22,8 +25,19 @@ import { DurationDisplayComponent } from './duration-display/duration-display.co
   ],
   imports: [
     CommonModule,
-    MatIconModule,
-    MatTooltipModule
+    FlexLayoutModule,
+    MatTooltipModule,
+    MatCardModule,
+    MatButtonModule,
+    PipesModule
+  ],
+  exports: [
+    MachineDashboardMiniComponent,
+    HoleCountModeIconComponent,
+    LockoutIndicatorComponent,
+    RunStateIndicatorComponent,
+    SnapshotBarComponent,
+    DurationDisplayComponent
   ]
 })
 export class ComponentsModule { }

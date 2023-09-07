@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UIRouterModule } from '@uirouter/angular';
+import { FlexLayoutModule } from '@angular/flex-layout'
 import { DashboardsComponent } from './dashboards/dashboards.component';
 import { ComponentsModule } from '../shared/components/components.module';
 
@@ -22,6 +23,7 @@ const dashboardsState = {
   imports: [
     CommonModule,
     ComponentsModule,
+    FlexLayoutModule,
     UIRouterModule.forChild({ states: [dashboardsState] })
   ]
 })

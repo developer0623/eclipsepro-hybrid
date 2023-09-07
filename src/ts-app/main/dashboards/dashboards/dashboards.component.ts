@@ -22,7 +22,8 @@ export class DashboardsComponent {
     this.machineSort = localStorage.getItem('machineSort') ?? 'machineNumber'
     this.machineData = machineDataService;
     this.machineData.dashboardMachines$.subscribe((data) => {
-      this.dashboardMachines = data;
+      if(data && data.length > 0 && data[0].stats && data[0].metricSettings && this.dashboardMachines.length === 0)
+         this.dashboardMachines = data;
     })
     apiResolver
         .resolve('metricDefs@get')

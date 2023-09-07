@@ -1,23 +1,24 @@
-<div>
-  <div class="widget-group" fxLayout="row" flex="100" layout-wrap>
+<div fxFlex fxLayout="column">
+  <div class="widget-group" fxLayout="row wrap" fxFlex="100">
     <!-- todo: orderBy with async is not working:  | orderBy:'description'-->
     <div
       *ngFor="let machine of dashboardMachines"
       uiSref="app.dashboards_machines_machine({id: machine.machineNumber})"
       fxLayout="column"
       fxFlex="100"
-      eat-click-if="!machine.machine.claims.includes('pro.machine.dashboard')"
+
       fxFlex.sm="50"
       fxFlex.md="33"
       fxFlex.lg="25"
       fxFlex.gt-lg="20"
     >
       <app-machine-dashboard-mini
+        *ngIf="machine.stats && machine.metricSettings && metricDefinitions"
         [machine]="machine"
         [metricDefinitions]="metricDefinitions"
       ></app-machine-dashboard-mini>
       <!-- trying to figure out why licenses are disappearing -->
-      <div feature-flag="in-development">{{machine.machine.claims | json}}</div>
+      <!-- <div featureFlag="in-development">{{machine.machine.claims | json}}</div> -->
     </div>
 
     <div
@@ -30,14 +31,15 @@
       fxFlex.gt-lg="20"
     >
       <app-machine-dashboard-mini
-        machine="machine"
+        *ngIf="machine.stats && machine.metricSettings && metricDefinitions"
+        [machine]="machine"
         [metricDefinitions]="metricDefinitions"
         [renderUnlicensed]="true"
       ></app-machine-dashboard-mini>
     </div>
   </div>
 
-  <div class="widget-group" fxLayout="row" flex="100" layout-wrap>
+  <div class="widget-group" fxLayout="row wrap" fxFlex="100">
     <div
       *ngFor="let device of devices"
       fxLayout="column"
