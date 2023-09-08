@@ -33,7 +33,8 @@
         <!-- todo: orderBy with async is not working:  | orderBy:'description'-->
         <div
           *ngFor="let machine of dashboardMachines | orderBy: machineSort"
-          uiSref="app.dashboards_machines_machine({id: machine.machineNumber})"
+          uiSref=".machine"
+          [uiParams]="{id: machine.machineNumber}"
           fxLayout="column"
           fxFlex="100"
 

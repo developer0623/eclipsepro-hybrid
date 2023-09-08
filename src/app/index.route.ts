@@ -7,10 +7,10 @@ import { ToolbarController } from './toolbar/toolbar.controller';
 import { NavigationController } from './navigation/navigation.controller';
 import { QuickPanelController } from './quick-panel/quick-panel.controller';
 
-routeConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
-export default function routeConfig($stateProvider, $urlRouterProvider, $locationProvider) {
+routeConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', 'msNavigationServiceProvider'];
+export default function routeConfig($stateProvider, $urlRouterProvider, $locationProvider, msNavigationServiceProvider) {
     $locationProvider.html5Mode(true);
-    $urlRouterProvider.otherwise('test');
+    $urlRouterProvider.otherwise('dashboards/machines');
     // $urlRouterProvider.otherwise('dashboards/machines');
 
     // State definitions
@@ -40,5 +40,13 @@ export default function routeConfig($stateProvider, $urlRouterProvider, $locatio
                 }
             }
         });
+
+
+
+    msNavigationServiceProvider.saveItem('dashboards', {
+      title: 'dashboards',
+      icon: 'mdi-microsoft',//tile-four',
+      weight: 1
+  });
 
 }

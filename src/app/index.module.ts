@@ -57,7 +57,7 @@ export const eclipseProApp = angular.module('eclipsePro', [
     panelModule,
 
     // // // Dashboards
-    dashboardModule,
+    // dashboardModule,
 
     // // Schedule
     scheduleModule,

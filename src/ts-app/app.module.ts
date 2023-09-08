@@ -15,6 +15,15 @@ import { NgxTranslateModule } from './translate/translate.module';
 // import { AppRoutingModule } from './app-routing.module';
 // import { AppComponent } from './app.component';
 
+const dashboardsState = {
+  name: 'app.dashboards.**',
+  url: '/dashboards/machines',
+  loadChildren: () => import('./main/dashboards/dashboards.module').then(m => m.DashboardsModule),
+  // component: DashboardsComponent,
+  // Mark this state as requiring authentication.  See ../global/requiresAuth.hook.js.
+  // data: { requiresAuth: true }
+};
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -25,13 +34,15 @@ import { NgxTranslateModule } from './translate/translate.module';
     HttpClientModule,
     NgxTranslateModule,
     PrefsModule,
-    DashboardsModule
+    DashboardsModule,
+    UIRouterModule.forChild({ states: [dashboardsState] }),
     // AppRoutingModule,
   ],
   providers: [
     { provide: 'apiResolver', deps: ['$injector'], useFactory: ($injector) =>  $injector.get('apiResolver')},
     { provide: 'machineData', deps: ['$injector'], useFactory: ($injector) =>  $injector.get('machineData') },
     { provide: 'clientDataStore', deps: ['$injector'], useFactory: ($injector) =>  $injector.get('clientDataStore') },
+    { provide: 'msNavigationServiceProvider', deps: ['$injector'], useFactory: ($injector) =>  $injector.get('msNavigationServiceProvider') },
   ],
   declarations: [],
   // bootstrap: [AppComponent]
