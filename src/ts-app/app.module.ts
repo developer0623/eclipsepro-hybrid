@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { eclipseProApp } from '../app/index.module';
 import { PrefsModule } from './prefs/prefs.module';
 import { DashboardsModule } from './main/dashboards/dashboards.module';
+import { NgxTranslateModule } from './translate/translate.module';
 
 // import { AppRoutingModule } from './app-routing.module';
 // import { AppComponent } from './app.component';
@@ -22,6 +23,7 @@ import { DashboardsModule } from './main/dashboards/dashboards.module';
     UIRouterUpgradeModule,
     MatIconModule,
     HttpClientModule,
+    NgxTranslateModule,
     PrefsModule,
     DashboardsModule
     // AppRoutingModule,

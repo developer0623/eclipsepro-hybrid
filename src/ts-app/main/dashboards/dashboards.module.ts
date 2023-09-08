@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UIRouterModule } from '@uirouter/angular';
-import { FlexLayoutModule } from '@angular/flex-layout'
+import { FlexLayoutModule } from '@angular/flex-layout';
+import {CdkMenu, CdkMenuItem, CdkMenuTrigger} from '@angular/cdk/menu';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
 import { DashboardsComponent } from './dashboards/dashboards.component';
 import { ComponentsModule } from '../shared/components/components.module';
+import { PipesModule } from "../shared/pipes/pipes.module";
 
 const dashboardsState = {
   name: 'app.test',
@@ -17,14 +21,18 @@ const dashboardsState = {
 };
 
 @NgModule({
-  declarations: [
-    DashboardsComponent
-  ],
-  imports: [
-    CommonModule,
-    ComponentsModule,
-    FlexLayoutModule,
-    UIRouterModule.forChild({ states: [dashboardsState] })
-  ]
+    declarations: [
+        DashboardsComponent
+    ],
+    imports: [
+        CommonModule,
+        ComponentsModule,
+        FlexLayoutModule,
+        UIRouterModule.forChild({ states: [dashboardsState] }),
+        CdkMenuTrigger, CdkMenu, CdkMenuItem,
+        MatIconModule,
+        MatButtonModule,
+        PipesModule
+    ]
 })
 export class DashboardsModule { }

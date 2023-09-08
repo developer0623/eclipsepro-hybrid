@@ -23,7 +23,7 @@
     <div class="pb-8" fxLayout="row wrap" fxLayoutAlign="start center">
       <div *ngFor="let metric of machine.metricSettings?.settings | showInMini: true" fxLayout="column" fxLayoutAlign="center center" fxFlex="33">
         <span class="font-size-20 font-weight-500">{{machine.stats[metricDefinitions[metric.metricId].primaryDataKey] | unitsFormat :metricDefinitions[metric.metricId].primaryUnits:3:true:true | obscureNumberString: renderUnlicensed}}<sup class="font-size-12">{{metricDefinitions[metric.metricId].primaryUnits | userDisplayUnits}}</sup></span><!--todo:unit display filter-->
-        <span class="h4 secondary-text" translate="{{metricDefinitions[metric.metricId].metricId}}">{{metricDefinitions[metric.metricId].metricId}}</span>
+        <span class="h4 secondary-text" [translate]="metricDefinitions[metric.metricId].metricId">{{metricDefinitions[metric.metricId].metricId}}</span>
       </div>
     </div>
   </div>

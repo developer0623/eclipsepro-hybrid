@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UnitsFormatPipe, UnitsValuePipe, UserDisplayUnitsPipe, TaskLenghValuePipe } from './units.pipe';
 import { ObscureNumberStringPipe } from './obscure-number-string.pipe';
 import { ShowInMiniPipe } from './show-in-mini.pipe';
+import { OrderByPipe } from './order-by.pipe';
 
 
 
@@ -13,7 +14,8 @@ import { ShowInMiniPipe } from './show-in-mini.pipe';
     UserDisplayUnitsPipe,
     TaskLenghValuePipe,
     ObscureNumberStringPipe,
-    ShowInMiniPipe
+    ShowInMiniPipe,
+    OrderByPipe
   ],
   imports: [
     CommonModule
@@ -24,7 +26,8 @@ import { ShowInMiniPipe } from './show-in-mini.pipe';
     UserDisplayUnitsPipe,
     TaskLenghValuePipe,
     ObscureNumberStringPipe,
-    ShowInMiniPipe
+    ShowInMiniPipe,
+    OrderByPipe
   ]
 })
 export class PipesModule { }

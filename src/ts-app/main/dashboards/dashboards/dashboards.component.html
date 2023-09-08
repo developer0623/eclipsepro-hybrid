@@ -1,62 +1,96 @@
-<div fxFlex fxLayout="column">
-  <div class="widget-group" fxLayout="row wrap" fxFlex="100">
-    <!-- todo: orderBy with async is not working:  | orderBy:'description'-->
-    <div
-      *ngFor="let machine of dashboardMachines"
-      uiSref="app.dashboards_machines_machine({id: machine.machineNumber})"
-      fxLayout="column"
-      fxFlex="100"
-
-      fxFlex.sm="50"
-      fxFlex.md="33"
-      fxFlex.lg="25"
-      fxFlex.gt-lg="20"
-    >
-      <app-machine-dashboard-mini
-        *ngIf="machine.stats && machine.metricSettings && metricDefinitions"
-        [machine]="machine"
-        [metricDefinitions]="metricDefinitions"
-      ></app-machine-dashboard-mini>
-      <!-- trying to figure out why licenses are disappearing -->
-      <!-- <div featureFlag="in-development">{{machine.machine.claims | json}}</div> -->
-    </div>
-
-    <div
-      *ngFor="let machine of machineData.unlicensedMachines"
-      fxLayout="column"
-      fxFlex="100"
-      fxFlex.sm="50"
-      fxFlex.md="33"
-      fxFlex.lg="25"
-      fxFlex.gt-lg="20"
-    >
-      <app-machine-dashboard-mini
-        *ngIf="machine.stats && machine.metricSettings && metricDefinitions"
-        [machine]="machine"
-        [metricDefinitions]="metricDefinitions"
-        [renderUnlicensed]="true"
-      ></app-machine-dashboard-mini>
+<div
+  id="dashboard-machines"
+  class="page-layout simple fullwidth dashboard"
+  ngsf-fullscreen
+>
+  <div class="header">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="h2 text-upper" translate="dashboard">DASHBOARD</span>
+      <div class="toolbar">
+        <button mat-icon-button [cdkMenuTriggerFor]="dashboardmenu" aria-label="machine sort">
+          <mat-icon>settings</mat-icon>
+        </button>
+        <ng-template #dashboardmenu>
+          <div class="main-menu" cdkMenu>
+            <button class="main-menu-item" cdkMenuItem (click)="swapSort()">
+                <span class="menu-item-content">Sort</span>
+                <i class="mdi mdi-numeric"></i>
+                <span>|</span>
+                <i class="mdi mdi-alphabetical"></i>
+            </button>
+            <button class="main-menu-item" uiSref="app.metric-config" cdkMenuItem aria-label="Metric Config">
+                <span class="menu-item-content">Metric Config</span>
+                <i class="mdi mdi-gauge"></i>
+            </button>
+          </div>
+        </ng-template>
+      </div>
     </div>
   </div>
+  <div class="content md-background md-hue-1">
+    <div class="content md-background md-hue-1" fxFlex fxLayout="column">
+      <div class="widget-group" fxLayout="row wrap" fxFlex="100">
+        <!-- todo: orderBy with async is not working:  | orderBy:'description'-->
+        <div
+          *ngFor="let machine of dashboardMachines | orderBy: machineSort"
+          uiSref="app.dashboards_machines_machine({id: machine.machineNumber})"
+          fxLayout="column"
+          fxFlex="100"
 
-  <div class="widget-group" fxLayout="row wrap" fxFlex="100">
-    <div
-      *ngFor="let device of devices"
-      fxLayout="column"
-      fxFlex="100"
-      fxFlex.sm="50"
-      fxFlex.md="33"
-      fxFlex.lg="25"
-      fxFlex.gt-lg="20"
-    >
-      <!-- Todo: Add metrics for runtime %, operations/hr total, operations/hr during runtime only since midnight -->
-      <app-device-dashboard-mini
-        device="device"
-        [deviceState]="device.state"
-        [shiftStats]="device.shiftStats"
-        [metrics]="device.metricModels"
-      >
-      </app-device-dashboard-mini>
+          fxFlex.sm="50"
+          fxFlex.md="33"
+          fxFlex.lg="25"
+          fxFlex.gt-lg="20"
+        >
+          <app-machine-dashboard-mini
+            *ngIf="machine.stats && machine.metricSettings && metricDefinitions"
+            [machine]="machine"
+            [metricDefinitions]="metricDefinitions"
+          ></app-machine-dashboard-mini>
+          <!-- trying to figure out why licenses are disappearing -->
+          <!-- <div featureFlag="in-development">{{machine.machine.claims | json}}</div> -->
+        </div>
+
+        <div
+          *ngFor="let machine of machineData.unlicensedMachines"
+          fxLayout="column"
+          fxFlex="100"
+          fxFlex.sm="50"
+          fxFlex.md="33"
+          fxFlex.lg="25"
+          fxFlex.gt-lg="20"
+        >
+          <app-machine-dashboard-mini
+            *ngIf="machine.stats && machine.metricSettings && metricDefinitions"
+            [machine]="machine"
+            [metricDefinitions]="metricDefinitions"
+            [renderUnlicensed]="true"
+          ></app-machine-dashboard-mini>
+        </div>
+      </div>
+
+      <div class="widget-group" fxLayout="row wrap" fxFlex="100">
+        <div
+          *ngFor="let device of devices"
+          fxLayout="column"
+          fxFlex="100"
+          fxFlex.sm="50"
+          fxFlex.md="33"
+          fxFlex.lg="25"
+          fxFlex.gt-lg="20"
+        >
+          <!-- Todo: Add metrics for runtime %, operations/hr total, operations/hr during runtime only since midnight -->
+          <app-device-dashboard-mini
+            device="device"
+            [deviceState]="device.state"
+            [shiftStats]="device.shiftStats"
+            [metrics]="device.metricModels"
+          >
+          </app-device-dashboard-mini>
+        </div>
+      </div>
     </div>
+        <!-- / MD-CONTENT -->
   </div>
+  <!-- / MAIN CONTENT -->
 </div>

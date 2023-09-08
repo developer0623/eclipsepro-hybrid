@@ -11,7 +11,7 @@ export class MachineDashboardMiniComponent implements OnChanges {
   @Input() renderUnlicensed;
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('111111111', changes);
+    // console.log('111111111', changes);
   }
 
 }

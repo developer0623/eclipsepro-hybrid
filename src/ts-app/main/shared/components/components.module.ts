@@ -11,6 +11,7 @@ import { LockoutIndicatorComponent } from './lockout-indicator/lockout-indicator
 import { RunStateIndicatorComponent } from './run-state-indicator/run-state-indicator.component';
 import { SnapshotBarComponent } from './snapshot-bar/snapshot-bar.component';
 import { DurationDisplayComponent } from './duration-display/duration-display.component';
+import { NgxTranslateModule } from 'src/ts-app/translate/translate.module';
 
 
 
@@ -29,7 +30,8 @@ import { DurationDisplayComponent } from './duration-display/duration-display.co
     MatTooltipModule,
     MatCardModule,
     MatButtonModule,
-    PipesModule
+    PipesModule,
+    NgxTranslateModule
   ],
   exports: [
     MachineDashboardMiniComponent,
