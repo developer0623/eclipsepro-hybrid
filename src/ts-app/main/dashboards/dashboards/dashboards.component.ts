@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { IMetricDefinition, IDevice, IDeviceState, IDeviceMetrics } from 'src/app/core/dto';
+import { IMetricDefinition, IDevice, IDeviceState, IDeviceMetrics, IMachine } from 'src/app/core/dto';
 
 @Component({
   selector: 'app-dashboards',
@@ -22,7 +22,7 @@ export class DashboardsComponent {
     this.machineSort = localStorage.getItem('machineSort') ?? 'machineNumber'
     this.machineData = machineDataService;
     this.machineData.dashboardMachines$.subscribe((data) => {
-      if(data && data.length > 0 && data[0].stats && data[0].metricSettings && this.dashboardMachines.length === 0)
+      if(data && data.length > 0 && data[0].stats && data[0].metricSettings)
          this.dashboardMachines = data;
     })
     apiResolver
@@ -142,5 +142,9 @@ export class DashboardsComponent {
     this.machineSort = this.machineSort === 'machineNumber' ? 'machine.description' : 'machineNumber';
     localStorage.setItem('machineSort', this.machineSort);
   }
+
+  trackByKey = (index: number, m: IMachine): number => {
+    return m.id;
+  };
 
 }

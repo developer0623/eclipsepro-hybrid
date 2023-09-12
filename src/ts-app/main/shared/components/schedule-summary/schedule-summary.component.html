@@ -1,0 +1,148 @@
+<div class="schedule-summary">
+  <div class="schedule-header">
+     <div class="h3 schedule-title ph-24">SCHEDULE SUMMARY
+        <button
+          uiSref="app.schedule_jobs"
+          [uiParams]="{machine: scheduleSummary?.machineNumber}"
+          matTooltip="Open Scheduler"
+          matTooltipPosition="right"
+          mat-icon-button
+        >
+            <i class="mdi mdi-calendar s18"></i>
+        </button>
+     </div>
+     <div class="schedule-stats">
+        <table>
+           <tbody>
+              <tr>
+                 <td class="secondary-text" translate="scheduledFeetTotal">Total Scheduled</td>
+                 <td> ({{scheduleSummary?.scheduledJobsCount}})</td>
+                 <td>{{scheduleSummary?.scheduledFeetTotal | unitsFormat:"ft":0 }} </td>
+              </tr>
+              <tr>
+                 <td class="secondary-text" translate="atMachineFeetTotal">At Machine</td>
+                 <td> ({{scheduleSummary?.atMachineJobsCount}})</td>
+                 <td>{{scheduleSummary?.atMachineFeetTotal | unitsFormat:"ft":0 }} </td>
+              </tr>
+              <tr>
+                 <td class="secondary-text" translate="available">Total Available</td>
+                 <td> ({{scheduleSummary?.availableJobsCount}})</td>
+                 <td>{{scheduleSummary?.availableFeetTotal | unitsFormat:"ft":0 }} </td>
+              </tr>
+              <tr>
+                 <td class="secondary-text" translate="scheduleCompletionDate">Schedule Ends</td>
+                 <td style="padding-left:8px;" colspan="2">{{scheduleSummary?.scheduleCompletionDate | amsDateTime}}</td>
+              </tr>
+              <tr feature-flag="experimental">
+                 <td class="secondary-text" translate="" matTooltip="Experimental: Orders remaining that are scheduled and required today">🧪 Today Remaining</td>
+                 <td>({{scheduleSummary?.requiredByTodayFt | unitsFormat:"ft":0 }})</td>
+                 <td>{{(shiftStats?.goodFeet / (shiftStats?.goodFeet + scheduleSummary?.requiredByTodayFt))*100 | number : '1.0-1'}}% </td>
+              </tr>
+           </tbody>
+        </table>
+     </div>
+  </div>
+  <div class="schedule-body">
+     <div class="schedule-element-container">
+        <div class="schedule-element">
+           <div class="element-title">ORDER</div>
+           <div class="element-current-line">
+              <div class="current-title">
+                <!-- <job-detail-preview ord-id="scheduleSummary?.currentOrderId">
+                  <a uiSref="app.orders.detail"
+                    [uiParams]="{id: scheduleSummary?.currentOrderId}"
+                  >{{scheduleSummary?.currentOrderCode}}</a>
+                </job-detail-preview> -->
+              </div>
+              <div class="current-length" matTooltip="Length remaining in current order">
+                {{(scheduleSummary?.currentOrderRemainingFeet | unitsFormat :"ft":0:true) || "n/a"}}
+                <span *ngIf="scheduleSummary?.currentOrderRemainingFeet" class="sch-unit">{{'ft' | userDisplayUnits}}</span>
+              </div>
+              <div class="current-time" matTooltip="Time until current order completion">
+                <app-duration-display [date]="scheduleSummary?.currentOrderCompletionDate"></app-duration-display>
+                 <!--2<span class="sch-unit">H</span> 34<span class="sch-unit">M</span>-->
+                <!-- <p class="des-txt">Descriptive Text</p> -->
+              </div>
+            </div>
+           <div class="element-next-line">
+              <div class="next">NEXT:</div>
+              <div class="next-title">
+                <!-- <job-detail-preview ord-id="scheduleSummary?.nextOrderId">
+                  <a uiSref="app.orders.detail"
+                    [uiParams]="{id: scheduleSummary?.nextOrderId}"
+                    >{{scheduleSummary?.nextOrderCode}}</a>
+                </job-detail-preview> -->
+              </div>
+              <!-- descriptive text -->
+              <div class="next-length" matTooltip="Length of next order">
+                  {{(scheduleSummary?.nextOrderFeet | unitsFormat :"ft":0:true) || "n/a"}}
+                  <span *ngIf="scheduleSummary?.nextOrderFeet" class="sch-unit">{{'ft' | userDisplayUnits}}</span>
+              </div>
+              <div class="next-time" matTooltip="Next order runtime">
+                <app-duration-display [milliseconds]="scheduleSummary?.nextOrderRuntimeMs"></app-duration-display>
+              </div>
+           </div>
+        </div>
+     </div>
+     <div class="schedule-element-container">
+        <div class="schedule-element">
+           <div class="element-title">MATERIAL</div>
+           <div class="element-current-line">
+              <div class="current-title">
+                <a uiSref="app.inventory.coil-types.coil-type" [uiParams]="{id: scheduleSummary?.currentMaterialCode}">{{scheduleSummary?.currentMaterialCode}}</a>
+              </div>
+              <div class="current-length" matTooltip="Length remaining in current material">
+                {{(scheduleSummary?.currentMaterialRemainingFeet | unitsFormat :"ft":0:true) || "n/a"}}
+                <span *ngIf="scheduleSummary?.currentMaterialRemainingFeet" class="sch-unit">{{'ft' | userDisplayUnits}}</span>
+              </div>
+              <div class="current-time" matTooltip="Time until current material completion">
+                <app-duration-display [date]="scheduleSummary?.currentMaterialCompletionDate"></app-duration-display>
+              </div>
+              <!-- <p class="des-txt">Descriptive Text</p> -->
+           </div>
+           <div class="element-next-line">
+              <div class="next">NEXT:</div>
+              <div class="next-title">
+                <a uiSref="app.inventory.coil-types.coil-type" [uiParams]="{id: scheduleSummary?.nextMaterialCode}">{{scheduleSummary?.nextMaterialCode}}</a>
+              </div>
+              <!-- descriptive text -->
+              <div class="next-length" matTooltip="Length of next material">
+                {{(scheduleSummary?.nextMaterialFeet | unitsFormat :"ft":0:true) || "n/a"}}
+                <span *ngIf="scheduleSummary?.nextMaterialFeet" class="sch-unit">{{'ft' | userDisplayUnits}}</span>
+              </div>
+              <div class="next-time" matTooltip="Next material runtime">
+                <app-duration-display [milliseconds]="scheduleSummary?.nextMaterialRuntimeMs"></app-duration-display>
+              </div>
+           </div>
+        </div>
+     </div>
+     <div class="schedule-element-container">
+        <div class="schedule-element">
+           <div class="element-title">TOOLING</div>
+           <div class="element-current-line">
+              <div class="current-title">{{scheduleSummary?.currentToolingCode}}</div>
+              <div class="current-length" matTooltip="Length remaining in current tooling">
+                {{(scheduleSummary?.currentToolingRemainingFeet | unitsFormat :"ft":0:true) || "n/a"}}
+                <span *ngIf="scheduleSummary?.currentToolingRemainingFeet" class="sch-unit">{{'ft' | userDisplayUnits}}</span>
+              </div>
+              <div class="current-time" matTooltip="Time until current tooling completion">
+                <app-duration-display date="scheduleSummary?.currentToolingCompletionDate"></app-duration-display>
+              </div>
+              <!-- <p class="des-txt">Descriptive Text</p> -->
+           </div>
+           <div class="element-next-line">
+              <div class="next">NEXT:</div>
+              <div class="next-title">{{scheduleSummary?.nextToolingCode}}</div>
+              <!-- descriptive text -->
+              <div class="next-length" matTooltip="Length of next tooling">
+                {{(scheduleSummary?.nextToolingFeet | unitsFormat :"ft":0:true) || "n/a"}}
+                <span *ngIf="scheduleSummary?.nextToolingFeet" class="sch-unit">{{'ft' | userDisplayUnits}}</span>
+              </div>
+              <div class="next-time" matTooltip="Next tooling runtime">
+                <app-duration-display [milliseconds]="scheduleSummary?.nextToolingRuntimeMs"></app-duration-display>
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>

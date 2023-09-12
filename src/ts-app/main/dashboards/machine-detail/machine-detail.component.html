@@ -1,1 +1,162 @@
-<p>machine-detail works!</p>
+<div id="dashboard-machines" fxLayout="column" class="page-layout datatable-layout simple fullwidth scroll-tab-dashboards">
+  <div class="schedule-content schedule-content-grid">
+      <!-- <div class="header machine-back-icon-container" layout="row" layout-align="space-between start">
+          <md-icon ui-sref="app.dashboards_machines_machines" md-font-icon="icon-arrow-left" class="icon back-icon"></md-icon>
+      </div>
+      <ams-md-tabs
+          class="jobsTabs machines-tabs"
+          md-border-bottom
+          md-selected="selectedTabIndex"
+          md-dynamic-height="true"
+      >
+          <ams-md-tab
+              ng-repeat="machine in dashboardMachines track by machine.machineNumber"
+              label="{{machine.machine.description}}"
+              ng-click="selectTab(machine.machineNumber, $index)"
+          >
+          </ams-md-tab>
+      </ams-md-tabs> -->
+
+      <div
+          fxLayout="row"
+          fxLayoutAlign="space-between"
+          class="machine-status-container"
+      >
+          <div class="h3 margin0">{{selectedMachine?.machine?.description}}</div>
+          <app-hole-count-mode-icon
+              *ngIf="selectedMachine?.machine?.isHoleCount"
+          ></app-hole-count-mode-icon>
+          <app-lockout-indicator
+              [lockout]="selectedMachine?.state?.lockout"
+          ></app-lockout-indicator>
+          <!-- todo: format this better (move to the left maybe) -->
+          <app-run-state-indicator
+              [state]="selectedMachine?.state?.runState"
+              [lastRunStateChange]="selectedMachine?.state?.lastRunStateChange"
+              [isOffline]="selectedMachine?.state?.isOffline"
+          ></app-run-state-indicator>
+      </div>
+      <!-- end machine status -->
+      <app-snapshot-bar
+          width="100%"
+          [running]="selectedStats?.runMinutes"
+          [exempt]="selectedStats?.exemptMinutes"
+          [changeover]="selectedStats?.changeoverMinutes"
+          [downtime]="selectedStats?.nonExemptMinutes"
+          [breakdown]="selectedStats?.breakdownMinutes"
+          class="snapshot-bar"
+      >
+      </app-snapshot-bar>
+      <div class="metric-large-container" *ngIf="machineData.metricDefinitions && selectedStats && selectedMachine.statsHistory">
+          <app-metric-large
+              *ngFor="let metric of selectedMachine?.metricSettings?.settings | metricLargeFilter:machineData.metricDefinitions:true"
+              [metric]="metric"
+              [metricDefinition]="machineData.metricDefinitions[metric.metricId]"
+              [currentPrimary]="selectedStats[machineData.metricDefinitions[metric.metricId].primaryDataKey]"
+              [currentSecondary]="selectedStats[machineData.metricDefinitions[metric.metricId].secondaryDataKey]"
+              [statsHistory]="selectedMachine.statsHistory[machineData.metricDefinitions[metric.metricId].historyKey]"
+              class="metric-large-item"
+          ></app-metric-large>
+
+      </div>
+      <app-shift-select class="shift-select-container ph-24 pb-16 border-left" [availableShifts]="availableShifts" [shiftIndex]="shiftIndex"
+            updateShiftIndex="updateShiftIndex({shiftIdx})"></app-shift-select>
+      <app-shift-summary
+          class="shift-summary-container ph-24 pb-16 border-bottom border-left"
+          [machineState]="selectedMachine?.state"
+          [shiftStats]="selectedStats"
+      ></app-shift-summary>
+      <div class="ph-24 pt-16 pb-8 machine-info-container border-left">
+        <div class="h3 pb-16 text-upper margin0 machine-info-title">Machine Info</div>
+        <table class="line-height-2 table-aligned text-nowrap shift-summary-table">
+
+            <colgroup>
+            <col style="width: 55%" />
+            <col style="width: 45%" />
+            </colgroup>
+            <tbody>
+            <tr>
+                <td class="secondary-text" translate="softwareModel">
+                Software Model
+                </td>
+                <td>{{selectedMachine?.machine.softwareModel}}</td>
+            </tr>
+            <tr>
+                <td class="secondary-text" translate="softwareVersion">
+                Software Version
+                </td>
+                <td title="UART Version: {{selectedMachine?.machine.uartVersion}}">
+                {{selectedMachine?.machine.softwareVersion}}
+                </td>
+            </tr>
+            <tr>
+                <td class="secondary-text" translate="serialNumber">
+                Serial Number
+                </td>
+                <td>{{selectedMachine?.machine.serialNumber}}</td>
+            </tr>
+            <tr>
+                <td class="secondary-text" translate="switchCode">Switch</td>
+                <td>{{selectedMachine?.machine.switchCode}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="widget-group pr-24 pl-24 pro-log-container" feature-flag="in-development" *ngIf="false">
+            <div>{{selectedMachine?.scheduleEstimate.asOf | timeAgo}}</div>
+            <table>
+                <thead><tr><th>start</th><th>activity</th><th>order</th><th>duration</th><th>remaining</th></tr></thead>
+                <tbody>
+                    <tr *ngFor="let block of debugActivities | orderBy:['startDateTime', 'activityType']">
+                        <td style="padding:8px;">{{block.startDateTime | amsDateTime}}</td>
+                        <td style="padding:8px;">{{block.activityType}}</td>
+                        <td style="padding:8px;">{{block.orderCode}}</td>
+                        <td style="padding:8px;text-align: right;">{{block.duration | timeSpan:'secondsWithMs'}}</td>
+                        <td style="padding:8px;text-align: right;">{{block.remainingFt | unitsFormat:'ft'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
+
+      <app-schedule-summary
+          class="schedule-summary-container"
+          [scheduleSummary]="selectedMachine?.scheduleSummary"
+          [shiftStats]="selectedStats"
+      ></app-schedule-summary>
+
+
+      <div class="pv-32 item-h top-downtime-reason">
+          <div class="h3 pb-16 text-upper margin0"  translate="topDowntimeReasons">
+              Top Downtime Reasons
+          </div>
+          <app-pareto
+              [data]="selectedStats?.downtimePareto"
+              name="name"
+              type="min"
+              value="durationMinutes"
+              occurances="instanceCount"
+              [topItems]="5"
+              [barWidth]="130"
+              [barHeight]="10"
+          ></app-pareto>
+      </div>
+
+      <div class="pv-32 item-i top-scrap-reason">
+          <div class="h3 pb-16 text-upper margin0" translate="topScrapReasons">
+              Top Scrap Reasons
+          </div>
+          <app-pareto
+              [data]="selectedStats?.scrapPareto"
+              name="name"
+              type="ft"
+              value="lengthFeet"
+              occurances="instanceCount"
+              [topItems]="5"
+              [barWidth]="130"
+              [barHeight]="10"
+          ></app-pareto>
+      </div>
+  </div>
+
+</div>
+

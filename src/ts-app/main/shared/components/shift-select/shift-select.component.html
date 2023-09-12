@@ -1,0 +1,26 @@
+<button class="bt-24" mat-icon-button *ngIf="!isLast"
+    (click)="moveIndex(currentIndex+1); $event.stopPropagation();">
+  <i class="mdi mdi-chevron-left"></i>
+</button>
+
+
+  <mat-form-field class="example-form-field">
+    <mat-datepicker-toggle matIconPrefix [for]="datepicker"></mat-datepicker-toggle>
+    <mat-datepicker #datepicker>
+    </mat-datepicker>
+    <input matInput [matDatepicker]="datepicker">
+  </mat-form-field>
+
+<button class="bt-24" mat-icon-button *ngFor="let item of repeatShifts; let i = index;"
+  (click)="selectShift(shifts[item]?.shiftCode); $event.stopPropagation();"
+    [disabled]="!shifts[item]">
+  <i class="mdi mdi-numeric-{{i+1}}-box"
+    *ngIf="availableShifts[currentIndex] && availableShifts[currentIndex].shift === i+1"></i>
+  <i class="mdi mdi-numeric-{{i+1}}-box-outline"
+    *ngIf="availableShifts[currentIndex] && availableShifts[currentIndex].shift != i+1"></i>
+</button>
+
+<button class="bt-24" mat-icon-button *ngIf="!isFirst"
+  (click)="moveIndex(currentIndex-1); $event.stopPropagation();">
+  <i md-font-icon="mdi-chevron-right" class="mdi"></i>
+</button>

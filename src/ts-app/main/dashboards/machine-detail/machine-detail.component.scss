@@ -1,0 +1,83 @@
+.machine-status-container {
+  padding: 32px 24px 16px 24px;
+}
+
+.snapshot-bar {
+    padding-bottom: 40px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.metric-large-container {
+  border-bottom: 1px solid rgba(0,0,0,.12);
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.top-scrap-reason {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.top-downtime-reason {
+  padding-left: 24px;
+  padding-right: 24px;
+  border-right: 1px solid rgba(0,0,0,.12);
+}
+
+
+@media only screen and (min-width: 1920px) {
+  .metric-large-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  .machine-status-container {
+    padding-top: 24px;
+    padding-left: 16px;
+    padding-right: 16px;
+
+  }
+
+  .top-scrap-reason {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .top-downtime-reason {
+    padding-left: 16px;
+    padding-right: 16px;
+    border-bottom: 1px solid rgba(0,0,0,.12);
+  }
+
+  .snapshot-bar {
+    padding-bottom: 24px;
+    padding-left: 16px;
+    padding-right: 16px;
+    border-bottom: 1px solid rgba(0,0,0,.12);
+  }
+
+  .metric-large-container {
+    padding: 16px;
+  }
+}
+
+@media only screen and (min-width: 960px) and (max-width: 1279px) {
+  .shift-summary-table {
+    font-size: 13px;
+  }
+}
+
+@media only screen and  (min-width: 1280px) and (max-width: 1919px) {
+  .shift-summary-table {
+    font-size: 14px;
+  }
+}
+
+@media only screen and  (min-width: 1920) {
+  .shift-summary-table {
+    font-size: 15px;
+  }
+}

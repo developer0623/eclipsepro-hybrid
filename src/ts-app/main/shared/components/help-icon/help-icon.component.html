@@ -1,0 +1,11 @@
+<i class="mdi mdi-information-outline s16 info-icon" *ngIf="(help | translate) !== help"  customToolTip [contentTemplate]="template" position="left">
+</i>
+
+<div *ngIf="(help | translate) === help" class="no-info-data">
+</div>
+
+
+<ng-template #template>
+  <div class="tooltip-header">{{header | translate}}</div>
+  <div class="tooltip-body" [innerHTML]="help | translate"></div><!-- {{$ctrl.help | translate}}-->
+</ng-template>

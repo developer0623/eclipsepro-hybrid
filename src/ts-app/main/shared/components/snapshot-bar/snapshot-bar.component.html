@@ -1,24 +1,42 @@
-<div class="running" *ngIf="running" [ngStyle]="{'flex-basis': running*100/total() + '%', 'width': running*100/total() + '%'}">
-  <span *ngIf="running*100/total() >= 4" class="snapshot-label">{{running*100/total() | number: '1.0-0'}}%</span>
-  <!-- <md-tooltip><span translate="running">Running</span>: {{running | number: '1.0-0'}} min | {{running*100/total() | number: '1.0-0'}}%</md-tooltip> -->
+<div class="running" *ngIf="running"
+  [ngStyle]="{'flex-basis': running*100/total() + '%', 'width': running*100/total() + '%'}"
+  [matTooltip]="('running' | translate) + ': ' + (running | number: '1.0-1') + ' min | ' + (running*100/total() | number: '1.0-1') + ' %'"
+  matTooltipClass="single-line-tooltip"
+>
+  <span *ngIf="running*100/total() >= 4" class="snapshot-label">{{running*100/total() | number: '1.0-1'}}%</span>
 </div>
-<div class="exempt" *ngIf="exempt" [ngStyle]="{'flex-basis': exempt*100/total() + '%', 'width': exempt*100/total() + '%'}">
-  <span *ngIf="exempt*100/total() >= 4" class="snapshot-label">{{exempt*100/total() | number: '1.0-0'}}%</span>
-  <!-- <md-tooltip><span translate="unscheduled">Unscheduled</span>: {{exempt| number: '1.0-0'}} min | {{exempt*100/total() | number: '1.0-0'}}%</md-tooltip> -->
+<div class="exempt" *ngIf="exempt"
+  [ngStyle]="{'flex-basis': exempt*100/total() + '%', 'width': exempt*100/total() + '%'}"
+  [matTooltip]="('unscheduled' | translate) + ': ' + (exempt | number: '1.0-1') + ' min | ' + (exempt*100/total() | number: '1.0-1') + ' %'"
+  matTooltipClass="single-line-tooltip"
+>
+  <span *ngIf="exempt*100/total() >= 4" class="snapshot-label">{{exempt*100/total() | number: '1.0-1'}}%</span>
 </div>
-<div class="changeover" *ngIf="changeover" [ngStyle]="{'flex-basis': changeover*100/total() + '%', 'width':changeover*100/total + '%'}">
-  <span *ngIf="changeover*100/total() >= 4" class="snapshot-label">{{changeover*100/total() | number: '1.0-0'}}%</span>
-  <!-- <md-tooltip><span translate="changeover">Changeover</span>: {{changeover| number: '1.0-0'}} in. | {{changeover*100/total() | number: '1.0-0'}}%</md-tooltip> -->
+<div class="changeover" *ngIf="changeover"
+  [ngStyle]="{'flex-basis': changeover*100/total() + '%', 'width':changeover*100/total + '%'}"
+  [matTooltip]="('changeover' | translate) + ': ' + (changeover | number: '1.0-1') + ' min | ' + (changeover*100/total() | number: '1.0-1') + ' %'"
+  matTooltipClass="single-line-tooltip"
+>
+  <span *ngIf="changeover*100/total() >= 4" class="snapshot-label">{{changeover*100/total() | number: '1.0-1'}}%</span>
 </div>
-<div class="downtime" *ngIf="downtime" [ngStyle]="{'flex-basis': downtime*100/total() + '%', 'width':downtime*100/total + '%'}">
-  <span *ngIf="downtime*100/total() >= 4" class="snapshot-label">{{downtime*100/total() | number: '1.0-0'}}%</span>
-  <!-- <md-tooltip><span translate="downtime">Downtime</span>: {{downtime| number: '1.0-0'}} min | {{downtime*100/total() | number: '1.0-0'}}%</md-tooltip> -->
+<div class="downtime" *ngIf="downtime"
+  [ngStyle]="{'flex-basis': downtime*100/total() + '%', 'width':downtime*100/total + '%'}"
+  [matTooltip]="('downtime' | translate) + ': ' + (downtime | number: '1.0-1') + ' min | ' + (downtime*100/total() | number: '1.0-1') + ' %'"
+  matTooltipClass="single-line-tooltip"
+>
+  <span *ngIf="downtime*100/total() >= 4" class="snapshot-label">{{downtime*100/total() | number: '1.0-1'}}%</span>
 </div>
-<div class="breakdown" *ngIf="breakdown" [ngStyle]="{'flex-basis': breakdown*100/total() + '%', 'width':breakdown*100/total + '%'}">
-  <span *ngIf="breakdown*100/total() >= 4" class="snapshot-label">{{breakdown*100/total() | number: '1.0-0'}}%</span>
-  <!-- <md-tooltip><span translate="breakdown">Breakdown</span>: {{breakdown| number: '1.0-0'}} min | {{breakdown*100/total() | number: '1.0-0'}}%</md-tooltip> -->
+<div class="breakdown" *ngIf="breakdown"
+  [ngStyle]="{'flex-basis': breakdown*100/total() + '%', 'width':breakdown*100/total + '%'}"
+  [matTooltip]="('breakdown' | translate) + ': ' + (breakdown | number: '1.0-1') + ' min | ' + (breakdown*100/total() | number: '1.0-1') + ' %'"
+  matTooltipClass="single-line-tooltip"
+>
+  <span *ngIf="breakdown*100/total() >= 4" class="snapshot-label">{{breakdown*100/total() | number: '1.0-1'}}%</span>
 </div>
-<div class="offline" *ngIf="offline" [ngStyle]="{'flex-basis': offline*100/total() + '%', 'width':offline*100/total + '%'}">
-  <span *ngIf="offline*100/total() >= 4" class="snapshot-label">{{offline*100/total() | number: '1.0-0'}}%</span>
-  <!-- <md-tooltip><span translate="offline">Offline</span>: {{offline| number: '1.0-0'}} min | {{offline*100/total() | number: '1.0-0'}}%</md-tooltip> -->
+<div class="offline" *ngIf="offline"
+  [ngStyle]="{'flex-basis': offline*100/total() + '%', 'width':offline*100/total + '%'}"
+  [matTooltip]="('offline' | translate) + ': ' + (offline | number: '1.0-1') + ' min | ' + (offline*100/total() | number: '1.0-1') + ' %'"
+  matTooltipClass="single-line-tooltip"
+>
+  <span *ngIf="offline*100/total() >= 4" class="snapshot-label">{{offline*100/total() | number: '1.0-1'}}%</span>
 </div>

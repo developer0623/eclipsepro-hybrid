@@ -32,7 +32,7 @@
       <div class="widget-group" fxLayout="row wrap" fxFlex="100">
         <!-- todo: orderBy with async is not working:  | orderBy:'description'-->
         <div
-          *ngFor="let machine of dashboardMachines | orderBy: machineSort"
+          *ngFor="let machine of dashboardMachines | orderBy: machineSort; trackBy: trackByKey"
           uiSref=".machine"
           [uiParams]="{id: machine.machineNumber}"
           fxLayout="column"

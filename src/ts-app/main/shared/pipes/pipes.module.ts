@@ -4,6 +4,10 @@ import { UnitsFormatPipe, UnitsValuePipe, UserDisplayUnitsPipe, TaskLenghValuePi
 import { ObscureNumberStringPipe } from './obscure-number-string.pipe';
 import { ShowInMiniPipe } from './show-in-mini.pipe';
 import { OrderByPipe } from './order-by.pipe';
+import { ShowInLargePipe } from './show-in-large.pipe';
+import { MetricLargeFilterPipe } from './metric-large-filter.pipe';
+import { AgePipe, DatesPipe, AmsTimePipe, AmsDateTimePipe, AmsDateTimeSecPipe, AmsTimeAgoPipe, TimeSpanPipe} from './dates.pipe';
+import { TimeAgoPipe } from './basic.pipe';
 
 
 
@@ -15,7 +19,17 @@ import { OrderByPipe } from './order-by.pipe';
     TaskLenghValuePipe,
     ObscureNumberStringPipe,
     ShowInMiniPipe,
-    OrderByPipe
+    OrderByPipe,
+    ShowInLargePipe,
+    MetricLargeFilterPipe,
+    DatesPipe,
+    AgePipe,
+    AmsTimePipe,
+    AmsDateTimePipe,
+    AmsDateTimeSecPipe,
+    AmsTimeAgoPipe,
+    TimeSpanPipe,
+    TimeAgoPipe
   ],
   imports: [
     CommonModule
@@ -27,7 +41,17 @@ import { OrderByPipe } from './order-by.pipe';
     TaskLenghValuePipe,
     ObscureNumberStringPipe,
     ShowInMiniPipe,
-    OrderByPipe
+    OrderByPipe,
+    ShowInLargePipe,
+    MetricLargeFilterPipe,
+    DatesPipe,
+    AgePipe,
+    AmsTimePipe,
+    AmsDateTimePipe,
+    AmsDateTimeSecPipe,
+    AmsTimeAgoPipe,
+    TimeSpanPipe,
+    TimeAgoPipe
   ]
 })
 export class PipesModule { }

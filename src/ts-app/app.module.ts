@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { UpgradeModule } from '@angular/upgrade/static';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { UIRouterUpgradeModule } from '@uirouter/angular-hybrid';
 import { UIRouterModule } from '@uirouter/angular';
@@ -15,6 +16,9 @@ import { NgxTranslateModule } from './translate/translate.module';
 // import { AppRoutingModule } from './app-routing.module';
 // import { AppComponent } from './app.component';
 
+// import 'd3';
+import 'nvd3';
+
 const dashboardsState = {
   name: 'app.dashboards.**',
   url: '/dashboards/machines',
@@ -27,6 +31,7 @@ const dashboardsState = {
 @NgModule({
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FlexLayoutModule,
     UpgradeModule,
     UIRouterUpgradeModule,
@@ -42,6 +47,7 @@ const dashboardsState = {
     { provide: 'apiResolver', deps: ['$injector'], useFactory: ($injector) =>  $injector.get('apiResolver')},
     { provide: 'machineData', deps: ['$injector'], useFactory: ($injector) =>  $injector.get('machineData') },
     { provide: 'clientDataStore', deps: ['$injector'], useFactory: ($injector) =>  $injector.get('clientDataStore') },
+    { provide: 'api', deps: ['$injector'], useFactory: ($injector) =>  $injector.get('api')},
     { provide: 'msNavigationServiceProvider', deps: ['$injector'], useFactory: ($injector) =>  $injector.get('msNavigationServiceProvider') },
   ],
   declarations: [],

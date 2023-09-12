@@ -1,0 +1,42 @@
+.pareto-name-td {
+  width: 45%;
+}
+
+.pareto-value {
+  display: block;
+}
+
+.table-pareto td:first-child {
+  width: 85%;
+  padding-right: 8px;
+}
+
+.table-pareto td {
+  overflow: hidden;
+  font-size: 13px;
+  text-transform: capitalize;
+  height: 32px;
+  padding: 2px 0;
+}
+
+@media only screen and (min-width: 960px) and (max-width: 1279px) {
+  .pareto-value {
+    display: none;
+  }
+}
+
+@media only screen and  (min-width: 1280px) and (max-width: 1919px) {
+  .shift-summary-table {
+    font-size: 14px;
+  }
+}
+
+@media only screen and  (min-width: 1920) {
+  .pareto-name-td {
+    display: block;
+  }
+
+  .pareto-name-hide {
+    display: none;
+  }
+}

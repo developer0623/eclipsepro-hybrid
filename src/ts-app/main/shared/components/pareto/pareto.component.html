@@ -1,0 +1,15 @@
+<table class="table-fixed table-pareto pareto">
+  <tr *ngFor="let item of vm">
+      <td *ngIf="media.isActive('gt-lg')" class="text-right pareto-name-td">
+          <div class="pareto-name text-truncate">{{item?.name.toLowerCase()}}</div>
+      </td>
+      <td class="text-truncate pr-8" matTooltip="{{item?.name}}: {{item?.toolTipText}}">
+          <div class="pareto-rect" [ngStyle]="{'width': item?.barPercent*100 + '%'}">
+              <div class="pareto-name pareto-name-hide">{{item?.name.toLowerCase()}}</div>
+          </div>
+      </td>
+      <td class="pareto-value text-nowrap">
+        {{item.value | number: '1.0-0'}} {{units.toLowerCase()}}
+      </td>
+  </tr>
+</table>

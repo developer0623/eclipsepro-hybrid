@@ -383,6 +383,7 @@ export interface IMachineStateDto {
   currentShiftCode: string;
   lockOutEnabled: boolean;
   isHoleCount: boolean;
+  lockout: boolean;
   // "serverReceivedDate": "2017-02-24T00:06:06.0382563-06:00"
 }
 
@@ -540,6 +541,8 @@ export interface IRollformingStatistics {
   totalOperationMinutes: number;
   statusEventTime: Date;
   productionEventTime: Date;
+  changeoverMinutes: any;
+  breakdownMinutes: any;
 }
 
 export interface IAggregate {
@@ -648,6 +651,7 @@ export interface IMachine {
     staggerPanelField: EclipseEnforcedSetup;
     setDoneItemsToReady: EclipseEnforcedSetup;
   };
+  isHoleCount: boolean;
 }
 
 export interface IMachineTools {

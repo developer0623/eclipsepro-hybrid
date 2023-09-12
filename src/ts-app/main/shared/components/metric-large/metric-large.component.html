@@ -1,0 +1,23 @@
+<div fxLayout="column" fxFlex [ngClass]="metricClass" *ngIf="metricDefinition.metricId">
+  <div fxLayout="row" fxLayoutAlign="space-between" fxFlex>
+     <div class="h3 secondary-text text-upper pb-8  margin0 metric-header" [translate]="metricDefinition?.metricId">{{metricDefinition?.metricId}}</div>
+     <app-help-icon [header]="metricDefinition.metricId" [help]="metricDefinition.nameToolTip"></app-help-icon>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="start">
+     <div fxFlex="40" class="line-height-1 font-weight-500 metric-currency-text">
+        {{currentPrimary | unitsFormat :metricDefinition.primaryUnits:3:true:true}}<sup class="metric-currency-unit">{{metricDefinition.primaryUnits | userDisplayUnits}}</sup>
+        <div class="line-height-1 font-size-13 black-text text-nowrap" style="position: relative; top: 3px; left: 3px;">
+              {{currentSecondary | unitsFormat :metricDefinition.secondaryUnits:1}}
+        </div>
+     </div>
+     <!--todo:unit display filter-->
+     <div fxFlex="60" class="sparkline-container">
+        <app-sparkline [current]="currentPrimary" [type]="metricDefinition.primaryUnits" [stats]="statsHistory"></app-sparkline>
+     </div>
+  </div>
+  <div class="font-size-12 secondary-text pb-8 text-nowrap hide">{{currentSecondary | number: '0.0-0' }} {{metricDefinition.secondaryUnits}} &nbsp;</div>
+  <div class="bullet-container">
+     <app-bullet-chart [current]="currentPrimary" [type]="metricDefinition.primaryUnits" [minValue]="metric.minValue" [okLower]="metric.okRangeStart" [okUpper]="metric.okRangeEnd" [target]="metric.targetValue"
+        [maxValue]="metric.maxValue" [lowerBetter]="metricDefinition.lowerIsBetter"></app-bullet-chart>
+  </div>
+</div>

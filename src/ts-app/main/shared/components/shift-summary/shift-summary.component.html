@@ -1,0 +1,74 @@
+<table class="line-height-2 table-aligned text-nowrap shift-summary-table">
+  <!--
+     For ng-if="$mdMedia('xs') || $mdMedia('sm')" => font-size-15
+   -->
+  <colgroup>
+     <col style="width: 55%;" />
+     <col style="width: 45%;" />
+  </colgroup>
+  <tbody>
+     <tr>
+        <td class="secondary-text" translate="leadOperator" title="{{'leadOperatorHelp' | translate}}">Lead Operator</td>
+        <td class="text-caps">{{machineState?.employeeName || "n/a"}}</td>
+     </tr>
+     <tr>
+        <td class="secondary-text" translate="averageSpeed" title="{{'avgFPMHelp' | translate}}">Avg Speed</td>
+        <td>{{(shiftStats?.avgFPM | unitsFormat :"fpm":0) || "n/a"}}</td>
+     </tr>
+     <tr>
+        <td class="secondary-text" translate="goodProduction" title="{{'goodFeetHelp' | translate}}">Good Production</td>
+        <td>{{(shiftStats?.goodFeet | unitsFormat :"ft":0) || "0"}}</td>
+     </tr>
+     <tr>
+        <td class="secondary-text" translate="scrap" title="{{'scrapFeetHelp' | translate}}">Scrap</td>
+        <td>{{(shiftStats?.scrapFeet | unitsFormat :"ft":0) || "0"}}</td>
+     </tr>
+     <tr>
+        <td class="secondary-text" translate="reclaimedScrap" title="{{'reclaimedScrapFeetHelp' | translate}}">Reclaimed Scrap</td>
+        <td>{{(shiftStats?.reclaimedScrapFeet | unitsFormat :"ft":0) || "0"}}</td>
+     </tr>
+     <tr>
+        <td class="secondary-text" translate="totalPieces" title="{{'totalPieceCountHelp' | translate}}">Total Pieces</td>
+        <td>{{shiftStats?.goodPieceCount || "0"}}</td>
+     </tr>
+     <tr>
+        <td class="secondary-text" translate="toolingChanges" title="{{'toolingChangeCountHelp' | translate}}">Tooling Changes</td>
+        <td>{{shiftStats?.toolingChangeCount || "0"}}</td>
+     </tr>
+     <tr>
+        <td class="secondary-text" translate="coilChanges" title="{{'coilChangeCountHelp' | translate}}">Coil Changes</td>
+        <td>{{shiftStats?.coilChangeCount || "0"}}</td>
+     </tr>
+<!-- Split here. Stats above, state below. Move lead operator to below? -->
+     <tr>
+        <td class="secondary-text" translate="coilId" title="{{'coilIdHelp' | translate}}">Coil ID</td>
+        <td><a class="td-link" ng-click="$event.stopPropagation()" ui-sref="app.inventory.coils.coil({id: machineState?.currentCoilId})">{{machineState?.currentCoilId || "n/a"}}</a></td>
+     </tr>
+     <tr>
+        <td class="secondary-text" translate="coilsMaterial" title="{{'coilsMaterialHelp' | translate}}">Coil Material</td>
+        <td><a class="td-link" ng-click="$event.stopPropagation()" ui-sref="app.inventory.coil-types.coil-type({id: machineState?.currentCoilMaterialCode})">{{machineState?.currentCoilMaterialCode || "n/a"}}</a></td>
+     </tr>
+     <tr>
+        <td class="secondary-text" translate="bundle" title="{{'bundleHelp' | translate}}">Bundle</td>
+        <td>{{machineState?.bundleNumber || "n/a"}}</td>
+     </tr>
+     <tr>
+        <td class="secondary-text" translate="itemId" title="{{'itemIdHelp' | translate}}">Item ID</td>
+        <td>{{machineState?.currentItemExternalId || "n/a"}}</td>
+     </tr>
+     <tr>
+        <td class="secondary-text" translate="partLength" title="{{'partLengthHelp' | translate}}">Part Length</td>
+        <td>{{(machineState?.currentItemLengthIn | unitsFormat :"in":3) || "0"}}</td>
+     </tr>
+     <tr>
+        <td class="secondary-text" translate="timeRange" title="{{'timeRangeHelp' | translate}}">Time Range</td>
+        <td>{{shiftStats?.start | amsTime }} - {{shiftStats?.end | amsTime }}</td>
+     </tr>
+     <!--Completed is not yet available from the data-->
+     <!--<tr>
+        <td>Completed</td>
+        <td><strong>{{current.machineState?.currentItemQtyDone}} / {{current.machineState?.currentItemQty}}</strong></td>
+     </tr>-->
+  </tbody>
+</table>
+
