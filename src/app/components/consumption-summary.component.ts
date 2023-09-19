@@ -231,7 +231,7 @@ const ConsumptionSummary = {
          }
 
          this.agGridOptions = {
-            angularCompileRows: true,
+
             headerHeight: 25,
             columnDefs: sortedColumns,
             onSortChanged: this.onSortChanged,
@@ -300,7 +300,7 @@ const ConsumptionSummary = {
       }
 
       onSortChanged = (event) => {
-         const sortColumns = this.agGridOptions.api.getSortModel();
+         const sortColumns = this.agGridOptions.columnApi.getColumnState().filter(s => s.sort !== null);
          if (sortColumns.length > 0) {
             const sortItem = {
                field: sortColumns[0].colId,

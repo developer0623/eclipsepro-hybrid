@@ -128,7 +128,7 @@ const CoilTypes = {
       }
 
       this.agGridOptions = {
-        angularCompileRows: true,
+
         headerHeight: 25,
         defaultColDef: {
           sortable: true,
@@ -142,7 +142,7 @@ const CoilTypes = {
           },
         },
         columnDefs: this.columns,
-        getRowNodeId: (data) => data.materialCode,
+        getRowId: params => params.data.materialCode,
         onColumnResized: this.onColumnResized,
         onColumnMoved: this.onColumnMoved,
         onDragStopped: this.onDragStopped,
@@ -275,7 +275,7 @@ const CoilTypes = {
 
     onSortChanged = (event) => {
       let localColumns = [];
-      const sortColumns = this.agGridOptions.api.getSortModel();
+      const sortColumns = this.agGridOptions.columnApi.getColumnState().filter(s => s.sort !== null);
       if (sortColumns.length > 0) {
          this.columns = this.columns.map(col => {
             let sortDirection = '';

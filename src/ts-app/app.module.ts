@@ -8,6 +8,7 @@ import { UIRouterModule } from '@uirouter/angular';
 import { MatIconModule } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { AgGridModule } from 'ag-grid-angular';
 import { eclipseProApp } from '../app/index.module';
 import { PrefsModule } from './prefs/prefs.module';
 import { DashboardsModule } from './main/dashboards/dashboards.module';
@@ -37,6 +38,7 @@ const dashboardsState = {
     UIRouterUpgradeModule,
     MatIconModule,
     HttpClientModule,
+    AgGridModule,
     NgxTranslateModule,
     PrefsModule,
     DashboardsModule,

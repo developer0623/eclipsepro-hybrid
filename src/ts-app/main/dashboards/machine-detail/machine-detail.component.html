@@ -156,6 +156,44 @@
               [barHeight]="10"
           ></app-pareto>
       </div>
+
+      <table id="graph-div" class="signals overview-table p-24 schedule-graph-container">
+        <thead>
+            <tr>
+            <th class="row-name h3">SCHEDULE</th>
+            <th class="timeline">
+              <app-timeline-xaxis
+                [height]="50"
+                [width]="1920"
+                [displayXDomain]="focusExtent"
+                [cursorTime]="cursor"
+              >
+              </app-timeline-xaxis>
+            </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td></td>
+            <td (mouseover)="disableScroll($event)" (mouseleave)="enableScroll()">
+              <app-timeline-block [name]="selectedMachine?.machine.description"
+                [machineNumber]="selectedMachine?.machineNumber"
+                [data]="selectedMachine?.scheduleEstimate?.scheduleBlocks"
+                [displayXDomain]="focusExtent" [cursorTime]="cursor" [height]="50" [width]="1920">
+              </app-timeline-block>
+            </td>
+            </tr>
+        </tbody>
+      </table>
+
+      <div class="widget-group pr-24 pl-24 pro-log-container">
+        <span class="h3">PRODUCTION LOG</span>
+          <app-production-log [machines]="machineNumber"
+            [shiftCode]="selectedStats?.startShiftCode"></app-production-log>
+      </div>
+
+
+
   </div>
 
 </div>

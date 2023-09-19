@@ -71,7 +71,7 @@ const CoilTypelPreview = {
             }
          });
          this.agCoilGridOptions = {
-            angularCompileRows: true,
+
             headerHeight: 25,
             defaultColDef: {
               sortable: true,
@@ -85,7 +85,7 @@ const CoilTypelPreview = {
               },
             },
             columnDefs: this.columns,
-            getRowNodeId: (data) => data.id,
+            getRowId: params => params.data.id,
             //onColumnResized: this.onColumnResized,
             enableCellChangeFlash: true,
             // onSortChanged: this.onSortChanged,

@@ -155,7 +155,7 @@ const AppCoils = {
       }
 
       this.agGridOptions = {
-        angularCompileRows: true,
+
         headerHeight: 25,
         defaultColDef: {
           sortable: true,
@@ -169,7 +169,7 @@ const AppCoils = {
           },
         },
         columnDefs: this.columns,
-        getRowNodeId: (data) => data.id,
+        getRowId: params => params.data.id,
         onColumnResized: this.onColumnResized,
         onColumnMoved: this.onColumnMoved,
         onDragStopped: this.onDragStopped,
@@ -300,7 +300,7 @@ const AppCoils = {
 
     onSortChanged = (event) => {
       let localColumns = [];
-      const sortColumns = this.agGridOptions.api.getSortModel();
+      const sortColumns = this.agGridOptions.columnApi.getColumnState().filter(s => s.sort !== null);
       if (sortColumns.length > 0) {
          this.columns = this.columns.map(col => {
             let sortDirection = '';

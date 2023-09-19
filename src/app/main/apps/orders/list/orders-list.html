@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="grid-filter">
-                  
+
                     <div class="age-label">Completion Age:</div>
                     <md-select ng-model="$ctrl.daysAgo"
                         ng-change="$ctrl.daysAgoObs.onNext({daysAgo: $ctrl.daysAgo})">
@@ -57,7 +57,7 @@
                       <md-option ng-value="365">365 Days</md-option>
                       <md-option ng-value="9999">All</md-option> <!-- eventually this will not be all -->
                     </md-select>
-                  
+
                 </div>
 
                 <div class="print-icon-column float-right">
@@ -96,9 +96,9 @@
                     </md-button>
                 </div>
             </div>
-
-            <div ag-grid="$ctrl.agGridOptions" class="ag-theme-balham" style="height:100%"
-            ></div>
+            <ag-grid-temp [grid-options]="$ctrl.agGridOptions" class="ag-theme-balham" style="height:100%"></ag-grid-temp>
+            <!-- <div ag-grid="$ctrl.agGridOptions" class="ag-theme-alpine" style="height:100%"
+            ></div> -->
         </div>
         <!-- / CONTENT -->
     </div>

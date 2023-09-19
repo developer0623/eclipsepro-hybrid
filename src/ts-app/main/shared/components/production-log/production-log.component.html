@@ -1,0 +1,23 @@
+<div class="production-log-menu-container">
+  <button mat-icon-button [cdkMenuTriggerFor]="productionLog" aria-label="Select Shift 1">
+    <mat-icon>settings</mat-icon>
+  </button>
+  <ng-template #productionLog>
+    <div class="main-menu" cdkMenu>
+      <div fxLayout="row" class="addColumn" fxLayoutAlign="center center">
+          Add/Remove Column
+      </div>
+      <button class="main-menu-item" cdkMenuItem (click)="swapSort()">
+          <span class="menu-item-content">Sort</span>
+          <i class="mdi mdi-numeric"></i>
+          <span>|</span>
+          <i class="mdi mdi-alphabetical"></i>
+      </button>
+      <button class="main-menu-item" uiSref="app.metric-config" cdkMenuItem aria-label="Metric Config">
+          <span class="menu-item-content">Metric Config</span>
+          <i class="mdi mdi-gauge"></i>
+      </button>
+    </div>
+  </ng-template>
+</div>
+<!-- <div ag-grid="$ctrl.agGridOptions" class="ag-theme-balham full-page-grid"></div> -->

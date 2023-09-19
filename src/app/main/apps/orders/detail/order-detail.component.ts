@@ -154,7 +154,7 @@ const OrderDetailComponent = {
 
     ];
     productionSummaryAgGridOptions: GridOptions = {
-      angularCompileRows: true,
+
       headerHeight: 25,
       defaultColDef: {
          sortable: true,
@@ -167,7 +167,7 @@ const OrderDetailComponent = {
     consumptionSummarySub_;
 
     bundleAgGridOptions: GridOptions = {
-      angularCompileRows: true,
+
       headerHeight: 25,
       defaultColDef: {
          sortable: true,
@@ -247,12 +247,12 @@ const OrderDetailComponent = {
           params.value.forEach(message => {
             messages += '<div style="text-align:left">' + message + '</div>';
           });
-          return messages;          
+          return messages;
          },
       },
     ];
    integrationAgGridOptions: GridOptions = {
-      angularCompileRows: true,
+
       headerHeight: 25,
       defaultColDef: {
          sortable: true,

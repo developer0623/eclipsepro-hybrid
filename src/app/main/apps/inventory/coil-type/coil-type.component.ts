@@ -218,7 +218,7 @@ const CoilType = {
             }
 
           this.agCoilGridOptions = {
-            angularCompileRows: true,
+
             headerHeight: 25,
             defaultColDef: {
               sortable: true,
@@ -232,7 +232,7 @@ const CoilType = {
               },
             },
             columnDefs: this.columns.map(({isChecked, ...rest}) => {return {...rest, hide: !isChecked}}),
-            getRowNodeId: (data) => data.id,
+            getRowId: params => params.data.id,
             //onColumnResized: this.onColumnResized,
             enableCellChangeFlash: true,
             onSortChanged: this.onSortChanged,
@@ -294,7 +294,7 @@ const CoilType = {
         }
 
          onSortChanged = (event) => {
-            const sortColumns = this.agCoilGridOptions.api.getSortModel();
+            const sortColumns = this.agCoilGridOptions.columnApi.getColumnState().filter(s => s.sort !== null);
             if (sortColumns.length > 0) {
                const sortItem = {
                   field: sortColumns[0].colId,

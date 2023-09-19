@@ -312,7 +312,7 @@ const OrderList = {
       if (this.searchObject) {
         this.searchParams = this.searchObject;
       }
-      
+
       let lsDaysAgo = localStorage.getItem('orders-list.daysAgo');
       if(!!lsDaysAgo) {
         this.daysAgo = +lsDaysAgo;
@@ -346,7 +346,7 @@ const OrderList = {
         });
 
       this.agGridOptions = {
-        angularCompileRows: true,
+
         headerHeight: 25,
         defaultColDef: {
           sortable: true,
@@ -360,7 +360,7 @@ const OrderList = {
           }
         },
         columnDefs: this.columns,
-        getRowNodeId: (data) => data.id,
+        getRowId: params => params.data.id,
         rowSelection: 'multiple',
         rowMultiSelectWithClick: true,
         onSelectionChanged: this.onSelectionChanged,
@@ -509,7 +509,7 @@ const OrderList = {
 
     onSortChanged = (event) => {
       let localColumns = [];
-      const sortColumns = this.agGridOptions.api.getSortModel();
+      const sortColumns = this.agGridOptions.columnApi.getColumnState().filter(s => s.sort !== null);
       if (sortColumns.length > 0) {
          this.columns = this.columns.map(col => {
             let sortDirection = '';

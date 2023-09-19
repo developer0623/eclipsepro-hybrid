@@ -118,7 +118,7 @@ const XL200Tools = {
          sortedColumns = [...this.masterListofToolColumns];
       }
       this.xl200ToolsGridOptions = {
-        angularCompileRows: true,
+
         headerHeight: 25,
         defaultColDef: {
           sortable: true,
@@ -132,7 +132,7 @@ const XL200Tools = {
           },
         },
         columnDefs: sortedColumns, //this.columns.map(({isChecked, ...rest}) => {return {...rest, hide: !isChecked}}),
-        getRowNodeId: (data) => data.tool,
+        getRowId: params => params.data.tool,
         //onColumnResized: this.onColumnResized,
         enableCellChangeFlash: true,
         onSortChanged: this.onSortChanged,
@@ -140,7 +140,7 @@ const XL200Tools = {
     }
 
     onSortChanged = (event) => {
-      const sortColumns = this.xl200ToolsGridOptions.api.getSortModel();
+      const sortColumns = this.xl200ToolsGridOptions.columnApi.getColumnState().filter(s => s.sort !== null);
       if (sortColumns.length > 0) {
          const sortItem = {
             field: sortColumns[0].colId,

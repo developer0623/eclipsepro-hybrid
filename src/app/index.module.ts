@@ -1,4 +1,6 @@
 import * as angular from 'angular';
+import { downgradeComponent } from '@angular/upgrade/static';
+import { AgGridTempComponent } from '../ts-app/main/shared/components/ag-grid-temp/ag-grid-temp.component';
 import "angulartics";
 import "angulartics-google-analytics";
 import "angular-advanced-searchbox";
@@ -35,11 +37,14 @@ import routeConfig from './index.route';
 import { AppController } from './index.controller';
 // import './index.scss';
 
-import * as agGrid from 'ag-grid-community'
+// import * as agGrid from 'ag-grid-community'
 // import 'ag-grid-community'
-//import {initialiseAgGridWithAngular1} from 'ag-grid-community';
+// import {initialiseAgGridWithAngular1} from 'ag-grid-community';
 
-agGrid.initialiseAgGridWithAngular1(angular);
+// agGrid.initialiseAgGridWithAngular1(angular);
+
+// import 'ag-grid-community';
+// import 'ag-grid-angular';
 
 export const eclipseProApp = angular.module('eclipsePro', [
   uiRouter,
@@ -90,11 +95,18 @@ export const eclipseProApp = angular.module('eclipsePro', [
     'angulartics', 'angulartics.google.analytics', 'angular-advanced-searchbox',
     'ui.bootstrap', /* 'infinite-scroll', */
     customDndModule, /* 'dndLists', */ 'angular.filter',
-    'agGrid'
+    // 'agGrid'
 ])
 .controller('AppController', AppController)
 .run(runBlock)
 .config(routeConfig)
-.config(httpConfig);
+.config(httpConfig)
+.directive('agGridTemp', downgradeComponent({ component: AgGridTempComponent }))
+// .directive('agGridTemp', ['angularjsDirectiveHelper', function(angularjsDirectiveHelper) {
+//   return angularjsDirectiveHelper.downgradeComponent({
+//     component: AgGridTempComponent,
+//     inputs: ['gridOptions'], // Specify the input property
+//   });
+// }])
 
 // bootstrap(document.querySelector('#main'), ['eclipsePro'])

@@ -9,6 +9,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {CdkMenu, CdkMenuItem, CdkMenuTrigger} from '@angular/cdk/menu';
+import {MatIconModule} from '@angular/material/icon';
 import { PipesModule } from '../pipes/pipes.module';
 import { DirectivesModule } from '../directives/directives.module';
 import { MachineDashboardMiniComponent } from './machine-dashboard-mini/machine-dashboard-mini.component';
@@ -28,6 +30,10 @@ import { ShiftSelectComponent } from './shift-select/shift-select.component';
 import { ShiftSummaryComponent } from './shift-summary/shift-summary.component';
 import { ScheduleSummaryComponent } from './schedule-summary/schedule-summary.component';
 import { ParetoComponent } from './pareto/pareto.component';
+import { TimelineXAxisComponent } from './timeline-xaxis/timeline-xaxis.component';
+import { TimelineBlockComponent } from './timeline-block/timeline-block.component';
+import { ProductionLogComponent } from './production-log/production-log.component';
+// import { AgGridTempComponent } from './ag-grid-temp/ag-grid-temp.component';
 
 
 
@@ -48,12 +54,18 @@ import { ParetoComponent } from './pareto/pareto.component';
     ShiftSelectComponent,
     ShiftSummaryComponent,
     ScheduleSummaryComponent,
-    ParetoComponent
+    ParetoComponent,
+    TimelineXAxisComponent,
+    TimelineBlockComponent,
+    ProductionLogComponent,
+    // AgGridTempComponent
   ],
   imports: [
     CommonModule,
     FlexLayoutModule,
     UIRouterModule,
+    CdkMenuTrigger, CdkMenu, CdkMenuItem,
+    MatIconModule,
     MatTooltipModule,
     MatCardModule,
     MatButtonModule,
@@ -81,7 +93,10 @@ import { ParetoComponent } from './pareto/pareto.component';
     ShiftSelectComponent,
     ShiftSummaryComponent,
     ScheduleSummaryComponent,
-    ParetoComponent
+    ParetoComponent,
+    TimelineXAxisComponent,
+    TimelineBlockComponent,
+    ProductionLogComponent
   ]
 })
 export class ComponentsModule { }

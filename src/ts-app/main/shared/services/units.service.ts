@@ -59,8 +59,8 @@ export class UnitsService {
       input: number,
       inType: string,
       decimals: number,
-      hideType: boolean,
-      outType: string,
+      hideType: boolean = false,
+      outType: string = '',
       ignoreSpecialInches: boolean = false
     ): string {
       if (!input && input !== 0) {

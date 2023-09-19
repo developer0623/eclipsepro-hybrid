@@ -34,6 +34,9 @@ $theme: mat.define-light-theme((
 // that you are using.
 @include mat.all-component-themes($theme);
 
+@import 'ag-grid-community/styles/ag-grid.css';
+@import 'ag-grid-community/styles/ag-theme-balham.css';
+
 
 .machine-panel-large {
   app-snapshot-bar {
