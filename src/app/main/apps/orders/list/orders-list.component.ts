@@ -85,9 +85,9 @@ const OrderList = {
         headerName: "Order",
         hide: false,
         filter: 'agTextColumnFilter',
-        cellRenderer: params => {
-           return `<link-helper document-id="'JobDetail/${params.data.ordId}'" label="'${params.value}'" hide-type="true"></link-helper>`;
-        },
+        // cellRenderer: params => {
+        //    return `<link-helper document-id="'JobDetail/${params.data.ordId}'" label="'${params.value}'" hide-type="true"></link-helper>`;
+        // },
         headerCheckboxSelection: true,
         headerCheckboxSelectionFilteredOnly: true,
         checkboxSelection: true,
@@ -99,9 +99,9 @@ const OrderList = {
         headerName: "Material",
         hide: false,
         filter: 'agTextColumnFilter',
-        cellRenderer: params => {
-           return `<link-helper document-id="'Material/${params.value}'" label="'${params.value}'" hide-type="true"></link-helper>`;
-        },
+        // cellRenderer: params => {
+        //    return `<link-helper document-id="'Material/${params.value}'" label="'${params.value}'" hide-type="true"></link-helper>`;
+        // },
       },
       {
         field: 'materialDescription',

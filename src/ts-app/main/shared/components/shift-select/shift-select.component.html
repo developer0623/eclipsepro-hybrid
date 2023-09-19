@@ -4,14 +4,14 @@
 </button>
 
 
-  <mat-form-field class="example-form-field">
+  <mat-form-field class="datepicker-form-field no-bottom">
     <mat-datepicker-toggle matIconPrefix [for]="datepicker"></mat-datepicker-toggle>
     <mat-datepicker #datepicker>
     </mat-datepicker>
-    <input matInput [matDatepicker]="datepicker">
+    <input matInput [matDatepicker]="datepicker" [(ngModel)]="currentDate" (dateChange)="selectDate()">
   </mat-form-field>
 
-<button class="bt-24" mat-icon-button *ngFor="let item of repeatShifts; let i = index;"
+<button class="bt-24 select-btn" mat-icon-button *ngFor="let item of repeatShifts; let i = index;"
   (click)="selectShift(shifts[item]?.shiftCode); $event.stopPropagation();"
     [disabled]="!shifts[item]">
   <i class="mdi mdi-numeric-{{i+1}}-box"

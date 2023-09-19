@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import moment from 'moment';
 import { IShiftChoice } from 'src/app/core/dto';
 
@@ -10,6 +10,7 @@ import { IShiftChoice } from 'src/app/core/dto';
 export class ShiftSelectComponent implements OnChanges {
   @Input() availableShifts: IShiftChoice[];
   @Input() shiftIndex: number;
+  @Output() updateShiftIndex = new EventEmitter<number>();
 
   currentIndex: number = 0;
   isFirst: boolean = true;
@@ -18,10 +19,6 @@ export class ShiftSelectComponent implements OnChanges {
   currentShift: IShiftChoice;
   currentDate: Date;
   repeatShifts = [0, 1, 2];
-
-  updateShiftIndex;
-  // @Input() availableShifts;
-
 
   refresh() {
     this.isFirst = this.currentIndex === 0;
@@ -66,7 +63,7 @@ export class ShiftSelectComponent implements OnChanges {
   }
 
   onShiftIndexChange(){
-    this.updateShiftIndex({shiftIdx: this.currentIndex});
+    this.updateShiftIndex.emit(this.currentIndex);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

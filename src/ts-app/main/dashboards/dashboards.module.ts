@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {MatTabsModule} from '@angular/material/tabs';
 import { UIRouterModule } from '@uirouter/angular';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {CdkMenu, CdkMenuItem, CdkMenuTrigger} from '@angular/cdk/menu';
@@ -36,6 +37,7 @@ const machineState = {
     ],
     imports: [
         CommonModule,
+        MatTabsModule,
         ComponentsModule,
         FlexLayoutModule,
         UIRouterModule.forChild({ states: [dashboardsState, machineState] }),

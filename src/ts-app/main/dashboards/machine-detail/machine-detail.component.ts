@@ -166,7 +166,7 @@ export class MachineDetailComponent implements OnDestroy {
     }
 
     updateShiftIndex(shiftIdx){
-      this.shiftIndex = shiftIdx.shiftIdx; // todo: find out why this is an object and not a number
+      this.shiftIndex = shiftIdx; // todo: find out why this is an object and not a number
       this.selectMachineData();
       this.updateQueryString();
     }
@@ -193,6 +193,10 @@ export class MachineDetailComponent implements OnDestroy {
       this.machineNumber = id;
       // this.$state.go('.', {id: id}, {notify: false});
       this.machineId$.onNext(this.machineNumber);
+    };
+
+    trackByKey = (index: number, m: IMachine): number => {
+      return m.id;
     };
 
 }

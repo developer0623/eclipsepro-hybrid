@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout'
 import { UIRouterModule } from "@uirouter/angular";
 import {TooltipPosition, MatTooltipModule} from '@angular/material/tooltip';
@@ -62,6 +63,7 @@ import { ProductionLogComponent } from './production-log/production-log.componen
   ],
   imports: [
     CommonModule,
+    FormsModule,
     FlexLayoutModule,
     UIRouterModule,
     CdkMenuTrigger, CdkMenu, CdkMenuItem,

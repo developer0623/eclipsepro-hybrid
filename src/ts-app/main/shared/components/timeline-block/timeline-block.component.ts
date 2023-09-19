@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { EventService } from '../../services/event.service';
 import { UnitsService } from '../../services/units.service';
 declare let d3: any;
 
@@ -21,7 +23,7 @@ export class TimelineBlockComponent implements OnInit, OnDestroy, OnChanges {
   @Input() brushOutput;
   @Input() cursorTime;
   @ViewChild('timelineSvg', { static: true }) timelineSvg: ElementRef;
-
+  private eventSubscription: Subscription;
   paddingTop: number = 0;
   paddingRight: number = 0;
   paddingBottom: number = 40;
@@ -37,7 +39,7 @@ export class TimelineBlockComponent implements OnInit, OnDestroy, OnChanges {
   inZoom = false;
   gMain;
 
-  constructor(private elementRef: ElementRef, private unitsService: UnitsService) {
+  constructor(private elementRef: ElementRef, private unitsService: UnitsService, private eventService: EventService) {
     this.paddingBottom = this.showXAxis ? 40 : 0;
   }
 
@@ -134,9 +136,9 @@ export class TimelineBlockComponent implements OnInit, OnDestroy, OnChanges {
         this.zoom = d3.behavior
           .zoom()
           .x(this.xScale)
-          .on('zoom', this.zoomHandler)
-          .on('zoomstart', this.zoomStart)
-          .on('zoomend', this.zoomEnd);
+          .on('zoom', () => this.zoomHandler())
+          .on('zoomstart', () => this.zoomStart())
+          .on('zoomend', () => this.zoomEnd());
         this.svg.call(this.zoom).on('dblclick.zoom', null);
       }
 
@@ -151,19 +153,23 @@ export class TimelineBlockComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   zoomStart() {
-    console.log('zoomstart', this.tooltip);
     this.tooltip.transition().style('opacity', 0);
     this.inZoom = true;
+    console.log('zoomStart');
   }
   zoomEnd() {
-    console.log('zoomend');
     this.tooltip.transition().duration(2000).style('opacity', 1);
     this.inZoom = false;
+    console.log('zoomend');
   }
 
   zoomHandler() {
     this.xValDomain = this.xScale.domain();
     this.displayXDomain = this.xScale.domain();
+    this.eventService.emitEvent({data: this.displayXDomain});
+    this.zoom.x(this.xScale);
+    this.drawCursor();
+    this.draw();
     //let rangeDiff = xValDomain[1].getTime() - xValDomain[0].getTime();
     //let zoomRange = (rangeDiff / (1000 * 60));
     //if(zoomRange >= 10 && zoomRange <= 525600){
@@ -844,6 +850,7 @@ export class TimelineBlockComponent implements OnInit, OnDestroy, OnChanges {
         .style('z-index', 0)
         .duration(500)
         .style('display', 'none');
+    this.eventSubscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

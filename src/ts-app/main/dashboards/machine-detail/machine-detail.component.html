@@ -17,6 +17,19 @@
           </ams-md-tab>
       </ams-md-tabs> -->
 
+      <div class="header machine-back-icon-container" fxLayout="row" fxLayoutAlign="space-between start">
+          <i uiSref="app.dashboards" class="icon icon-arrow-left back-icon"></i>
+      </div>
+
+      <nav mat-tab-nav-bar [tabPanel]="tabPanel" class="jobsTabs machines-tabs"  >
+        <span mat-tab-link *ngFor="let machine of dashboardMachines; let i = index; trackBy: trackByKey"
+           (click)="selectTab(machine.machineNumber, i)"
+           [scrollDistance]="100"
+           [active]="selectedTabIndex === i"
+          > {{machine.machine.description}} </span>
+      </nav>
+      <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+
       <div
           fxLayout="row"
           fxLayoutAlign="space-between"
@@ -60,7 +73,7 @@
 
       </div>
       <app-shift-select class="shift-select-container ph-24 pb-16 border-left" [availableShifts]="availableShifts" [shiftIndex]="shiftIndex"
-            updateShiftIndex="updateShiftIndex({shiftIdx})"></app-shift-select>
+            (updateShiftIndex)="updateShiftIndex($event)"></app-shift-select>
       <app-shift-summary
           class="shift-summary-container ph-24 pb-16 border-bottom border-left"
           [machineState]="selectedMachine?.state"
@@ -179,7 +192,7 @@
               <app-timeline-block [name]="selectedMachine?.machine.description"
                 [machineNumber]="selectedMachine?.machineNumber"
                 [data]="selectedMachine?.scheduleEstimate?.scheduleBlocks"
-                [displayXDomain]="focusExtent" [cursorTime]="cursor" [height]="50" [width]="1920">
+                [displayXDomain]="focusExtent" [cursorTime]="cursor" [height]="78" [width]="1920">
               </app-timeline-block>
             </td>
             </tr>

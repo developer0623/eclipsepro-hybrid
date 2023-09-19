@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { EventService } from '../../services/event.service';
 declare let d3: any;
 
 @Component({
@@ -6,12 +8,13 @@ declare let d3: any;
   templateUrl: './timeline-xaxis.component.html',
   styleUrls: ['./timeline-xaxis.component.scss']
 })
-export class TimelineXAxisComponent implements OnInit, OnChanges {
+export class TimelineXAxisComponent implements OnInit, OnChanges, OnDestroy {
   @Input() displayXDomain;
   @Input() height = 100;
   @Input() width = 0;
   @Input() cursorTime;
   @ViewChild('timelineSvg', { static: true }) timelineSvg: ElementRef;
+  private eventSubscription: Subscription;
   drawFlag: boolean = false;
   paddingTop: number = 0;
   paddingRight: number = 0;
@@ -29,7 +32,7 @@ export class TimelineXAxisComponent implements OnInit, OnChanges {
   gMain: any;
   gCursor: any;
 
-  constructor(private elementRef: ElementRef) {}
+  constructor(private elementRef: ElementRef, private eventService: EventService) {}
 
   ngOnInit() {
     const svgElement = this.timelineSvg.nativeElement;
@@ -85,6 +88,11 @@ export class TimelineXAxisComponent implements OnInit, OnChanges {
       .attr('y2', this.height);
 
     this.drawCursor();
+    this.eventSubscription = this.eventService.getEvent().subscribe(event => {
+      this.xValDomain = event.data;
+      this.xScale.domain(this.xValDomain);
+      this.draw();
+    });
 
     setInterval(() => this.advanceCursorTime(), 1000);
   }
@@ -190,5 +198,9 @@ export class TimelineXAxisComponent implements OnInit, OnChanges {
       console.log('111111', this.cursorTime)
       // this.draw()
     }
+  }
+
+  ngOnDestroy(): void {
+    this.eventSubscription.unsubscribe();
   }
 }

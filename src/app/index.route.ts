@@ -47,6 +47,11 @@ export default function routeConfig($stateProvider, $urlRouterProvider, $locatio
       title: 'dashboards',
       icon: 'mdi-microsoft',//tile-four',
       weight: 1
-  });
+    });
+    msNavigationServiceProvider.saveItem('dashboards.machines', {
+      title: 'machines',
+      state: 'app.dashboards',
+      weight: 1,
+    });
 
 }
