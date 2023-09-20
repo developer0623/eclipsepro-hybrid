@@ -1,7 +1,8 @@
-import { Component, Inject, OnDestroy } from '@angular/core';
+import { Component, Inject, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Location } from '@angular/common';
 import * as moment from "moment";
 import * as _ from 'lodash';
-import { Transition } from '@uirouter/core';
+import { Transition, StateService } from '@uirouter/core';
 
 import { IMachine, IMetricDefinition, IMetricConfig, IRollformingStatistics, IShiftChoice, IMachineStateDto, IStatisticsHistory, IScheduleSummary, IScheduleEstimate, IMachineMetricSettings, IDashboardMachine, IScheduleEntry } from 'src/app/core/dto';
 
@@ -11,7 +12,7 @@ import { IMachine, IMetricDefinition, IMetricConfig, IRollformingStatistics, ISh
   styleUrls: ['./machine-detail.component.scss']
 })
 export class MachineDetailComponent implements OnDestroy {
-
+    @ViewChild('tabGroup', { static: true }) tabGroup: any;
     machineId$ = new Rx.Subject<number>();
     focusExtent: [Date, Date] = [
       moment().subtract(10, 'minutes').toDate(),
@@ -42,8 +43,11 @@ export class MachineDetailComponent implements OnDestroy {
       @Inject('machineData') public machineDataService,
       @Inject('clientDataStore') public clientDataStore,
       @Inject('api') public api,
-      $transition$: Transition
+      $transition$: Transition,
+      private state: StateService,
+      private _location: Location
     ) {
+      console.log('77777777')
 
       this.machineData = machineDataService;
       this.machineSort = localStorage.getItem('machineSort') ?? 'machineNumber';
@@ -193,10 +197,31 @@ export class MachineDetailComponent implements OnDestroy {
       this.machineNumber = id;
       // this.$state.go('.', {id: id}, {notify: false});
       this.machineId$.onNext(this.machineNumber);
+      this.centerSelectedTab();
     };
 
     trackByKey = (index: number, m: IMachine): number => {
       return m.id;
     };
+
+    onChangeTab() {
+      this.selectedTabIndex = this.tabGroup.selectedIndex;
+      this.machineNumber = this.dashboardMachines[this.selectedTabIndex].machineNumber;
+      // this.state.go('.', {id: this.machineNumber}, {reload: false});
+      // this._location.replaceState(`/dashboards/machines/${this.machineNumber}`);
+      this.machineId$.onNext(this.machineNumber);
+      this.centerSelectedTab()
+    }
+
+    centerSelectedTab() {
+      const tabHeader = this.tabGroup._tabHeader;
+      const tabList = tabHeader._tabList.nativeElement;
+      const tabElement = tabList.children[0].children[this.selectedTabIndex];
+      const tabWidth = tabElement.offsetWidth;
+      const screenWidth = this.tabGroup._tabHeader._tabListContainer.nativeElement.clientWidth;
+
+      const scrollAmount = tabElement.offsetLeft + tabWidth / 2 - screenWidth / 2;
+      tabHeader.scrollDistance = scrollAmount;
+    }
 
 }

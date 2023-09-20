@@ -30,6 +30,36 @@ app-timeline-xaxis {
   height: 100px;
 }
 
+::ng-deep .machines-tabs {
+  .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+    color: #545454;
+    font-size: 14px;
+  }
+  .mat-mdc-tab.mdc-tab--active:focus .mdc-tab__text-label {
+    color: #545454;
+  }
+  .mat-mdc-tab .mdc-tab__text-label {
+    color: rgb(236, 177, 0);
+  }
+
+  .mat-mdc-tab .mdc-tab-indicator__content--underline {
+    border-color: rgb(236, 177, 0);
+    opacity: 1;
+  }
+  .mat-mdc-tab:focus .mdc-tab-indicator__content--underline {
+    border-color: #545454;
+  }
+  .mdc-tab-indicator--active .mdc-tab-indicator__content {
+    border-color: #545454;
+  }
+  .mat-mdc-tab.mdc-tab--active:focus .mdc-tab-indicator__content--underline {
+    border-color: #545454;
+  }
+  .mat-mdc-tab.mdc-tab:hover .mdc-tab-indicator__content--underline {
+    border-color: #545454;
+  }
+}
+
 
 @media only screen and (min-width: 1920px) {
   .metric-large-container {

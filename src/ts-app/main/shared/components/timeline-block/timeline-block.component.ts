@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { EventService } from '../../services/event.service';
 import { UnitsService } from '../../services/units.service';
 declare let d3: any;
@@ -23,7 +22,6 @@ export class TimelineBlockComponent implements OnInit, OnDestroy, OnChanges {
   @Input() brushOutput;
   @Input() cursorTime;
   @ViewChild('timelineSvg', { static: true }) timelineSvg: ElementRef;
-  private eventSubscription: Subscription;
   paddingTop: number = 0;
   paddingRight: number = 0;
   paddingBottom: number = 40;
@@ -518,6 +516,7 @@ export class TimelineBlockComponent implements OnInit, OnDestroy, OnChanges {
       });
 
       // Data binding
+      console.log('55555', this.gMain)
       let timeBlocks = this.gMain
         .selectAll('svg')
         .data(this.data, (d: any) => {
@@ -850,7 +849,6 @@ export class TimelineBlockComponent implements OnInit, OnDestroy, OnChanges {
         .style('z-index', 0)
         .duration(500)
         .style('display', 'none');
-    this.eventSubscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -1,34 +1,12 @@
 <div id="dashboard-machines" fxLayout="column" class="page-layout datatable-layout simple fullwidth scroll-tab-dashboards">
   <div class="schedule-content schedule-content-grid">
-      <!-- <div class="header machine-back-icon-container" layout="row" layout-align="space-between start">
-          <md-icon ui-sref="app.dashboards_machines_machines" md-font-icon="icon-arrow-left" class="icon back-icon"></md-icon>
-      </div>
-      <ams-md-tabs
-          class="jobsTabs machines-tabs"
-          md-border-bottom
-          md-selected="selectedTabIndex"
-          md-dynamic-height="true"
-      >
-          <ams-md-tab
-              ng-repeat="machine in dashboardMachines track by machine.machineNumber"
-              label="{{machine.machine.description}}"
-              ng-click="selectTab(machine.machineNumber, $index)"
-          >
-          </ams-md-tab>
-      </ams-md-tabs> -->
+      <button mat-icon-button uiSref="app.dashboards">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
 
-      <div class="header machine-back-icon-container" fxLayout="row" fxLayoutAlign="space-between start">
-          <i uiSref="app.dashboards" class="icon icon-arrow-left back-icon"></i>
-      </div>
-
-      <nav mat-tab-nav-bar [tabPanel]="tabPanel" class="jobsTabs machines-tabs"  >
-        <span mat-tab-link *ngFor="let machine of dashboardMachines; let i = index; trackBy: trackByKey"
-           (click)="selectTab(machine.machineNumber, i)"
-           [scrollDistance]="100"
-           [active]="selectedTabIndex === i"
-          > {{machine.machine.description}} </span>
-      </nav>
-      <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+      <mat-tab-group class="jobsTabs machines-tabs" #tabGroup [selectedIndex]="selectedTabIndex" (selectedTabChange)="onChangeTab()">
+        <mat-tab label="{{machine.machine.description}}" *ngFor="let machine of dashboardMachines; let i = index; trackBy: trackByKey" (click)="selectTab(machine.machineNumber, i)"></mat-tab>
+      </mat-tab-group>
 
       <div
           fxLayout="row"

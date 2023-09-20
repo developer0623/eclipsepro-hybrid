@@ -8,6 +8,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import { DashboardsComponent } from './dashboards/dashboards.component';
 import { ComponentsModule } from '../shared/components/components.module';
+import { DirectivesModule } from '../shared/directives/directives.module';
 import { PipesModule } from "../shared/pipes/pipes.module";
 import { MachineDetailComponent } from './machine-detail/machine-detail.component';
 
@@ -39,6 +40,7 @@ const machineState = {
         CommonModule,
         MatTabsModule,
         ComponentsModule,
+        DirectivesModule,
         FlexLayoutModule,
         UIRouterModule.forChild({ states: [dashboardsState, machineState] }),
         CdkMenuTrigger, CdkMenu, CdkMenuItem,
